@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorFondo"
+    android:gravity="center_horizontal|fill_vertical"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="329dp"
+        android:layout_height="142dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="90dp"
+        android:src="@drawable/sallefy_logo"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/main_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorBoton"
+                android:ems="10"
+                android:fontFamily="@font/gotham_light"
+                android:hint="@string/main_username"
+                android:autofillHints=""
+                android:inputType="textPersonName"
+                android:textAlignment="center"
+                android:textColorHint="@color/colorGrey" />
+
+            <EditText
+                android:id="@+id/main_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/colorBoton"
+                android:ems="10"
+                android:fontFamily="@font/gotham_light"
+                android:hint="@string/main_password"
+                android:inputType="textPassword"
+                android:textAlignment="center"
+                android:textColorHint="@color/colorGrey" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/main_logIn_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/boton_borde_verde"
+                android:fontFamily="@font/gotham_bold"
+                android:text="@string/main_logIn_button"
+                android:textColor="@color/colorBoton" />
+
+            <Button
+                android:id="@+id/main_register_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/boton_verde"
+                android:fontFamily="@font/gotham_bold"
+                android:text="@string/main_register_button" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/main_recordar_contra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/gotham_bold"
+            android:text="@string/main_refresh_contraseña"
+            android:textColor="@color/colorBoton" />
+    </LinearLayout>
+
+</LinearLayout>
