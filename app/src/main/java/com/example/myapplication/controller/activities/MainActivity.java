@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private Button bRegister;
     private TextView tvRecordarContra;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
