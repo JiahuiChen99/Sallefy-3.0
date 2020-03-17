@@ -11,4 +11,8 @@
     <string name="register_password">Password</string>
     <string name="register_email">E-mail</string>
     <string name="register_register_button">Register</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_library">Library</string>
 </resources>

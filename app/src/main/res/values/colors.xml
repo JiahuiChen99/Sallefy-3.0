@@ -10,4 +10,5 @@
 
     <color name="colorFondo">#130916</color>
     <color name="colorBoton">#1ed760</color>
+    <color name="colorMenuBar">#141212</color>
 </resources>

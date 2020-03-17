@@ -1,4 +1,4 @@
-package com.example.myapplication.controller.activity;
+package com.example.myapplication.controller.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,6 +30,15 @@ public class MainActivity extends AppCompatActivity {
         etUsername = (EditText) findViewById(R.id.main_username);
         etPassword = (EditText) findViewById(R.id.main_password);
         bLogin = (Button) findViewById(R.id.main_logIn_button);
+        bLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PaginaPrincipalActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+        });
+
         bRegister = (Button) findViewById(R.id.main_register_button);
         bRegister.setOnClickListener(new View.OnClickListener() {
             @Override
