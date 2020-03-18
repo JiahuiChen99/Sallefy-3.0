@@ -9,6 +9,8 @@
     <color name="colorGrey">#AAA9A9</color>
 
     <color name="colorFondo">#130916</color>
+    <color name="colorFondo2">#09001e</color>
+    <color name="colorFondo3">#060013</color>
     <color name="colorBoton">#1ed760</color>
     <color name="colorMenuBar">#141212</color>
 </resources>

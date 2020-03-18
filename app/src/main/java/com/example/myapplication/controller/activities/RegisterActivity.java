@@ -85,4 +85,10 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     public void onFailure(Throwable throwable) {
 
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
 }
