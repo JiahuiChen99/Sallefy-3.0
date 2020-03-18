@@ -1,7 +1,7 @@
-package com.example.myapplication.controller.resapi.callback;
+package com.example.myapplication.restapi.callback;
 
 public interface FailureCallback {
 
     void onFailure(Throwable throwable);
-}
 
+}

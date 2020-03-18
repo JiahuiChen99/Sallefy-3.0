@@ -11,11 +11,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
-import com.example.myapplication.controller.resapi.callback.UserCallback;
-import com.example.myapplication.controller.resapi.manager.UserManager;
 import com.example.myapplication.model.User;
 import com.example.myapplication.model.UserToken;
-import com.example.myapplication.utils.Session;
+import com.example.myapplication.restapi.callback.UserCallback;
+import com.example.myapplication.restapi.manager.UserManager;
+import com.example.myapplication.utils.Sesion;
 
 public class MainActivity extends AppCompatActivity implements UserCallback {
 
@@ -25,14 +25,16 @@ public class MainActivity extends AppCompatActivity implements UserCallback {
     private Button bRegister;
     private TextView tvRecordarContra;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreate(Bundle savedInstanceSate) {
+        super.onCreate(savedInstanceSate);
         setContentView(R.layout.activity_main);
-        initView();
+        initViews();
     }
 
-    private void initView() {
+    private void initViews () {
+
         etUsername = (EditText) findViewById(R.id.main_username);
         etPassword = (EditText) findViewById(R.id.main_password);
         bLogin = (Button) findViewById(R.id.main_logIn_button);
@@ -63,11 +65,11 @@ public class MainActivity extends AppCompatActivity implements UserCallback {
 
     @Override
     public void onLoginSuccess(UserToken userToken) {
-        Session.getInstance(getApplicationContext())
+        Sesion.getInstance(getApplicationContext())
                 .setUserToken(userToken);
         Intent intent = new Intent(getApplicationContext(), PaginaPrincipalActivity.class);
         startActivity(intent);
-        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     @Override
@@ -86,13 +88,17 @@ public class MainActivity extends AppCompatActivity implements UserCallback {
     }
 
     @Override
-    public void onUserInfoReceived(User userData) {
-
-    }
-
-    @Override
     public void onFailure(Throwable throwable) {
 
     }
 
 }
+
+
+
+
+
+
+
+
+

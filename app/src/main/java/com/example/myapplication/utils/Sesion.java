@@ -1,14 +1,15 @@
 package com.example.myapplication.utils;
 
+
 import android.content.Context;
 
 import com.example.myapplication.model.User;
 import com.example.myapplication.model.UserRegister;
 import com.example.myapplication.model.UserToken;
 
-public class Session {
+public class Sesion {
 
-    public static Session sesionActual;
+    public static Sesion sesionActual;
     private static Object mutex = new Object();
 
     private Context mContext;
@@ -17,21 +18,21 @@ public class Session {
     private User user;
     private UserToken token;
 
-    public static Session getInstance(Context context) {
-        Session result = sesionActual;
+    public static Sesion getInstance(Context context) {
+        Sesion result = sesionActual;
         if (result == null) {
             synchronized (mutex) {
                 result = sesionActual;
                 if (result == null)
-                    sesionActual = result = new Session();
+                    sesionActual = result = new Sesion();
             }
         }
         return result;
     }
 
-    private Session() {}
+    private Sesion() {}
 
-    public Session(Context context) {
+    public Sesion(Context context) {
         this.mContext = context;
         this.usuarioRegistrado = null;
         this.token = null;

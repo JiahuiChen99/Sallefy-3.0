@@ -1,4 +1,4 @@
-package com.example.myapplication.controller.resapi.service;
+package com.example.myapplication.restapi.service;
 
 
 import com.example.myapplication.model.UserLogin;

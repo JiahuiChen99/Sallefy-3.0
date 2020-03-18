@@ -1,9 +1,6 @@
-package com.example.myapplication.controller.resapi.callback;
+package com.example.myapplication.restapi.callback;
 
-import com.example.myapplication.model.User;
 import com.example.myapplication.model.UserToken;
-
-import java.util.List;
 
 public interface UserCallback extends FailureCallback {
 
@@ -11,6 +8,5 @@ public interface UserCallback extends FailureCallback {
     void onLoginFailure(Throwable throwable);
     void onRegisterSuccess();
     void onRegisterFailure(Throwable throwable);
-    void onUserInfoReceived(User userData);
 
 }

@@ -58,6 +58,29 @@ public class User implements Serializable {
     @SerializedName("login")
     private String login;
 
+    public User() {
+    }
+
+    public User(Boolean activated, List<String> authorities, String createdBy, String createdDate, String email, String firstName, Integer id, String imageUrl, String langKey, String lastModifiedBy, String lastModifiedDate, String lastName, Integer playlists, Integer tracks, Integer followers, Integer following, String login) {
+        this.activated = activated;
+        this.authorities = authorities;
+        this.createdBy = createdBy;
+        this.createdDate = createdDate;
+        this.email = email;
+        this.firstName = firstName;
+        this.id = id;
+        this.imageUrl = imageUrl;
+        this.langKey = langKey;
+        this.lastModifiedBy = lastModifiedBy;
+        this.lastModifiedDate = lastModifiedDate;
+        this.lastName = lastName;
+        this.playlists = playlists;
+        this.tracks = tracks;
+        this.followers = followers;
+        this.following = following;
+        this.login = login;
+    }
+
     public Boolean getActivated() {
         return activated;
     }
