@@ -11,7 +11,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
-import com.example.myapplication.model.User;
 import com.example.myapplication.model.UserToken;
 import com.example.myapplication.restapi.callback.UserCallback;
 import com.example.myapplication.restapi.manager.UserManager;
