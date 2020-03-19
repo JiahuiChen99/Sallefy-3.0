@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements UserCallback {
     public void onLoginSuccess(UserToken userToken) {
         Sesion.getInstance(getApplicationContext())
                 .setUserToken(userToken);
-        Intent intent = new Intent(getApplicationContext(), PaginaPrincipalActivity.class);
+        Intent intent = new Intent(getApplicationContext(), OpcionesActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }

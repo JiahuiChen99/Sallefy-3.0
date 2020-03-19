@@ -58,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     public void onLoginSuccess(UserToken userToken) {
         Sesion.getInstance(getApplicationContext())
                 .setUserToken(userToken);
-        Intent intent = new Intent(getApplicationContext(), PaginaPrincipalActivity.class);
+        Intent intent = new Intent(getApplicationContext(), OpcionesActivity.class);
         startActivity(intent);
     }
 

@@ -15,4 +15,9 @@
     <string name="menu_home">Home</string>
     <string name="menu_search">Search</string>
     <string name="menu_library">Library</string>
+
+    <string name="opciones_1">Follow una playlist</string>
+    <string name="opciones_2">Reproducir una cancion</string>
+    <string name="opciones_3">Añadir cancion a playlist</string>
+    <string name="opciones_4">Like a una cancion</string>
 </resources>

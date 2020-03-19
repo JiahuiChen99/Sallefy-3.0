@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".controller.activities.RegisterActivity"/>
         <activity android:name=".controller.activities.PaginaPrincipalActivity"/>
+        <activity android:name=".controller.activities.OpcionesActivity"/>
     </application>
 
 </manifest>
