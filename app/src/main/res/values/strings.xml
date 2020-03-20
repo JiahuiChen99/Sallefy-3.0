@@ -1,23 +1,34 @@
 <resources>
     <string name="app_name">Sallefy</string>
 
+    <!-- MAIN/lOGIN ACTIVITY-->
     <string name="main_username">Username</string>
     <string name="main_password">Password</string>
     <string name="main_logIn_button">LogIn</string>
     <string name="main_register_button">Register</string>
     <string name="main_refresh_contraseña">No recuerdo la contraseña</string>
 
+    <!-- REGISTER ACTIVITY-->
     <string name="register_username">Username</string>
     <string name="register_password">Password</string>
     <string name="register_email">E-mail</string>
     <string name="register_register_button">Register</string>
 
+    <!-- MENU BAR ACTIVITY-->
     <string name="menu_home">Home</string>
     <string name="menu_search">Search</string>
     <string name="menu_library">Library</string>
 
+    <!-- OPTIONS ACTIVITY-->
     <string name="opciones_1">Follow una playlist</string>
     <string name="opciones_2">Reproducir una cancion</string>
     <string name="opciones_3">Añadir cancion a playlist</string>
     <string name="opciones_4">Like a una cancion</string>
+
+    <!-- PLAYLIST ACTIVITY-->
+    <string name="playlsit_name">Playlist name</string>
+
+    <!-- SONG -->
+    <string name="song_name">Título cancion</string>
+    <string name="song_artists">Autor/a</string>
 </resources>

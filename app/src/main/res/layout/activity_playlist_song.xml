@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@drawable/gradient_fondo">
+
+    <TextView
+        android:id="@+id/playlist_name"
+        style="@style/fragmentTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="30dp"
+        android:text="@string/playlsit_name"
+        android:textAlignment="center"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlist_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/playlist_song_menu"
+        app:layout_constraintTop_toBottomOf="@+id/playlist_name" />
+
+
+    <LinearLayout
+        android:id="@+id/playlist_song_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="20dp">
+
+        <SeekBar
+            android:id="@+id/playlist_seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:backgroundTint="@color/colorWhite"
+            android:progressBackgroundTint="@color/colorWhite" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/playlist_info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/playlist_song_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:fadingEdge="horizontal"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:maxWidth="200dp"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:text="@string/song_name"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/playlist_song_autor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/song_artists"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/playlist_song_menu_sl"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_skip_left" />
+
+                <ImageButton
+                    android:id="@+id/playlist_song_menu_play"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_play" />
+
+                <ImageButton
+                    android:id="@+id/playlist_song_menu_sr"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_skip_right" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
