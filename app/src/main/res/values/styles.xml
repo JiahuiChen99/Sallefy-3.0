@@ -29,4 +29,11 @@
         <item name="android:fontFamily">@font/gotham_narrow_thin</item>
     </style>
 
+    <style name="settings_title" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:fontFamily">@font/gotham_book</item>
+    </style>
+
 </resources>

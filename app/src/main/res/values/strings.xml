@@ -21,12 +21,16 @@
 
     <!-- OPTIONS ACTIVITY-->
     <string name="opciones_1">Follow una playlist</string>
-    <string name="opciones_2">Reproducir una cancion</string>
+    <string name="opciones_2">Reproducir una playlist</string>
     <string name="opciones_3">Añadir cancion a playlist</string>
     <string name="opciones_4">Like a una cancion</string>
 
     <!-- PLAYLIST ACTIVITY-->
     <string name="playlsit_name">Playlist name</string>
+    <string name="action_canciones_playlisst">Canciones en una playlist</string>
+    <string name="action_playlistId">Id de la playlist</string>
+    <string name="action_namePlaylist">Nombre de la playlist</string>
+    <string name="action_accept">Aceptar</string>
 
     <!-- SONG -->
     <string name="song_name">Título cancion</string>

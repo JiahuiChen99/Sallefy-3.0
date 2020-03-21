@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
+import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.UserToken;
 import com.example.myapplication.restapi.callback.UserCallback;
 import com.example.myapplication.restapi.manager.UserManager;
@@ -22,8 +23,6 @@ public class MainActivity extends AppCompatActivity implements UserCallback {
     private EditText etPassword;
     private Button bLogin;
     private Button bRegister;
-    private TextView tvRecordarContra;
-
 
     @Override
     public void onCreate(Bundle savedInstanceSate) {
@@ -53,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements UserCallback {
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
-        tvRecordarContra = (TextView) findViewById(R.id.main_recordar_contra);
     }
 
     private void doLogin(String username, String userpassword) {
