@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.controller.callbacks.TrackListCallback;
 import com.example.myapplication.model.Track;
 
 import java.util.ArrayList;
@@ -22,21 +24,37 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
     private static final String TAG = "TrackListAdapter";
     private ArrayList<Track> mTracks;
     private Context mContext;
+    private TrackListCallback mCallback;
+    private int NUM_VIEWHOLDERS = 0;
 
-    public TrackListAdapter(Context context, ArrayList<Track> tracks) {
-        mContext = context;
+    public TrackListAdapter(TrackListCallback callback, Context context, ArrayList<Track> tracks ) {
         mTracks = tracks;
+        mContext = context;
+        mCallback = callback;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: called.");
+        Log.d(TAG, "onCreateViewHolder: called. Num viewHolders: " + NUM_VIEWHOLDERS++);
+
+
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_song, parent, false);
-        return new TrackListAdapter.ViewHolder(itemView);
+        ViewHolder vh = new TrackListAdapter.ViewHolder(itemView);
+        Log.d(TAG, "onCreateViewHolder: called. viewHolder hashCode: " + vh.hashCode());
+        return vh;
     }
 
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+        Log.d(TAG, "onBindViewHolder: called. viewHolder hashcode: " + holder.hashCode());
+
+
+        holder.mLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.onTrackSelected(position);
+            }
+        });
         holder.tvTitle.setText(mTracks.get(position).getName());
         holder.tvAuthor.setText(mTracks.get(position).getUserLogin());
         if (mTracks.get(position).getThumbnail() != null) {
@@ -50,18 +68,24 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
 
     @Override
     public int getItemCount() {
-
         return mTracks != null ? mTracks.size():0;
+    }
+
+    public void updateTrackLikeStateIcon(int position, boolean isLiked) {
+        mTracks.get(position).setLiked(isLiked);
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        LinearLayout mLayout;
         TextView tvTitle;
         TextView tvAuthor;
         ImageView ivPicture;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            mLayout = itemView.findViewById(R.id.track_item_layout);
             tvTitle = (TextView) itemView.findViewById(R.id.song_title);
             tvAuthor = (TextView) itemView.findViewById(R.id.song_author);
             ivPicture = (ImageView) itemView.findViewById(R.id.song_img);
