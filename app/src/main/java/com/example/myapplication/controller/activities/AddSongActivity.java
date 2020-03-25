@@ -51,15 +51,15 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
 
     @Override
     public void onPlaylistReceived(Playlist playlist) {
-
-
-
-        if (playlist.getUser().equals(Sesion.getInstance(this).getUser().getLogin())) {
+        if (playlist.getUser().getLogin().equals(Sesion.getInstance(this).getUser().getLogin())) {
             List<Track> tracks = null;
             tracks = playlist.getTracks();
             tracks.add(new Track(Integer.parseInt(etIdSong.getText().toString())));
             PlaylistManager.getInstance(this).modifyPlaylist(new Playlist(Integer.parseInt(etIdPlaylist.getText().toString()),
                     etNamePlaylist.getText().toString(), tracks, true), this);
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "No eres dueño de la playlist o no tienes permisos", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -75,7 +75,7 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
     }
 
     public void onPlaylistCreated(Playlist playlists) {
-
+        Toast.makeText(getApplicationContext(), "Se ha añadido con éxito la canción", Toast.LENGTH_LONG).show();
     }
     public void onPlaylistFailure(Throwable throwable) {
 

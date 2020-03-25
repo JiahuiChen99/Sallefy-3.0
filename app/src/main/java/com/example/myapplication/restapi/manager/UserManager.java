@@ -117,7 +117,7 @@ public class UserManager {
     public synchronized void accountAttempt (final UserCallback userCallback) {
 
         UserToken userToken = Sesion.getInstance(context).getUserToken();
-        Call<User> call = service.getAccount("Bearer" + userToken.getIdToken());
+        Call<User> call = service.getAccount("Bearer " + userToken.getIdToken());
 
         call.enqueue(new Callback<User>() {
             @Override

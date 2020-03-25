@@ -25,7 +25,7 @@ public class OpcionesActivity extends AppCompatActivity implements UserCallback 
     @Override
     public void onCreate(Bundle savedInstanceSate) {
         super.onCreate(savedInstanceSate);
-
+        setContentView(R.layout.activity_opciones);
         UserManager.getInstance(getApplicationContext())
                 .accountAttempt(OpcionesActivity.this);
     }
@@ -77,7 +77,6 @@ public class OpcionesActivity extends AppCompatActivity implements UserCallback 
     @Override
     public void onAccountSucces(User user) {
         Sesion.getInstance(getApplicationContext()).setUser(user);
-        setContentView(R.layout.activity_opciones);
         initViews();
     }
 
