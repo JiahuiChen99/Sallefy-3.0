@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
+import com.example.myapplication.model.User;
 import com.example.myapplication.model.UserRegister;
 import com.example.myapplication.model.UserToken;
 import com.example.myapplication.restapi.callback.UserCallback;
@@ -90,5 +91,15 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onAccountSucces(User user) {
+
+    }
+
+    @Override
+    public void onAccountFailure(Throwable throwable) {
+
     }
 }

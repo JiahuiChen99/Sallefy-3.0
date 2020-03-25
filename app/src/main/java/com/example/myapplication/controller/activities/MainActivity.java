@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
 import com.example.myapplication.model.Playlist;
+import com.example.myapplication.model.User;
 import com.example.myapplication.model.UserToken;
 import com.example.myapplication.restapi.callback.UserCallback;
 import com.example.myapplication.restapi.manager.UserManager;
@@ -86,6 +87,16 @@ public class MainActivity extends AppCompatActivity implements UserCallback {
 
     @Override
     public void onFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onAccountSucces(User user) {
+
+    }
+
+    @Override
+    public void onAccountFailure(Throwable throwable) {
 
     }
 

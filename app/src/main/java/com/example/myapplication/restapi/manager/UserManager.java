@@ -4,12 +4,14 @@ import android.content.Context;
 import android.util.Log;
 
 
+import com.example.myapplication.model.User;
 import com.example.myapplication.model.UserLogin;
 import com.example.myapplication.model.UserRegister;
 import com.example.myapplication.model.UserToken;
 import com.example.myapplication.restapi.callback.UserCallback;
 import com.example.myapplication.restapi.service.UserService;
 import com.example.myapplication.restapi.service.UserTokenService;
+import com.example.myapplication.utils.Sesion;
 import com.example.myapplication.utils.Variables;
 
 import java.io.IOException;
@@ -107,6 +109,34 @@ public class UserManager {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                userCallback.onFailure(t);
+            }
+        });
+    }
+
+    public synchronized void accountAttempt (final UserCallback userCallback) {
+
+        UserToken userToken = Sesion.getInstance(context).getUserToken();
+        Call<User> call = service.getAccount("Bearer" + userToken.getIdToken());
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    userCallback.onAccountSucces(response.body());
+                } else {
+                    try {
+                        userCallback.onAccountFailure(new Throwable("ERROR " + code + ", " + response.errorBody().string()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
                 userCallback.onFailure(t);
             }
         });

@@ -35,4 +35,10 @@
     <!-- SONG -->
     <string name="song_name">Título cancion</string>
     <string name="song_artists">Autor/a</string>
+
+    <!-- ADD SONG -->
+    <string name="add_song_title">Añadir una cancion</string>
+    <string name="add_song_id">Id de la cancion</string>
+    <string name="add_song_playlist_id">Id de la playlist</string>
+    <string name="add_song_playlist_name">Nombre de la playlist</string>
 </resources>
