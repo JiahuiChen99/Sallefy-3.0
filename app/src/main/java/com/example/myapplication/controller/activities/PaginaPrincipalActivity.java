@@ -10,7 +10,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myapplication.R;
-import com.example.myapplication.controller.fragments.HomeFragment;
+import com.example.myapplication.controller.fragments.ExploreFragment;
+import com.example.myapplication.controller.fragments.ProfileFragment;
 import com.example.myapplication.controller.fragments.LibraryFragment;
 import com.example.myapplication.controller.fragments.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -41,7 +42,7 @@ public class PaginaPrincipalActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.action_home:
-                        fragment = new HomeFragment();
+                        fragment = new ProfileFragment();
                         break;
 
                     case R.id.action_search:
@@ -50,6 +51,9 @@ public class PaginaPrincipalActivity extends AppCompatActivity {
 
                     case R.id.action_content:
                         fragment = new LibraryFragment();
+                        break;
+                    case R.id.action_profile:
+                        fragment = new ProfileFragment();
                         break;
 
                 }
@@ -61,7 +65,7 @@ public class PaginaPrincipalActivity extends AppCompatActivity {
     }
 
     private void setInicialFragment() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExploreFragment()).commit();
     }
 
     @Override
