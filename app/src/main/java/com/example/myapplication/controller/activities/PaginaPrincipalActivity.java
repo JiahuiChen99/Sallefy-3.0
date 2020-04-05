@@ -41,8 +41,8 @@ public class PaginaPrincipalActivity extends AppCompatActivity {
                 Fragment fragment = null;
 
                 switch (item.getItemId()) {
-                    case R.id.action_home:
-                        fragment = new ProfileFragment();
+                    case R.id.action_explore:
+                        fragment = new ExploreFragment();
                         break;
 
                     case R.id.action_search:
