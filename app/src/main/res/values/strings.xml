@@ -49,4 +49,9 @@
     <string name="library">Library</string>
     <string name="profile">User Profile</string>
 
+    <!-- Explore Fragment -->
+    <string name="recentlyPlayed">Recently Played</string>
+    <string name="recommend">Recommended for you</string>
+    <string name="recommendArtists">Artists you may like</string>
+
 </resources>
