@@ -14,4 +14,6 @@ public interface TrackService {
     @GET("tracks")
     Call<List<Track>> getAllTracks(@Header("Authorization") String token);
 
+    @GET("tracks?played=true")
+    Call<List<Track>> getRecentTracks(@Header("Authorization") String token);
 }
