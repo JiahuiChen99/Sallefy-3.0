@@ -1,13 +1,12 @@
 package com.example.myapplication.controller.adapters;
 
-import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,21 +14,67 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.controller.activities.TrackDetailsActivity;
+import com.example.myapplication.controller.callbacks.TrackListCallback;
 import com.example.myapplication.controller.fragments.ExploreFragment;
 import com.example.myapplication.model.Track;
+import com.example.myapplication.restapi.callback.TrackCallback;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class RecentTracksAdapter extends RecyclerView.Adapter<RecentTracksAdapter.ViewHolder> {
+public class RecentTracksAdapter extends RecyclerView.Adapter<RecentTracksAdapter.ViewHolder> implements TrackCallback {
 
     private static final String TAG = "RecentTracksAdapter";
     private ArrayList<Track> mTracks;
     private ExploreFragment mContext;
+    private TrackCallback callback;
     private int NUM_VIEWHOLDERS = 0;
 
-    public RecentTracksAdapter(ExploreFragment context, ArrayList<Track> tracks ) {
+    public RecentTracksAdapter(TrackCallback callback, ExploreFragment context, ArrayList<Track> tracks ) {
+        this.callback = callback;
         this.mTracks = tracks;
         this.mContext = context;
+    }
+
+    @Override
+    public void onTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onRecommendedTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoRecommendedTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onSpecificTrackReceived(Track track) {
+
+    }
+
+    @Override
+    public void onNoSpecificTrack(Track track) {
+
+    }
+
+    @Override
+    public void onTrackSelected(Integer id) {
+
+    }
+
+    @Override
+    public void onFailure(Throwable throwable) {
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -62,13 +107,14 @@ public class RecentTracksAdapter extends RecyclerView.Adapter<RecentTracksAdapte
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Clicked: " + mTracks.get(position).getName());
+                Log.d(TAG, "SONG: " + position);
+                callback.onTrackSelected(mTracks.get(position).getId());
             }
         });
         if (mTracks.get(position).getThumbnail() != null) {
             Glide.with(mContext)
                     .asBitmap()
-                    .placeholder(R.drawable.ic_audiotrack)
+                    .placeholder(R.drawable.logo)
                     .load(mTracks.get(position).getThumbnail())
                     .into(holder.ivThumbnail);
             holder.tvTrackName.setText(mTracks.get(position).getName());
