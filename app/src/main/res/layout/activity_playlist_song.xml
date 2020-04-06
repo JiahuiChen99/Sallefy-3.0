@@ -106,7 +106,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/ic_play" />
+                    android:src="@drawable/ic_play_outline" />
 
                 <ImageButton
                     android:id="@+id/playlist_song_menu_sr"
