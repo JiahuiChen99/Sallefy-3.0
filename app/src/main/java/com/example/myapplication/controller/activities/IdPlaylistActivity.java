@@ -251,6 +251,16 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
     }
 
     @Override
+    public void onRecommendedTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoRecommendedTracks(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }
