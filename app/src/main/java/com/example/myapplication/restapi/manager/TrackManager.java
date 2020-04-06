@@ -96,6 +96,31 @@ public class TrackManager {
         });
     }
 
+    public synchronized void getSpecificTrack(Integer id, final TrackCallback trackCallback) {
+        UserToken userToken = Sesion.getInstance(mContext).getUserToken();
+
+        Call<Track> call = mTrackService.getSpecificTrack(id,"Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<Track>() {
+            @Override
+            public void onResponse(Call<Track> call, Response<Track> response) {
+                int code = response.code();
+
+                if (response.isSuccessful()) {
+                    trackCallback.onSpecificTrackReceived(response.body());
+                } else {
+                    Log.d(TAG, "Error Not Successful: " + code);
+                    trackCallback.onNoTracks(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Track> call, Throwable t) {
+                Log.d(TAG, "Error Failure: " + t.getStackTrace());
+                trackCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+    }
+
     public synchronized void getRecommendedTracks(final TrackCallback trackCallback) {
         UserToken userToken = Sesion.getInstance(mContext).getUserToken();
 

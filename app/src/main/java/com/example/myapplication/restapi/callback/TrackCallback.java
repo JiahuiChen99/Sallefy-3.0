@@ -11,4 +11,9 @@ public interface TrackCallback extends FailureCallback {
 
     void onRecommendedTracksReceived(List<Track> tracks);
     void onNoRecommendedTracks(Throwable throwable);
+
+    void onSpecificTrackReceived(Track track);
+    void onNoSpecificTrack(Track track);
+
+    void onTrackSelected(Integer id);
 }
