@@ -1,5 +1,6 @@
 package com.example.myapplication.controller.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.controller.activities.TrackDetailsActivity;
 import com.example.myapplication.controller.adapters.ArtistsAdapter;
 import com.example.myapplication.controller.adapters.RecentTracksAdapter;
 import com.example.myapplication.controller.adapters.RecommendAdapter;
+import com.example.myapplication.controller.callbacks.TrackListCallback;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.model.User;
 import com.example.myapplication.restapi.callback.TrackCallback;
@@ -42,7 +45,7 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
 
         mRecentRecyclerView = (RecyclerView) view.findViewById(R.id.recentList);
         LinearLayoutManager recentTracksManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        RecentTracksAdapter recentTracksAdapter = new RecentTracksAdapter(this, null);
+        RecentTracksAdapter recentTracksAdapter = new RecentTracksAdapter(this, this, null);
         mRecentRecyclerView.setLayoutManager(recentTracksManager);
         mRecentRecyclerView.setAdapter(recentTracksAdapter);
 
@@ -77,7 +80,7 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
     @Override
     public void onTracksReceived(List<Track> tracks) {
         mRecentTracks = (ArrayList) tracks;
-        RecentTracksAdapter adapter = new RecentTracksAdapter(this, mRecentTracks);
+        RecentTracksAdapter adapter = new RecentTracksAdapter(this, this, mRecentTracks);
         mRecentRecyclerView.setAdapter(adapter);
     }
 
@@ -99,6 +102,24 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
     }
 
     @Override
+    public void onSpecificTrackReceived(Track track) {
+
+    }
+
+    @Override
+    public void onNoSpecificTrack(Track track) {
+
+    }
+
+    @Override
+    public void onTrackSelected(Integer id) {
+        Intent intent = new Intent(getActivity(), TrackDetailsActivity.class);
+        intent.putExtra("songId", id);
+        startActivity(intent);
+    }
+
+
+    @Override
     public void onUsersReceived(List<User> artists) {
         mArtists = (ArrayList) artists;
         ArtistsAdapter adapter = new ArtistsAdapter(this, mArtists);
@@ -115,6 +136,4 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
     public void onFailure(Throwable throwable) {
 
     }
-
-
 }
