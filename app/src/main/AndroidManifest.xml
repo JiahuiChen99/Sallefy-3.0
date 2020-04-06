@@ -28,6 +28,7 @@
         <activity android:name=".controller.activities.BuscarPlaylistActivity"/>
         <activity android:name=".controller.activities.IdPlaylistActivity"/>
         <activity android:name=".controller.activities.AddSongActivity"/>
+        <activity android:name=".controller.activities.TrackDetailsActivity"/>
     </application>
 
 </manifest>
