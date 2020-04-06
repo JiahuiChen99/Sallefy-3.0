@@ -67,7 +67,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
         if (mTracks.get(position).getThumbnail() != null) {
             Glide.with(mContext)
                     .asBitmap()
-                    .placeholder(R.drawable.ic_audiotrack)
+                    .placeholder(R.drawable.logo)
                     .load(mTracks.get(position).getThumbnail())
                     .into(holder.ivThumbnail);
             holder.tvTrackName.setText(mTracks.get(position).getName());

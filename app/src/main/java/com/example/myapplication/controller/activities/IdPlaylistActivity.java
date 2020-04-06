@@ -181,7 +181,7 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
 
     private void pauseAudio() {
         mPlayer.pause();
-        btnPlayStop.setImageResource(R.drawable.ic_play);
+        btnPlayStop.setImageResource(R.drawable.ic_play_outline);
         btnPlayStop.setTag(PLAY_VIEW);
     }
 
@@ -257,6 +257,21 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
 
     @Override
     public void onNoRecommendedTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onSpecificTrackReceived(Track track) {
+
+    }
+
+    @Override
+    public void onNoSpecificTrack(Track track) {
+
+    }
+
+    @Override
+    public void onTrackSelected(Integer id) {
 
     }
 
