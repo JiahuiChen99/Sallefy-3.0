@@ -220,22 +220,11 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
 
     @Override
     public void onTracksReceived(List<Track> tracks) {
-
     }
 
     @Override
     public void onSpecificTrackReceived(Track track) {
-        mTrack = track;
-        tvTitle.setText("Now Playing");
-        tvArtist.setText(mTrack.getUser().getLogin());
-        tvSongName.setText(mTrack.getName());
 
-        Glide.with(this)
-                .asBitmap()
-                .load(mTrack.getThumbnail())
-                .into(ivThumbnail);
-
-        prepareMediaPlayer(mTrack.getUrl());
     }
 
     @Override

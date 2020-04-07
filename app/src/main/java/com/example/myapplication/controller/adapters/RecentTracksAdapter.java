@@ -46,6 +46,16 @@ public class RecentTracksAdapter extends RecyclerView.Adapter<RecentTracksAdapte
     }
 
     @Override
+    public void onRecentTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoRecentTracksReceived(Throwable throwable) {
+
+    }
+
+    @Override
     public void onRecommendedTracksReceived(List<Track> tracks) {
 
     }

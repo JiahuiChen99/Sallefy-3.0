@@ -17,7 +17,6 @@ import com.example.myapplication.controller.activities.TrackDetailsActivity;
 import com.example.myapplication.controller.adapters.ArtistsAdapter;
 import com.example.myapplication.controller.adapters.RecentTracksAdapter;
 import com.example.myapplication.controller.adapters.RecommendAdapter;
-import com.example.myapplication.controller.callbacks.TrackListCallback;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.model.User;
 import com.example.myapplication.restapi.callback.TrackCallback;
@@ -79,13 +78,22 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
 
     @Override
     public void onTracksReceived(List<Track> tracks) {
+    }
+
+    @Override
+    public void onNoTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onRecentTracksReceived(List<Track> tracks) {
         mRecentTracks = (ArrayList) tracks;
         RecentTracksAdapter adapter = new RecentTracksAdapter(this, this, mRecentTracks);
         mRecentRecyclerView.setAdapter(adapter);
     }
 
     @Override
-    public void onNoTracks(Throwable throwable) {
+    public void onNoRecentTracksReceived(Throwable throwable) {
 
     }
 
