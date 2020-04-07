@@ -14,20 +14,22 @@
             android:id="@+id/recommendImage"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/recommendedImageName"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:text="Song Name"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/recommendImage"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:textStyle="bold"
-            android:scrollHorizontally="true"
             android:layout_centerHorizontal="true"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"/>
 

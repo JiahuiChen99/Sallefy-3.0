@@ -51,13 +51,17 @@
 
         <TextView
             android:id="@+id/song_title"
+            android:text="@string/song_name"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:gravity="center"
             android:layout_marginTop="20dp"
             android:textSize="30sp"
             android:textStyle="bold"
-            android:text="@string/song_name"/>
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever" />
 
         <TextView
             android:id="@+id/song_author"
@@ -99,7 +103,7 @@
                 android:tint="#FFFFFF" />
 
             <ImageButton
-                android:id="@+id/playlist_song_menu_sl"
+                android:id="@+id/previous_song"
                 android:layout_width="70dp"
                 android:layout_height="50dp"
                 android:background="@android:color/transparent"
@@ -116,7 +120,7 @@
                 android:tint="#FFFFFF" />
 
             <ImageButton
-                android:id="@+id/playlist_song_menu_sr"
+                android:id="@+id/next_song"
                 android:layout_width="70dp"
                 android:layout_height="50dp"
                 android:background="@android:color/transparent"
