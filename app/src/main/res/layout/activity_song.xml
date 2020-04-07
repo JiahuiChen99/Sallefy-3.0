@@ -78,7 +78,7 @@
         android:orientation="vertical">
 
         <SeekBar
-            android:id="@+id/playlist_seekBar"
+            android:id="@+id/song_progress"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:backgroundTint="@color/colorWhite"
@@ -107,7 +107,7 @@
                 android:tint="#FFFFFF" />
 
             <ImageButton
-                android:id="@+id/playlist_song_menu_play"
+                android:id="@+id/play_stop"
                 android:layout_width="70dp"
                 android:layout_height="50dp"
                 android:background="@android:color/transparent"
