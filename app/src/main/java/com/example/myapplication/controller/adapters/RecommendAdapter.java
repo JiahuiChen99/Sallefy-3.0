@@ -16,19 +16,63 @@ import com.example.myapplication.R;
 import com.example.myapplication.controller.fragments.ExploreFragment;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.model.User;
+import com.example.myapplication.restapi.callback.TrackCallback;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.ViewHolder> {
+public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.ViewHolder> implements TrackCallback {
 
     private static final String TAG = "RecommendAdapter";
     private ArrayList<Track> mTracks;
     private ExploreFragment mContext;
+    TrackCallback callback;
     private int NUM_VIEWHOLDERS = 0;
 
-    public RecommendAdapter(ExploreFragment context, ArrayList<Track> recommendedTracks ) {
+    public RecommendAdapter(TrackCallback trackCallback,ExploreFragment context, ArrayList<Track> recommendedTracks ) {
+        this.callback = trackCallback;
         this.mTracks = recommendedTracks;
         this.mContext = context;
+    }
+
+    @Override
+    public void onTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onRecommendedTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoRecommendedTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onSpecificTrackReceived(Track track) {
+
+    }
+
+    @Override
+    public void onNoSpecificTrack(Track track) {
+
+    }
+
+    @Override
+    public void onTrackSelected(Integer id) {
+
+    }
+
+    @Override
+    public void onFailure(Throwable throwable) {
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -61,6 +105,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                callback.onTrackSelected(mTracks.get(position).getId());
                 Log.d(TAG, "Clicked: " + mTracks.get(position).getName());
             }
         });
