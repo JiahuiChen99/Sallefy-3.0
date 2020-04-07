@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
-import com.example.myapplication.controller.activities.TrackDetailsActivity;
-import com.example.myapplication.controller.callbacks.TrackListCallback;
 import com.example.myapplication.controller.fragments.ExploreFragment;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.TrackCallback;
