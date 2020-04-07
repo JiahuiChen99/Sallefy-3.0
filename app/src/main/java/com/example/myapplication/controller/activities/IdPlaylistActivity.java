@@ -175,7 +175,7 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
     private void playAudio() {
         mPlayer.start();
         updateSeekBar();
-        btnPlayStop.setImageResource(R.drawable.ic_pause);
+        btnPlayStop.setImageResource(R.drawable.ic_pause_outline);
         btnPlayStop.setTag(STOP_VIEW);
     }
 
