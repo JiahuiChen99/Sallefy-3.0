@@ -57,7 +57,7 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
 
         mRecommendedRecyclerView = (RecyclerView) view.findViewById(R.id.recommendTracksList);
         LinearLayoutManager recommendManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        RecommendAdapter recommendAdapter = new RecommendAdapter(this, null);
+        RecommendAdapter recommendAdapter = new RecommendAdapter(this, this, null);
         mRecommendedRecyclerView.setLayoutManager(recommendManager);
         mRecommendedRecyclerView.setAdapter(recommendAdapter);
 
@@ -92,7 +92,7 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
     @Override
     public void onRecommendedTracksReceived(List<Track> recommendedTracks) {
         mRecommendedTracks = (ArrayList) recommendedTracks;
-        RecommendAdapter adapter = new RecommendAdapter(this, mRecommendedTracks);
+        RecommendAdapter adapter = new RecommendAdapter(this,this, mRecommendedTracks);
         mRecommendedRecyclerView.setAdapter(adapter);
     }
 
