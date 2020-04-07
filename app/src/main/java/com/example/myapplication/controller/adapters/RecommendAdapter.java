@@ -23,7 +23,7 @@ import java.util.List;
 
 public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.ViewHolder> implements TrackCallback {
 
-    private static final String TAG = "RecommendAdapter";
+    private static final String TAG = "Recommended Tracks";
     private ArrayList<Track> mTracks;
     private ExploreFragment mContext;
     TrackCallback callback;
@@ -42,6 +42,16 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
 
     @Override
     public void onNoTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onRecentTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoRecentTracksReceived(Throwable throwable) {
 
     }
 
@@ -66,7 +76,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
     }
 
     @Override
-    public void onTrackSelected(Integer id) {
+    public void onTrackSelected(Integer id, String sectionID) {
 
     }
 
@@ -105,8 +115,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.onTrackSelected(mTracks.get(position).getId());
                 Log.d(TAG, "Clicked: " + mTracks.get(position).getName());
+                callback.onTrackSelected(position, TAG);
             }
         });
         if (mTracks.get(position).getThumbnail() != null) {

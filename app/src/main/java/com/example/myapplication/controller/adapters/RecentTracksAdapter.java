@@ -23,7 +23,7 @@ import java.util.List;
 
 public class RecentTracksAdapter extends RecyclerView.Adapter<RecentTracksAdapter.ViewHolder> implements TrackCallback {
 
-    private static final String TAG = "RecentTracksAdapter";
+    private static final String TAG = "Recent Tracks";
     private ArrayList<Track> mTracks;
     private ExploreFragment mContext;
     private TrackCallback callback;
@@ -76,7 +76,7 @@ public class RecentTracksAdapter extends RecyclerView.Adapter<RecentTracksAdapte
     }
 
     @Override
-    public void onTrackSelected(Integer id) {
+    public void onTrackSelected(Integer id, String sectionID) {
 
     }
 
@@ -116,7 +116,7 @@ public class RecentTracksAdapter extends RecyclerView.Adapter<RecentTracksAdapte
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "SONG: " + position);
-                callback.onTrackSelected(mTracks.get(position).getId());
+                callback.onTrackSelected(position, TAG);
             }
         });
         if (mTracks.get(position).getThumbnail() != null) {
