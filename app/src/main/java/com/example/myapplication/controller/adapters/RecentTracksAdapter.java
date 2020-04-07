@@ -1,6 +1,6 @@
 package com.example.myapplication.controller.adapters;
 
-import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +13,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
 import com.example.myapplication.controller.fragments.ExploreFragment;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.TrackCallback;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,12 +125,17 @@ public class RecentTracksAdapter extends RecyclerView.Adapter<RecentTracksAdapte
             }
         });
         if (mTracks.get(position).getThumbnail() != null) {
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(20));
             Glide.with(mContext)
                     .asBitmap()
                     .placeholder(R.drawable.logo)
                     .load(mTracks.get(position).getThumbnail())
+                    .apply(requestOptions)
                     .into(holder.ivThumbnail);
             holder.tvTrackName.setText(mTracks.get(position).getName());
+            holder.tvTrackName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+            holder.tvTrackName.setSelected(true);
         }
     }
 

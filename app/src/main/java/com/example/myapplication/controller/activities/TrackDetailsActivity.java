@@ -1,10 +1,10 @@
 package com.example.myapplication.controller.activities;
 
-import android.app.Activity;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -15,10 +15,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.TrackCallback;
 import com.example.myapplication.restapi.manager.TrackManager;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,7 +35,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     private static final String LIKED = "LikeIcon";
     private static final String NOT_LIKED = "NotLikedIcon";
 
-    private Track mTrack;
+    private List<Track> mTracks;
     private TextView tvTitle;
     private ImageView ivThumbnail;
     private TextView tvSongName;
@@ -54,14 +59,27 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     private Handler mHandler;
     private Runnable mRunnable;
 
+    private Integer songID;
+    private String sectionID;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song);
-        Integer id = getIntent().getIntExtra("songId", 0);
+        this.songID = getIntent().getIntExtra("songId", 0);
+         this.sectionID = getIntent().getStringExtra("sectionId");
         initViews();
-        getData(id);
+        getData(sectionID);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     private void initViews(){
@@ -69,6 +87,15 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         ivThumbnail = findViewById(R.id.song_thumbnail);
         tvSongName = findViewById(R.id.song_title);
         tvArtist = findViewById(R.id.song_author);
+        btnPreviousSong = (ImageButton) findViewById(R.id.previous_song);
+        btnPreviousSong.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                songID = ((songID-1)%(mTracks.size()));
+                songID = songID < 0 ? (mTracks.size()-1):songID;
+                updateTrack(mTracks.get(songID));
+            }
+        });
         btnBackward = (ImageButton) findViewById(R.id.backwards);
         btnBackward.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -93,6 +120,16 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
             @Override
             public void onClick(View v){
                 mPlayer.seekTo(mPlayer.getCurrentPosition() + 5000);
+            }
+        });
+        btnNextSong = (ImageButton) findViewById(R.id.next_song);
+        btnNextSong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                songID = ((songID+1)%(mTracks.size()));
+                songID = songID >= mTracks.size() ? 0:songID;
+
+                updateTrack(mTracks.get(songID));
             }
         });
         mPlayer = new MediaPlayer();
@@ -186,7 +223,26 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         });
         connection.start();
     }
+    
+    public void updateTrack(Track track){
+        tvArtist.setText(track.getUserLogin());
+        tvSongName.setText(track.getName());
+        tvSongName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        tvSongName.setSelected(true);
+        Glide.with(this)
+                .asBitmap()
+                .load(track.getThumbnail())
+                .into(ivThumbnail);
 
+        try {
+            mPlayer.reset();
+            mPlayer.setDataSource(track.getUrl());
+            //mediaPlayer.pause();
+            mPlayer.prepare();
+        } catch(Exception e) {
+        }
+    }
+    
     private void playAudio() {
         mPlayer.start();
         updateSeekBar();
@@ -214,8 +270,13 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         }
     }
 
-    private void getData(Integer id){
-        TrackManager.getInstance(this).getSpecificTrack(id, this);
+    private void getData(String sectionID){
+
+        if(sectionID.equalsIgnoreCase("Recent Tracks")){
+            TrackManager.getInstance(this).getRecentTracks(this);
+        }else{
+            TrackManager.getInstance(this).getRecommendedTracks(this);
+        }
     }
 
     @Override
@@ -238,8 +299,46 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     }
 
     @Override
-    public void onRecommendedTracksReceived(List<Track> tracks) {
+    public void onRecentTracksReceived(List<Track> tracks) {
+        mTracks = tracks;
+        tvTitle.setText("Playing From " + sectionID);
+        tvArtist.setText(mTracks.get(songID).getUser().getLogin());
+        tvSongName.setText(mTracks.get(songID).getName());
+        tvSongName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        tvSongName.setSelected(true);
 
+        Glide.with(this)
+                .asBitmap()
+                .load(mTracks.get(songID).getThumbnail())
+                .into(ivThumbnail);
+
+        prepareMediaPlayer(mTracks.get(songID).getUrl());
+    }
+
+    @Override
+    public void onNoRecentTracksReceived(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onRecommendedTracksReceived(List<Track> tracks) {
+        mTracks = tracks;
+        tvTitle.setText("Playing From " + sectionID);
+
+        tvArtist.setText(mTracks.get(songID).getUser().getLogin());
+        tvSongName.setText(mTracks.get(songID).getName());
+        tvSongName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        tvSongName.setSelected(true);
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(30));
+        Glide.with(this)
+                .asBitmap()
+                .load(mTracks.get(songID).getThumbnail())
+                .apply(requestOptions)
+                .into(ivThumbnail);
+
+        prepareMediaPlayer(mTracks.get(songID).getUrl());
     }
 
     @Override
@@ -248,7 +347,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     }
 
     @Override
-    public void onTrackSelected(Integer id) {
+    public void onTrackSelected(Integer id, String sectionID) {
 
     }
 
