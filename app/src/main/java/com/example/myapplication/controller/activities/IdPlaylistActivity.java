@@ -24,7 +24,6 @@ import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
 import com.example.myapplication.restapi.callback.TrackCallback;
 import com.example.myapplication.restapi.manager.PlaylistManager;
-import com.example.myapplication.restapi.manager.TrackManager;
 import com.gauravk.audiovisualizer.visualizer.BarVisualizer;
 
 import java.io.IOException;
@@ -251,6 +250,16 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
     }
 
     @Override
+    public void onRecentTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoRecentTracksReceived(Throwable throwable) {
+
+    }
+
+    @Override
     public void onRecommendedTracksReceived(List<Track> tracks) {
 
     }
@@ -271,7 +280,7 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
     }
 
     @Override
-    public void onTrackSelected(Integer id) {
+    public void onTrackSelected(Integer id, String sectionID) {
 
     }
 
