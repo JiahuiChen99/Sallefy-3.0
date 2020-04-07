@@ -81,10 +81,10 @@ public class TrackManager {
                 int code = response.code();
 
                 if (response.isSuccessful()) {
-                    trackCallback.onTracksReceived(response.body());
+                    trackCallback.onRecentTracksReceived(response.body());
                 } else {
                     Log.d(TAG, "Error Not Successful: " + code);
-                    trackCallback.onNoTracks(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                    trackCallback.onNoRecentTracksReceived(new Throwable("ERROR " + code + ", " + response.raw().message()));
                 }
             }
 

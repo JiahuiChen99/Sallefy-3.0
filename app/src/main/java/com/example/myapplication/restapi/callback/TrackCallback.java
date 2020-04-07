@@ -9,6 +9,9 @@ public interface TrackCallback extends FailureCallback {
     void onTracksReceived(List<Track> tracks);
     void onNoTracks(Throwable throwable);
 
+    void onRecentTracksReceived(List<Track> tracks);
+    void onNoRecentTracksReceived(Throwable throwable);
+
     void onRecommendedTracksReceived(List<Track> tracks);
     void onNoRecommendedTracks(Throwable throwable);
 
