@@ -288,6 +288,26 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         }
     }
 
+    private void updateData(List<Track> tracks){
+        mTracks = tracks;
+        tvTitle.setText("Playing from " + sectionID);
+
+        tvArtist.setText(mTracks.get(songID).getUser().getLogin());
+        tvSongName.setText(mTracks.get(songID).getName());
+        tvSongName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        tvSongName.setSelected(true);
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(30));
+        Glide.with(this)
+                .asBitmap()
+                .load(mTracks.get(songID).getThumbnail())
+                .apply(requestOptions)
+                .into(ivThumbnail);
+
+        prepareMediaPlayer(mTracks.get(songID).getUrl());
+    }
+
     private String createTimeLabel(Integer duration){
         String timerLabel = "";
         int min = duration / 1000 / 60;
@@ -323,20 +343,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
 
     @Override
     public void onRecentTracksReceived(List<Track> tracks) {
-        mTracks = tracks;
-        tvTitle.setText("Playing from " + sectionID);
-        tvArtist.setText(mTracks.get(songID).getUser().getLogin());
-        tvSongName.setText(mTracks.get(songID).getName());
-        tvSongName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        tvSongName.setSelected(true);
-
-
-        Glide.with(this)
-                .asBitmap()
-                .load(mTracks.get(songID).getThumbnail())
-                .into(ivThumbnail);
-
-        prepareMediaPlayer(mTracks.get(songID).getUrl());
+        updateData(tracks);
     }
 
     @Override
@@ -346,23 +353,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
 
     @Override
     public void onRecommendedTracksReceived(List<Track> tracks) {
-        mTracks = tracks;
-        tvTitle.setText("Playing from " + sectionID);
-
-        tvArtist.setText(mTracks.get(songID).getUser().getLogin());
-        tvSongName.setText(mTracks.get(songID).getName());
-        tvSongName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        tvSongName.setSelected(true);
-
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(30));
-        Glide.with(this)
-                .asBitmap()
-                .load(mTracks.get(songID).getThumbnail())
-                .apply(requestOptions)
-                .into(ivThumbnail);
-
-        prepareMediaPlayer(mTracks.get(songID).getUrl());
+        updateData(tracks);
     }
 
     @Override
