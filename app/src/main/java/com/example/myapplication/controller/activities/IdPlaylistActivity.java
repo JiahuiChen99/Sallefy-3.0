@@ -285,6 +285,11 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
     }
 
     @Override
+    public void onTrackLiked(Track like) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

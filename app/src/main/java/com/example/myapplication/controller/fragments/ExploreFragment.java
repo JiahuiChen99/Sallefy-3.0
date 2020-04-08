@@ -127,6 +127,11 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
         startActivity(intent);
     }
 
+    @Override
+    public void onTrackLiked(Track like) {
+
+    }
+
 
     @Override
     public void onUsersReceived(List<User> artists) {

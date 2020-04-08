@@ -86,6 +86,11 @@ public class RecentTracksAdapter extends RecyclerView.Adapter<RecentTracksAdapte
     }
 
     @Override
+    public void onTrackLiked(Track like) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

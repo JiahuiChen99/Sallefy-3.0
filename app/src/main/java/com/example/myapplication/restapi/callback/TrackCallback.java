@@ -19,4 +19,6 @@ public interface TrackCallback extends FailureCallback {
     void onNoSpecificTrack(Track track);
 
     void onTrackSelected(Integer id, String sectionID);
+
+    void onTrackLiked(Track like);
 }

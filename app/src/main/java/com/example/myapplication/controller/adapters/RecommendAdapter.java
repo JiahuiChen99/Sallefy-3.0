@@ -84,6 +84,11 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
     }
 
     @Override
+    public void onTrackLiked(Track like) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }
