@@ -234,9 +234,12 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         tvSongName.setText(track.getName());
         tvSongName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         tvSongName.setSelected(true);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(20));
         Glide.with(this)
                 .asBitmap()
                 .load(track.getThumbnail())
+                .apply(requestOptions)
                 .into(ivThumbnail);
 
         try {
