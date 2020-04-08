@@ -182,11 +182,10 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
             }
         });
         btnLikeSong = (ImageButton) findViewById(R.id.like);
-        btnLikeSong.setTag(NOT_LIKED);
         btnLikeSong.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                    TrackManager.getInstance(getApplicationContext()).likeTrack(mTracks.get(songID).getId(), TrackDetailsActivity.this);
+            TrackManager.getInstance(getApplicationContext()).likeTrack(mTracks.get(songID).getId(), TrackDetailsActivity.this);
             }
         });
         btnAddToPlaylist = (ImageButton) findViewById(R.id.add_to_playlist);
@@ -234,6 +233,9 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         tvSongName.setText(track.getName());
         tvSongName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         tvSongName.setSelected(true);
+
+        TrackManager.getInstance(this).isLiked(mTracks.get(songID).getId(), TrackDetailsActivity.this);
+
         RequestOptions requestOptions = new RequestOptions();
         requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(20));
         Glide.with(this)
@@ -297,6 +299,16 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         tvSongName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         tvSongName.setSelected(true);
 
+        if(mTracks.get(songID).isLiked()){
+            btnLikeSong.setImageResource(R.drawable.ic_heart);
+            btnLikeSong.setColorFilter(Color.RED);
+            btnLikeSong.setTag(LIKED);
+        }else{
+            btnLikeSong.setImageResource(R.drawable.ic_heart_outline);
+            btnLikeSong.setColorFilter(Color.WHITE);
+            btnLikeSong.setTag(NOT_LIKED);
+        }
+
         RequestOptions requestOptions = new RequestOptions();
         requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(30));
         Glide.with(this)
@@ -306,6 +318,10 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
                 .into(ivThumbnail);
 
         prepareMediaPlayer(mTracks.get(songID).getUrl());
+    }
+
+    private void updateLike(){
+
     }
 
     private String createTimeLabel(Integer duration){
