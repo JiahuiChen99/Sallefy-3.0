@@ -43,6 +43,8 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     private TextView tvArtist;
 
     private SeekBar mSeekBar;
+    private TextView tvStartTime;
+    private TextView tvEndTime;
 
     private ImageButton btnPreviousSong;
     private ImageButton btnBackward;
@@ -54,6 +56,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     private ImageButton btnAddToPlaylist;
     private ImageButton btnDownload;
     private ImageButton btnShareSong;
+
 
     private MediaPlayer mPlayer;
     private int mDuration;
@@ -88,6 +91,8 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         ivThumbnail = findViewById(R.id.song_thumbnail);
         tvSongName = findViewById(R.id.song_title);
         tvArtist = findViewById(R.id.song_author);
+        tvStartTime = findViewById(R.id.start_time);
+        tvEndTime = findViewById(R.id.end_time);
         btnPreviousSong = (ImageButton) findViewById(R.id.previous_song);
         btnPreviousSong.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -138,8 +143,14 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
+                //Set Seekbar maximum duration
                 mSeekBar.setMax(mPlayer.getDuration());
+
                 mDuration =  mPlayer.getDuration();
+
+                //Set end time of the song
+                tvEndTime.setText(createTimeLabel(mPlayer.getDuration()));
+
                 playAudio();
             }
         });
@@ -251,6 +262,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     }
 
     public void updateSeekBar() {
+        tvStartTime.setText(createTimeLabel(mPlayer.getCurrentPosition()));
         mSeekBar.setProgress(mPlayer.getCurrentPosition());
 
         if(mPlayer.isPlaying()) {
@@ -271,6 +283,20 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         }else{
             TrackManager.getInstance(this).getRecommendedTracks(this);
         }
+    }
+
+    private String createTimeLabel(Integer duration){
+        String timerLabel = "";
+        int min = duration / 1000 / 60;
+        int sec = duration / 1000 % 60;
+
+        timerLabel += min + ":";
+
+        if(sec < 10) timerLabel += "0";
+
+        timerLabel += sec;
+
+        return timerLabel;
     }
 
     @Override
@@ -300,6 +326,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         tvSongName.setText(mTracks.get(songID).getName());
         tvSongName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         tvSongName.setSelected(true);
+
 
         Glide.with(this)
                 .asBitmap()

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_fondo">
@@ -74,26 +76,52 @@
             android:text="@string/song_artists"/>
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:orientation="vertical">
 
         <SeekBar
             android:id="@+id/song_progress"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="20dp"
             android:backgroundTint="@color/colorWhite"
-            android:progressBackgroundTint="@color/colorWhite" />
+            android:progressBackgroundTint="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/song_progress"
+            app:layout_constraintTop_toBottomOf="@+id/song_progress" />
+
+        <TextView
+            android:id="@+id/end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/song_progress"
+            app:layout_constraintTop_toBottomOf="@+id/song_progress" />
 
         <LinearLayout
+            android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/end_time">
+
             <ImageButton
                 android:id="@+id/backwards"
                 android:layout_width="70dp"
@@ -115,8 +143,8 @@
                 android:layout_width="70dp"
                 android:layout_height="50dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_play_outline"
                 android:scaleType="fitCenter"
+                android:src="@drawable/ic_play_outline"
                 android:tint="#FFFFFF" />
 
             <ImageButton
@@ -141,10 +169,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
             android:gravity="center"
 
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
             <ImageButton
                 android:id="@+id/like"
                 android:layout_width="90dp"
@@ -177,7 +206,11 @@
                 android:src="@drawable/ic_share_social_outline"
                 android:tint="#FFFFFF" />
         </LinearLayout>
-    </LinearLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.scwang.wave.MultiWaveHeader
         android:layout_width="match_parent"
         android:layout_height="200dp"
