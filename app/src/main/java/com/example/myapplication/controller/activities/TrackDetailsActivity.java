@@ -1,5 +1,6 @@
 package com.example.myapplication.controller.activities;
 
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -174,14 +175,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         btnLikeSong.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                System.out.println();
-                if(btnLikeSong.getTag().equals(LIKED)){
-                    btnLikeSong.setImageResource(R.drawable.ic_heart_outline);
-                    btnLikeSong.setTag(NOT_LIKED);
-                }else{
-                    btnLikeSong.setImageResource(R.drawable.ic_heart);
-                    btnLikeSong.setTag(LIKED);
-                }
+                    TrackManager.getInstance(getApplicationContext()).likeTrack(mTracks.get(songID).getId(), TrackDetailsActivity.this);
             }
         });
         btnAddToPlaylist = (ImageButton) findViewById(R.id.add_to_playlist);
@@ -301,7 +295,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     @Override
     public void onRecentTracksReceived(List<Track> tracks) {
         mTracks = tracks;
-        tvTitle.setText("Playing From " + sectionID);
+        tvTitle.setText("Playing from " + sectionID);
         tvArtist.setText(mTracks.get(songID).getUser().getLogin());
         tvSongName.setText(mTracks.get(songID).getName());
         tvSongName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
@@ -323,7 +317,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     @Override
     public void onRecommendedTracksReceived(List<Track> tracks) {
         mTracks = tracks;
-        tvTitle.setText("Playing From " + sectionID);
+        tvTitle.setText("Playing from " + sectionID);
 
         tvArtist.setText(mTracks.get(songID).getUser().getLogin());
         tvSongName.setText(mTracks.get(songID).getName());
@@ -349,6 +343,19 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     @Override
     public void onTrackSelected(Integer id, String sectionID) {
 
+    }
+
+    @Override
+    public void onTrackLiked(Track like) {
+        if(like.isLiked()){
+            btnLikeSong.setImageResource(R.drawable.ic_heart);
+            btnLikeSong.setColorFilter(Color.RED);
+            btnLikeSong.setTag(LIKED);
+        }else{
+            btnLikeSong.setImageResource(R.drawable.ic_heart_outline);
+            btnLikeSong.setColorFilter(Color.WHITE);
+            btnLikeSong.setTag(NOT_LIKED);
+        }
     }
 
     @Override
