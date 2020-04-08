@@ -146,4 +146,27 @@ public class TrackManager {
         });
     }
 
+    public synchronized void likeTrack(Integer id, final TrackCallback trackCallback){
+        UserToken userToken = Sesion.getInstance(mContext).getUserToken();
+
+        Call<Track> call = mTrackService.likeTrack(id, "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<Track>() {
+            @Override
+            public void onResponse(Call<Track> call, Response<Track> response) {
+                int code = response.code();
+
+                if(response.isSuccessful()){
+                    trackCallback.onTrackLiked(response.body());
+                }else{
+                    trackCallback.onFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Track> call, Throwable t) {
+                trackCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+    }
+
 }
