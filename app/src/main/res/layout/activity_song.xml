@@ -49,21 +49,23 @@
             android:id="@+id/song_thumbnail"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:transitionName="thumbnail_transition"/>
 
         <TextView
             android:id="@+id/song_title"
-            android:text="@string/song_name"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:gravity="center"
             android:layout_marginTop="20dp"
-            android:textSize="30sp"
-            android:textStyle="bold"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:ellipsize="marquee"
-            android:marqueeRepeatLimit="marquee_forever" />
+            android:text="@string/song_name"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:transitionName="name_transition"/>
 
         <TextView
             android:id="@+id/song_author"
@@ -73,7 +75,8 @@
             android:layout_marginEnd="0dp"
             android:gravity="center"
             android:textSize="16sp"
-            android:text="@string/song_artists"/>
+            android:text="@string/song_artists"
+            android:transitionName="artist_transition"/>
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
