@@ -1,11 +1,13 @@
 package com.example.myapplication.controller.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -14,6 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
+import androidx.core.view.ViewCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
@@ -42,6 +48,8 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     private TextView tvSongName;
     private TextView tvArtist;
 
+    private ImageButton btnBack;
+    private ImageButton btnMore;
     private SeekBar mSeekBar;
     private TextView tvStartTime;
     private TextView tvEndTime;
@@ -87,6 +95,24 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     }
 
     private void initViews(){
+        btnBack = findViewById(R.id.down_button);
+        btnBack.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Pair<View, String> p1 = Pair.create((View) ivThumbnail, "thumbnail_transition");
+                Pair<View, String> p2 = Pair.create((View) tvSongName, "name_transition");
+                Pair<View, String> p3 = Pair.create((View) tvArtist, "artist_transition");
+
+                Intent intent = new Intent(TrackDetailsActivity.this, PaginaPrincipalActivity.class);
+                intent.putExtra("songID", mTracks.get(songID).getThumbnail());
+                intent.putExtra("songName", mTracks.get(songID).getName());
+                intent.putExtra("songArtist", mTracks.get(songID).getUserLogin());
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(TrackDetailsActivity.this, p1, p2, p3);
+                intent.putExtras(options.toBundle());
+                startActivity(intent, options.toBundle());
+
+            }
+        });
         tvTitle = findViewById(R.id.track_header);
         ivThumbnail = findViewById(R.id.song_thumbnail);
         tvSongName = findViewById(R.id.song_title);
