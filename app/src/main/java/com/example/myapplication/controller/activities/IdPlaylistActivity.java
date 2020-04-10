@@ -307,6 +307,16 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
     public void onPlaylistFailure(Throwable throwable) {}
 
     @Override
+    public void onUserPlaylistsReceived(List<Playlist> playlists) {
+
+    }
+
+    @Override
+    public void onNoUserPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
     public void onTrackSelected(Track track) {
         updateTrack(track);
     }

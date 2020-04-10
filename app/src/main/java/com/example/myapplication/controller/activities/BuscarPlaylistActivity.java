@@ -16,6 +16,8 @@ import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
 import com.example.myapplication.restapi.manager.PlaylistManager;
 
+import java.util.List;
+
 public class BuscarPlaylistActivity extends AppCompatActivity implements PlaylistCallback {
 
     private EditText etIdPlaylist;
@@ -75,6 +77,16 @@ public class BuscarPlaylistActivity extends AppCompatActivity implements Playlis
 
     }
     public void onPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onUserPlaylistsReceived(List<Playlist> playlists) {
+
+    }
+
+    @Override
+    public void onNoUserPlaylists(Throwable throwable) {
 
     }
 }
