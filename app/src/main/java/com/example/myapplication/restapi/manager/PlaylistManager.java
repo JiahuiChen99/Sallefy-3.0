@@ -12,6 +12,7 @@ import com.example.myapplication.utils.Sesion;
 import com.example.myapplication.utils.Variables;
 
 import java.io.IOException;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -129,4 +130,32 @@ public class PlaylistManager {
             }
         });
     }
+
+    public synchronized void getUserPlaylists(final PlaylistCallback playlistcallback) {
+        UserToken userToken = Sesion.getInstance(mContext).getUserToken();
+
+        Call<List<Playlist>> call = mService.getUserPlaylists("Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<List<Playlist>>() {
+            @Override
+            public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
+                int code = response.code();
+
+                if (response.isSuccessful()) {
+                    playlistcallback.onUserPlaylistsReceived(response.body());
+                } else {
+                    try {
+                        playlistcallback.onNoUserPlaylists(new Throwable(response.errorBody().string()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Playlist>> call, Throwable t) {
+                playlistcallback.onPlaylistFailure(t);
+            }
+        });
+    }
+
 }
