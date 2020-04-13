@@ -1,6 +1,7 @@
 package com.example.myapplication.controller.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
 import com.example.myapplication.controller.callbacks.TrackListCallback;
 import com.example.myapplication.model.Track;
@@ -56,14 +60,37 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
             }
         });
         holder.tvTitle.setText(mTracks.get(position).getName());
+        holder.tvTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        holder.tvTitle.setSelected(true);
         holder.tvAuthor.setText(mTracks.get(position).getUserLogin());
+        if(mTracks.get(position).getDuration() != null){
+            holder.ivDuration.setText(createTimeLabel(mTracks.get(position).getDuration()));
+        }
         if (mTracks.get(position).getThumbnail() != null) {
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(20));
             Glide.with(mContext)
                     .asBitmap()
-                    .placeholder(R.drawable.ic_audiotrack)
+                    .placeholder(R.drawable.no_user)
                     .load(mTracks.get(position).getThumbnail())
+                    .apply(requestOptions)
                     .into(holder.ivPicture);
         }
+    }
+
+    private String createTimeLabel(Integer duration){
+        String timerLabel = "";
+        duration *= 1000;
+        int min = duration / 1000 / 60;
+        int sec = duration / 1000 % 60;
+
+        timerLabel += min + ":";
+
+        if(sec < 10) timerLabel += "0";
+
+        timerLabel += sec;
+
+        return timerLabel;
     }
 
     @Override
@@ -81,6 +108,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         LinearLayout mLayout;
         TextView tvTitle;
         TextView tvAuthor;
+        TextView ivDuration;
         ImageView ivPicture;
 
         public ViewHolder(@NonNull View itemView) {
@@ -88,7 +116,10 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
             mLayout = itemView.findViewById(R.id.track_item_layout);
             tvTitle = (TextView) itemView.findViewById(R.id.song_title);
             tvAuthor = (TextView) itemView.findViewById(R.id.song_author);
+            ivDuration = (TextView) itemView.findViewById(R.id.song_duration);
             ivPicture = (ImageView) itemView.findViewById(R.id.song_img);
         }
     }
+
+
 }
