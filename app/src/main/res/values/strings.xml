@@ -36,6 +36,7 @@
     <!-- SONG -->
     <string name="song_name">Título cancion</string>
     <string name="song_artists">Autor/a</string>
+    <string name="song_duration">00:00</string>
 
     <!-- ADD SONG -->
     <string name="add_song_title">Añadir una cancion</string>
