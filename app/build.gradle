@@ -58,4 +58,7 @@ dependencies {
 
     //Audio Visualizer
     implementation 'com.gauravk.audiovisualizer:audiovisualizer:0.9.2'
+
+    //Button Effect
+    implementation 'com.sackcentury:shinebutton:1.0.0'
 }
