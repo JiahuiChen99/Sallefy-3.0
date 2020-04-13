@@ -29,6 +29,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.TrackCallback;
 import com.example.myapplication.restapi.manager.TrackManager;
+import com.sackcentury.shinebuttonlib.ShineButton;
 
 import org.w3c.dom.Text;
 
@@ -60,7 +61,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     private ImageButton btnForward;
     private ImageButton btnNextSong;
 
-    private ImageButton btnLikeSong;
+    private ShineButton btnLikeSong;
     private ImageButton btnAddToPlaylist;
     private ImageButton btnDownload;
     private ImageButton btnShareSong;
@@ -207,7 +208,9 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
 
             }
         });
-        btnLikeSong = (ImageButton) findViewById(R.id.like);
+
+        btnLikeSong = (ShineButton) findViewById(R.id.like);
+        btnLikeSong.init(this);
         btnLikeSong.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -326,10 +329,12 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         tvSongName.setSelected(true);
 
         if(mTracks.get(songID).isLiked()){
+            btnLikeSong.setChecked(true);
             btnLikeSong.setImageResource(R.drawable.ic_heart);
             btnLikeSong.setColorFilter(Color.RED);
             btnLikeSong.setTag(LIKED);
         }else{
+            btnLikeSong.setChecked(false);
             btnLikeSong.setImageResource(R.drawable.ic_heart_outline);
             btnLikeSong.setColorFilter(Color.WHITE);
             btnLikeSong.setTag(NOT_LIKED);
@@ -410,13 +415,20 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
 
     @Override
     public void onTrackLiked(Track like) {
+        System.out.println(like.isLiked());
         if(like.isLiked()){
-            btnLikeSong.setImageResource(R.drawable.ic_heart);
+            btnLikeSong.setChecked(true);
+            btnLikeSong.setShapeResource(R.drawable.ic_heart);
+            btnLikeSong.setBtnColor(Color.RED);
+            btnLikeSong.setBtnFillColor(Color.RED);
             btnLikeSong.setColorFilter(Color.RED);
             btnLikeSong.setTag(LIKED);
         }else{
-            btnLikeSong.setImageResource(R.drawable.ic_heart_outline);
+            btnLikeSong.setChecked(false);
+            btnLikeSong.setShapeResource(R.drawable.ic_heart_outline);
             btnLikeSong.setColorFilter(Color.WHITE);
+            btnLikeSong.setBtnColor(Color.WHITE);
+            btnLikeSong.setBtnFillColor(Color.WHITE);
             btnLikeSong.setTag(NOT_LIKED);
         }
     }
