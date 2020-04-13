@@ -1,5 +1,7 @@
 package com.example.myapplication.controller.fragments;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +20,15 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
+import com.example.myapplication.controller.activities.TrackDetailsActivity;
 import com.example.myapplication.controller.adapters.RecentTracksAdapter;
+import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.adapters.UserPlaylistAdapter;
+import com.example.myapplication.controller.callbacks.TrackListCallback;
 import com.example.myapplication.model.Playlist;
+import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
+import com.example.myapplication.restapi.callback.TrackCallback;
 import com.example.myapplication.restapi.manager.PlaylistManager;
 
 import java.util.ArrayList;
@@ -30,10 +37,13 @@ import java.util.List;
 import recycler.coverflow.CoverFlowLayoutManger;
 import recycler.coverflow.RecyclerCoverFlow;
 
-public class LibraryFragment extends Fragment implements PlaylistCallback {
+public class LibraryFragment extends Fragment implements PlaylistCallback, TrackListCallback {
 
     private RecyclerCoverFlow mPlaylistRecyclerView;
     private ArrayList<Playlist> mPlaylists;
+    private RecyclerView msongList;
+    private TrackListCallback callback;
+    private Context context;
 
     @Nullable
     @Override
@@ -50,18 +60,14 @@ public class LibraryFragment extends Fragment implements PlaylistCallback {
             public void onItemSelected(int position) {
                 System.out.println("POSITION: " + position + " - " + mPlaylists.get(position).getThumbnail());
 
-                /*RequestOptions requestOptions = new RequestOptions();
-                requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(20));
-                Glide.with(LibraryFragment.this)
-                        .asBitmap()
-                        .placeholder(R.drawable.logo)
-                        //.load("https://livedoor.blogimg.jp/bookuma/imgs/f/5/f5a998fa.jpg")
-                        .load(mPlaylists.get(position).getThumbnail())
-                        .apply(requestOptions)
-                        .into((ImageView) view.findViewById(R.id.user_playlist_cover));*/
-
-                //((TextView) view.findViewById(R.id.user_playlist_name)).setText(mPlaylists.get(position).getName());
+                TrackListAdapter songsListAdapter = new TrackListAdapter(callback, getContext(), (ArrayList<Track>) mPlaylists.get(position).getTracks());
+                msongList.setAdapter(songsListAdapter);
             }});
+
+        msongList = (RecyclerView) view.findViewById(R.id.library_playlist_songs);
+        LinearLayoutManager songsListManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        msongList.setLayoutManager(songsListManager);;
+
         getData();
 
         return view;
@@ -106,6 +112,17 @@ public class LibraryFragment extends Fragment implements PlaylistCallback {
 
     @Override
     public void onNoUserPlaylists(Throwable throwable) {
+
+    }
+
+
+    @Override
+    public void onTrackSelected(Track track) {
+
+    }
+
+    @Override
+    public void onTrackSelected(int index) {
 
     }
 }
