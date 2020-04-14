@@ -18,6 +18,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
 import com.example.myapplication.controller.fragments.LibraryFragment;
+import com.example.myapplication.controller.fragments.LibraryUserPlaylistsFragment;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
 
@@ -30,11 +31,11 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
 
     private static final String TAG = "User Playlists";
     private ArrayList<Playlist> mPlaylists;
-    private LibraryFragment mContext;
+    private LibraryUserPlaylistsFragment mContext;
     private PlaylistCallback callback;
     private int NUM_VIEWHOLDERS = 0;
 
-    public UserPlaylistAdapter(LibraryFragment context, ArrayList<Playlist> playlists){
+    public UserPlaylistAdapter(LibraryUserPlaylistsFragment context, ArrayList<Playlist> playlists){
         this.callback = callback;
         this.mContext = context;
         this.mPlaylists = playlists;
