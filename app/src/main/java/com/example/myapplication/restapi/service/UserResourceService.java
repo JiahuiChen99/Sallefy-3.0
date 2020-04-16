@@ -15,4 +15,7 @@ public interface UserResourceService {
 
     @GET("users?popular=true")
     Call<List<User>> getPopularUsers(@Header("Authorization") String token);
+
+    @GET("me/followings")
+    Call<List<User>> getFollowingArtists(@Header("Authorization") String token);
 }

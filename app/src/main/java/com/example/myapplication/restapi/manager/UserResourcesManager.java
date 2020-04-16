@@ -68,4 +68,29 @@ public class UserResourcesManager {
             }
         });
     }
+
+    public synchronized void getFollowingArtists(final UserResourcesCallback userResourcesCallback) {
+        UserToken userToken = Sesion.getInstance(mContext).getUserToken();
+
+        Call<List<User>> call = mUserResourceService.getFollowingArtists("Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                int code = response.code();
+
+                if(response.isSuccessful()) {
+                    userResourcesCallback.onFollowingArtistsReceived(response.body());
+                }else{
+                    Log.d(TAG, "Error Not Successful: " + code);
+                    userResourcesCallback.onNoFollowingArtists(new Throwable("Error " + code + ": " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Log.d(TAG, "Error Not Successful: " + t.getStackTrace());
+                userResourcesCallback.onFailure(new Throwable("ERROR: " + t.getStackTrace()));
+            }
+        });
+    }
 }
