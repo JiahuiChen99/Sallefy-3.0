@@ -300,6 +300,16 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
     }
 
     @Override
+    public void onArtistTracksReceived(List<Track> artistTracks) {
+
+    }
+
+    @Override
+    public void onNoArtistTracks(Throwable noArtistTracks) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

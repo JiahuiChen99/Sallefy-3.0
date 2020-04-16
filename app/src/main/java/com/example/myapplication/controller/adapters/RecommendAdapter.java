@@ -99,6 +99,16 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
     }
 
     @Override
+    public void onArtistTracksReceived(List<Track> artistTracks) {
+
+    }
+
+    @Override
+    public void onNoArtistTracks(Throwable noArtistTracks) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }
