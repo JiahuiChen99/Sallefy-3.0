@@ -21,4 +21,7 @@ public interface TrackCallback extends FailureCallback {
     void onTrackSelected(Integer id, String sectionID);
 
     void onTrackLiked(Track like);
+
+    void onLikedTracksReceived(List<Track> likedTracks);
+    void onNoLikedTracks(Throwable noLikedTracks);
 }

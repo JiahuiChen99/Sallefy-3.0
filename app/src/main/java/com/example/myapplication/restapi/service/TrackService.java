@@ -26,6 +26,9 @@ public interface TrackService {
     @PUT("tracks/{id}/like")
     Call<Track> likeTrack(@Path("id") int id, @Header("Authorization") String token);
 
+    @GET("me/tracks/liked")
+    Call<List<Track>> getLikedTracks(@Header("Authorization") String token);
+
     @PUT("tracks/{id}/play")
     Call<Track> playTrack(@Path("id") int id, @Header("Authorization") String token);
 
