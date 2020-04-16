@@ -24,4 +24,7 @@ public interface TrackCallback extends FailureCallback {
 
     void onLikedTracksReceived(List<Track> likedTracks);
     void onNoLikedTracks(Throwable noLikedTracks);
+
+    void onArtistTracksReceived(List<Track> artistTracks);
+    void onNoArtistTracks(Throwable noArtistTracks);
 }
