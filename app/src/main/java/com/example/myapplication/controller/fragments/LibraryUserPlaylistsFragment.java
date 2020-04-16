@@ -35,6 +35,10 @@ public class LibraryUserPlaylistsFragment extends Fragment implements PlaylistCa
     private TrackListCallback callback;
     private Context context;
 
+    public static LibraryUserPlaylistsFragment getInstance(){
+        return new LibraryUserPlaylistsFragment();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
