@@ -290,6 +290,16 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
     }
 
     @Override
+    public void onLikedTracksReceived(List<Track> likedTracks) {
+
+    }
+
+    @Override
+    public void onNoLikedTracks(Throwable noLikedTracks) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }
