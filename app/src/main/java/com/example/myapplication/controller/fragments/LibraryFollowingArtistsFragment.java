@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.controller.adapters.ArtistsAdapter;
+import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.callbacks.TrackListCallback;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.model.User;
+import com.example.myapplication.restapi.callback.TrackCallback;
 import com.example.myapplication.restapi.callback.UserResourcesCallback;
 import com.example.myapplication.restapi.manager.UserResourcesManager;
 
@@ -25,11 +27,14 @@ import java.util.List;
 import recycler.coverflow.CoverFlowLayoutManger;
 import recycler.coverflow.RecyclerCoverFlow;
 
-public class LibraryFollowingArtistsFragment extends Fragment implements UserResourcesCallback, TrackListCallback {
+public class LibraryFollowingArtistsFragment extends Fragment implements UserResourcesCallback, TrackCallback, TrackListCallback {
 
     private RecyclerCoverFlow mArtistsRecyclerView;
     private ArrayList<User> mFollowingArtists;
+    private ArrayList<Track> mArtistSongsList;
     private RecyclerView msongList;
+    private TrackCallback callback;
+    private TrackListCallback selectedCallback;
 
     public static LibraryFollowingArtistsFragment getInstance(){
         return new LibraryFollowingArtistsFragment();
@@ -50,8 +55,7 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
             public void onItemSelected(int position) {
                 System.out.println("POSITION: " + position + " - " + mFollowingArtists.get(position).getLogin());
 
-
-
+                UserResourcesManager.getInstance(getContext()).getFollowingArtistsTopSongs( mFollowingArtists.get(position).getLogin(), LibraryFollowingArtistsFragment.this);
             }});
 
         msongList = (RecyclerView) view.findViewById(R.id.library_artists_songs);
@@ -92,6 +96,78 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
 
     @Override
     public void onNoFollowingArtists(Throwable noFollowingArtists) {
+
+    }
+
+    @Override
+    public void onTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onRecentTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoRecentTracksReceived(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onRecommendedTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoRecommendedTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onSpecificTrackReceived(Track track) {
+
+    }
+
+    @Override
+    public void onNoSpecificTrack(Track track) {
+
+    }
+
+    @Override
+    public void onTrackSelected(Integer id, String sectionID) {
+
+    }
+
+    @Override
+    public void onTrackLiked(Track like) {
+
+    }
+
+    @Override
+    public void onLikedTracksReceived(List<Track> likedTracks) {
+
+    }
+
+    @Override
+    public void onNoLikedTracks(Throwable noLikedTracks) {
+
+    }
+
+    @Override
+    public void onArtistTracksReceived(List<Track> artistTracks) {
+        mArtistSongsList = (ArrayList) artistTracks;
+        TrackListAdapter adapter = new TrackListAdapter(selectedCallback, getContext(), mArtistSongsList);
+        msongList.setAdapter(adapter);
+    }
+
+    @Override
+    public void onNoArtistTracks(Throwable noArtistTracks) {
 
     }
 

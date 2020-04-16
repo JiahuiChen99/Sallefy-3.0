@@ -118,6 +118,16 @@ public class LibraryFavouriteSongsFragment extends Fragment implements TrackCall
     }
 
     @Override
+    public void onArtistTracksReceived(List<Track> artistTracks) {
+
+    }
+
+    @Override
+    public void onNoArtistTracks(Throwable noArtistTracks) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }
