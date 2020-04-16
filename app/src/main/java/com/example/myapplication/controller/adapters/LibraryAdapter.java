@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 
 import com.example.myapplication.controller.fragments.LibraryFavouriteSongsFragment;
+import com.example.myapplication.controller.fragments.LibraryFollowingArtistsFragment;
 import com.example.myapplication.controller.fragments.LibraryLikedPlaylistsFragment;
 import com.example.myapplication.controller.fragments.LibraryUserPlaylistsFragment;
 
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class LibraryAdapter extends FragmentStatePagerAdapter {
 
-    public static  final int count = 3;
+    public static  final int count = 4;
 
     public LibraryAdapter(FragmentManager manager){
         super(manager);
@@ -30,8 +31,8 @@ public class LibraryAdapter extends FragmentStatePagerAdapter {
                 return LibraryLikedPlaylistsFragment.getInstance();
             case 2:
                 return LibraryFavouriteSongsFragment.getInstance();
-            /*case 3:
-                return new;*/
+            case 3:
+                return LibraryFollowingArtistsFragment.getInstance();
         }
         return null;
     }
