@@ -103,6 +103,8 @@ public class LibraryLikedPlaylistsFragment extends Fragment implements PlaylistC
         mPlaylists = (ArrayList) playlists;
         LikedPlaylistAdapter adapter = new LikedPlaylistAdapter(this, mPlaylists);
         mPlaylistRecyclerView.setAdapter(adapter);
+        TrackListAdapter songsListAdapter = new TrackListAdapter(callback, getContext(), (ArrayList<Track>) mPlaylists.get(0).getTracks());
+        msongList.setAdapter(songsListAdapter);
     }
 
     @Override

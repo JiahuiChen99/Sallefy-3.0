@@ -92,6 +92,7 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
         mFollowingArtists = (ArrayList<User>) followingArtists;
         ArtistsAdapter adapter = new ArtistsAdapter(getContext(), mFollowingArtists);
         mArtistsRecyclerView.setAdapter(adapter);
+        UserResourcesManager.getInstance(getContext()).getFollowingArtistsTopSongs( mFollowingArtists.get(0).getLogin(), LibraryFollowingArtistsFragment.this);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.myapplication.controller.fragments;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,6 +103,8 @@ public class LibraryUserPlaylistsFragment extends Fragment implements PlaylistCa
         mPlaylists = (ArrayList) playlists;
         UserPlaylistAdapter adapter = new UserPlaylistAdapter(this, mPlaylists);
         mPlaylistRecyclerView.setAdapter(adapter);
+        TrackListAdapter songsListAdapter = new TrackListAdapter(callback, getContext(), (ArrayList<Track>) mPlaylists.get(0).getTracks());
+        msongList.setAdapter(songsListAdapter);
     }
 
     @Override
