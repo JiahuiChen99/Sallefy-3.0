@@ -185,7 +185,7 @@ public class PlaylistManager {
         });
     }
 
-    public synchronized void getSpecificLikedPlaylist(Integer playlistId, final PlaylistCallback playlistcallback) {
+    public synchronized void getSpecificPlaylist(Integer playlistId, final PlaylistCallback playlistcallback) {
         UserToken userToken = Sesion.getInstance(mContext).getUserToken();
 
         Call<Playlist> call = mService.getSpecificLikedPlaylist(playlistId, "Bearer " + userToken.getIdToken());

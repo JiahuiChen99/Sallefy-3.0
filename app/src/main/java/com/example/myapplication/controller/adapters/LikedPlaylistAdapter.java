@@ -28,7 +28,7 @@ import java.util.List;
 
 public class LikedPlaylistAdapter extends RecyclerView.Adapter<LikedPlaylistAdapter.ViewHolder> implements  TrackCallback {
 
-    private static final String TAG = "User Liked Playlists";
+    public static final String TAG = "User Liked Playlists";
     private ArrayList<Playlist> mPlaylists;
     private LibraryLikedPlaylistsFragment mContext;
     private TrackCallback callback;

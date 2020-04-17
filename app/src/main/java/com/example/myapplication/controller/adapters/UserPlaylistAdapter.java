@@ -29,7 +29,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapter.ViewHolder> implements PlaylistCallback {
 
-    private static final String TAG = "User Playlists";
+    public static final String TAG = "User Playlists";
     private ArrayList<Playlist> mPlaylists;
     private LibraryUserPlaylistsFragment mContext;
     private PlaylistCallback callback;
