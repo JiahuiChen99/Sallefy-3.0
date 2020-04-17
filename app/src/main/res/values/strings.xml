@@ -55,4 +55,7 @@
     <string name="recommend">Recommended for you</string>
     <string name="recommendArtists">Artists you may like</string>
 
+    <!-- Library Fragment -->
+    <string name="top_artist_songs">Popular songs</string>
+
 </resources>
