@@ -72,6 +72,16 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
     }
 
     @Override
+    public void onUserSpecificLikedPlaylistReceived(Playlist specificPlaylist) {
+
+    }
+
+    @Override
+    public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

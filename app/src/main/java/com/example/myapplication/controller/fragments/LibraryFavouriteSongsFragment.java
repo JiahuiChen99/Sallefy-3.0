@@ -27,7 +27,7 @@ import java.util.List;
 public class LibraryFavouriteSongsFragment extends Fragment implements TrackCallback {
     private ArrayList<Track> favouriteSongsList;
     private RecyclerView msongListRecyclerView;
-    private TrackListCallback callback;
+
 
     public static LibraryFavouriteSongsFragment getInstance(){
         return new LibraryFavouriteSongsFragment();
@@ -40,7 +40,7 @@ public class LibraryFavouriteSongsFragment extends Fragment implements TrackCall
 
         msongListRecyclerView = (RecyclerView) view.findViewById(R.id.library_favourite_songs);
         LinearLayoutManager songsListManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        TrackListAdapter likedPlaylistAdapter = new TrackListAdapter( callback, getContext(), null);
+        TrackListAdapter likedPlaylistAdapter = new TrackListAdapter( this, getContext(), null);
         msongListRecyclerView.setLayoutManager(songsListManager);
         msongListRecyclerView.setAdapter(likedPlaylistAdapter);
 
@@ -108,7 +108,7 @@ public class LibraryFavouriteSongsFragment extends Fragment implements TrackCall
     @Override
     public void onLikedTracksReceived(List<Track> likedTracks) {
         favouriteSongsList = (ArrayList) likedTracks;
-        TrackListAdapter adapter = new TrackListAdapter(callback, getContext(), favouriteSongsList);
+        TrackListAdapter adapter = new TrackListAdapter(this, getContext(), favouriteSongsList);
         msongListRecyclerView.setAdapter(adapter);
     }
 

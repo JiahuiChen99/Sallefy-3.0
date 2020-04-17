@@ -20,6 +20,7 @@ import com.example.myapplication.controller.callbacks.TrackListCallback;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
+import com.example.myapplication.restapi.callback.TrackCallback;
 import com.example.myapplication.restapi.manager.PlaylistManager;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class LibraryUserPlaylistsFragment extends Fragment implements PlaylistCa
     private RecyclerCoverFlow mPlaylistRecyclerView;
     private ArrayList<Playlist> mPlaylists;
     private RecyclerView msongList;
-    private TrackListCallback callback;
+    private TrackCallback callback;
     private Context context;
 
     public static LibraryUserPlaylistsFragment getInstance(){
@@ -109,6 +110,16 @@ public class LibraryUserPlaylistsFragment extends Fragment implements PlaylistCa
 
     @Override
     public void onNoUserPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onUserSpecificLikedPlaylistReceived(Playlist specificPlaylist) {
+
+    }
+
+    @Override
+    public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
 
     }
 

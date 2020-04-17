@@ -163,7 +163,7 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
     @Override
     public void onArtistTracksReceived(List<Track> artistTracks) {
         mArtistSongsList = (ArrayList) artistTracks;
-        TrackListAdapter adapter = new TrackListAdapter(selectedCallback, getContext(), mArtistSongsList);
+        TrackListAdapter adapter = new TrackListAdapter(this, getContext(), mArtistSongsList);
         msongList.setAdapter(adapter);
     }
 

@@ -89,4 +89,14 @@ public class BuscarPlaylistActivity extends AppCompatActivity implements Playlis
     public void onNoUserPlaylists(Throwable throwable) {
 
     }
+
+    @Override
+    public void onUserSpecificLikedPlaylistReceived(Playlist specificPlaylist) {
+
+    }
+
+    @Override
+    public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
+
+    }
 }
