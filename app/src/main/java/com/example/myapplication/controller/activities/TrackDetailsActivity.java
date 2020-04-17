@@ -69,6 +69,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     private Integer songID;
     private String sectionID;
     private Integer playlistID;
+    private String playlistName;
 
 
     @Override
@@ -303,7 +304,12 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
 
     private void updateData(List<Track> tracks){
         mTracks = tracks;
-        tvTitle.setText("Playing from " + sectionID);
+        if(sectionID.equalsIgnoreCase("Recent Tracks") ||sectionID.equalsIgnoreCase("Recommended Tracks")){
+            tvTitle.setText("Playing + from " + sectionID);
+        }
+        if(sectionID.equalsIgnoreCase("Liked Playlists")){
+            tvTitle.setText("Playing " + playlistName + " from " + sectionID );
+        }
 
         tvArtist.setText(mTracks.get(songID).getUser().getLogin());
         tvSongName.setText(mTracks.get(songID).getName());
@@ -463,6 +469,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
 
     @Override
     public void onUserSpecificLikedPlaylistReceived(Playlist specificPlaylist) {
+        this.playlistName = specificPlaylist.getName();
         updateData(specificPlaylist.getTracks());
     }
 

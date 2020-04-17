@@ -38,7 +38,7 @@ public class LibraryLikedPlaylistsFragment extends Fragment implements PlaylistC
     private RecyclerView msongList;
     private TrackCallback callback;
     private Context context;
-    private Integer playlistID;
+    private Integer playlistID = 0;
 
     public static LibraryLikedPlaylistsFragment getInstance(){
         return new LibraryLikedPlaylistsFragment();
@@ -107,7 +107,7 @@ public class LibraryLikedPlaylistsFragment extends Fragment implements PlaylistC
         mPlaylists = (ArrayList) playlists;
         LikedPlaylistAdapter adapter = new LikedPlaylistAdapter(this, mPlaylists);
         mPlaylistRecyclerView.setAdapter(adapter);
-        TrackListAdapter songsListAdapter = new TrackListAdapter(callback, getContext(), (ArrayList<Track>) mPlaylists.get(0).getTracks());
+        TrackListAdapter songsListAdapter = new TrackListAdapter(this, getContext(), (ArrayList<Track>) mPlaylists.get(0).getTracks());
         msongList.setAdapter(songsListAdapter);
     }
 
