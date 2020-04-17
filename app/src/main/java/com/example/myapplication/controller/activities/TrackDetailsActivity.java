@@ -26,6 +26,7 @@ import com.example.myapplication.restapi.callback.PlaylistCallback;
 import com.example.myapplication.restapi.callback.TrackCallback;
 import com.example.myapplication.restapi.manager.PlaylistManager;
 import com.example.myapplication.restapi.manager.TrackManager;
+import com.example.myapplication.restapi.manager.UserResourcesManager;
 
 import java.io.IOException;
 import java.util.List;
@@ -67,6 +68,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     private Integer songID;
     private String sectionID;
     private Integer playlistID;
+    private String artistID;
     private String playlistName;
 
 
@@ -77,6 +79,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         this.songID = getIntent().getIntExtra("songId", 0);
         this.sectionID = getIntent().getStringExtra("sectionId");
         this.playlistID = getIntent().getIntExtra("playlistID", 0);
+        this.artistID = getIntent().getStringExtra("artistID");
         initViews();
         getData(sectionID);
     }
@@ -300,6 +303,9 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
                 break;
             case "Favourite Songs":
                 TrackManager.getInstance(this).getLikedTracks(this);
+            case "Artists":
+                UserResourcesManager.getInstance(this).getFollowingArtistsTopSongs(artistID, this);
+                break;
         }
     }
 
@@ -311,6 +317,9 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         }
         if(sectionID.equalsIgnoreCase("User Liked Playlists") || sectionID.equalsIgnoreCase("User Playlists")){
             tvTitle.setText("Playing " + playlistName + " from " + sectionID );
+        }
+        if(sectionID.equalsIgnoreCase("Artists")){
+            tvTitle.setText("Playing " + artistID + " popular songs");
         }
 
         tvArtist.setText(mTracks.get(songID).getUser().getLogin());
@@ -427,6 +436,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     @Override
     public void onArtistTracksReceived(List<Track> artistTracks) {
 
+        updateData(artistTracks);
     }
 
     @Override

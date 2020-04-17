@@ -1,5 +1,6 @@
 package com.example.myapplication.controller.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.controller.activities.TrackDetailsActivity;
 import com.example.myapplication.controller.adapters.ArtistsAdapter;
+import com.example.myapplication.controller.adapters.LikedPlaylistAdapter;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.callbacks.TrackListCallback;
 import com.example.myapplication.model.Track;
@@ -33,8 +36,7 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
     private ArrayList<User> mFollowingArtists;
     private ArrayList<Track> mArtistSongsList;
     private RecyclerView msongList;
-    private TrackCallback callback;
-    private TrackListCallback selectedCallback;
+    private Integer artistID = 0;
 
     public static LibraryFollowingArtistsFragment getInstance(){
         return new LibraryFollowingArtistsFragment();
@@ -54,7 +56,7 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
             @Override
             public void onItemSelected(int position) {
                 System.out.println("POSITION: " + position + " - " + mFollowingArtists.get(position).getLogin());
-
+                artistID = position;
                 UserResourcesManager.getInstance(getContext()).getFollowingArtistsTopSongs( mFollowingArtists.get(position).getLogin(), LibraryFollowingArtistsFragment.this);
             }});
 
@@ -142,7 +144,11 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
 
     @Override
     public void onTrackSelected(Integer id, String sectionID) {
-
+        Intent intent = new Intent(getActivity(), TrackDetailsActivity.class);
+        intent.putExtra("songId", id);
+        intent.putExtra("sectionId", "Artists");
+        intent.putExtra("artistID", mFollowingArtists.get(artistID).getLogin());
+        startActivity(intent);
     }
 
     @Override
