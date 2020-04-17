@@ -20,18 +20,19 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
 import com.example.myapplication.controller.callbacks.TrackListCallback;
 import com.example.myapplication.model.Track;
+import com.example.myapplication.restapi.callback.TrackCallback;
 
 import java.util.ArrayList;
 
 public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.ViewHolder> {
 
-    private static final String TAG = "TrackListAdapter";
+    private static final String TAG = "Liked Playlists";
     private ArrayList<Track> mTracks;
     private Context mContext;
-    private TrackListCallback mCallback;
+    private TrackCallback mCallback;
     private int NUM_VIEWHOLDERS = 0;
 
-    public TrackListAdapter(TrackListCallback callback, Context context, ArrayList<Track> tracks ) {
+    public TrackListAdapter(TrackCallback callback, Context context, ArrayList<Track> tracks ) {
         mTracks = tracks;
         mContext = context;
         mCallback = callback;
@@ -56,7 +57,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.onTrackSelected(position);
+                mCallback.onTrackSelected(position, TAG);
             }
         });
         holder.tvTitle.setText(mTracks.get(position).getName());

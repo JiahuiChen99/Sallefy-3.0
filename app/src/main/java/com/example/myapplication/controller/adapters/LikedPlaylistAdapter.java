@@ -19,59 +19,26 @@ import com.example.myapplication.R;
 import com.example.myapplication.controller.fragments.LibraryLikedPlaylistsFragment;
 import com.example.myapplication.controller.fragments.LibraryUserPlaylistsFragment;
 import com.example.myapplication.model.Playlist;
+import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
+import com.example.myapplication.restapi.callback.TrackCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LikedPlaylistAdapter extends RecyclerView.Adapter<LikedPlaylistAdapter.ViewHolder> implements PlaylistCallback {
+public class LikedPlaylistAdapter extends RecyclerView.Adapter<LikedPlaylistAdapter.ViewHolder> implements  TrackCallback {
 
-    private static final String TAG = "User Playlists";
+    private static final String TAG = "User Liked Playlists";
     private ArrayList<Playlist> mPlaylists;
     private LibraryLikedPlaylistsFragment mContext;
-    private PlaylistCallback callback;
+    private TrackCallback callback;
     private int NUM_VIEWHOLDERS = 0;
 
     public LikedPlaylistAdapter(LibraryLikedPlaylistsFragment context, ArrayList<Playlist> playlists){
-        this.callback = callback;
         this.mContext = context;
         this.mPlaylists = playlists;
     }
 
-    @Override
-    public void onPlaylistReceived(Playlist playlists) {
-
-    }
-
-    @Override
-    public void onNoPlaylists(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onPlaylistCreated(Playlist playlist) {
-
-    }
-
-    @Override
-    public void onPlaylistFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onUserPlaylistsReceived(List<Playlist> playlists) {
-
-    }
-
-    @Override
-    public void onNoUserPlaylists(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onFailure(Throwable throwable) {
-
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivThumbnail;
@@ -102,7 +69,7 @@ public class LikedPlaylistAdapter extends RecyclerView.Adapter<LikedPlaylistAdap
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Clicked: " + mPlaylists.get(position).getName());
+                //TODO: Like or Dislike playlist
             }
         });
         if (mPlaylists.get(position).getThumbnail() != null) {
@@ -123,5 +90,80 @@ public class LikedPlaylistAdapter extends RecyclerView.Adapter<LikedPlaylistAdap
     @Override
     public int getItemCount() {
         return mPlaylists != null ? mPlaylists.size():0;
+    }
+
+    @Override
+    public void onFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onRecentTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoRecentTracksReceived(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onRecommendedTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoRecommendedTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onSpecificTrackReceived(Track track) {
+
+    }
+
+    @Override
+    public void onNoSpecificTrack(Track track) {
+
+    }
+
+    @Override
+    public void onTrackSelected(Integer id, String sectionID) {
+
+    }
+
+    @Override
+    public void onTrackLiked(Track like) {
+
+    }
+
+    @Override
+    public void onLikedTracksReceived(List<Track> likedTracks) {
+
+    }
+
+    @Override
+    public void onNoLikedTracks(Throwable noLikedTracks) {
+
+    }
+
+    @Override
+    public void onArtistTracksReceived(List<Track> artistTracks) {
+
+    }
+
+    @Override
+    public void onNoArtistTracks(Throwable noArtistTracks) {
+
     }
 }
