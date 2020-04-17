@@ -28,4 +28,7 @@ public interface PlaylistService {
 
     @GET("me/playlists/following")
     Call<List<Playlist>> getLikedPlaylists(@Header("Authorization") String token);
+
+    @GET("me/playlists/{id}")
+    Call<Playlist> getSpecificLikedPlaylist(@Path("id") int id, @Header("Authorization") String token);
 }

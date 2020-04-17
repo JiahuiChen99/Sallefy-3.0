@@ -185,4 +185,31 @@ public class PlaylistManager {
         });
     }
 
+    public synchronized void getSpecificLikedPlaylist(Integer playlistId, final PlaylistCallback playlistcallback) {
+        UserToken userToken = Sesion.getInstance(mContext).getUserToken();
+
+        Call<Playlist> call = mService.getSpecificLikedPlaylist(playlistId, "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<Playlist>() {
+            @Override
+            public void onResponse(Call<Playlist> call, Response<Playlist> response) {
+                int code = response.code();
+
+                if (response.isSuccessful()) {
+                    playlistcallback.onUserSpecificLikedPlaylistReceived(response.body());
+                } else {
+                    try {
+                        playlistcallback.onNoUserSpecificLikedPlaylist(new Throwable(response.errorBody().string()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Playlist> call, Throwable t) {
+                playlistcallback.onPlaylistFailure(t);
+            }
+        });
+    }
+
 }
