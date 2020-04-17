@@ -298,13 +298,16 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
             case "User Playlists":
                 PlaylistManager.getInstance(this).getSpecificPlaylist(playlistID, this);
                 break;
+            case "Favourite Songs":
+                TrackManager.getInstance(this).getLikedTracks(this);
         }
     }
 
     private void updateData(List<Track> tracks){
         mTracks = tracks;
-        if(sectionID.equalsIgnoreCase("Recent Tracks") ||sectionID.equalsIgnoreCase("Recommended Tracks")){
-            tvTitle.setText("Playing + from " + sectionID);
+        if(sectionID.equalsIgnoreCase("Recent Tracks") ||sectionID.equalsIgnoreCase("Recommended Tracks")
+                || sectionID.equalsIgnoreCase("Favourite Songs")){
+            tvTitle.setText("Playing from " + sectionID);
         }
         if(sectionID.equalsIgnoreCase("User Liked Playlists") || sectionID.equalsIgnoreCase("User Playlists")){
             tvTitle.setText("Playing " + playlistName + " from " + sectionID );
@@ -413,7 +416,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
 
     @Override
     public void onLikedTracksReceived(List<Track> likedTracks) {
-
+        updateData(likedTracks);
     }
 
     @Override

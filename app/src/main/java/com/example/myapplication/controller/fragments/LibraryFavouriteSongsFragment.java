@@ -1,6 +1,7 @@
 package com.example.myapplication.controller.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.controller.activities.TrackDetailsActivity;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
+import com.example.myapplication.controller.adapters.UserPlaylistAdapter;
 import com.example.myapplication.controller.callbacks.TrackListCallback;
 import com.example.myapplication.model.Track;
 
@@ -97,7 +100,10 @@ public class LibraryFavouriteSongsFragment extends Fragment implements TrackCall
 
     @Override
     public void onTrackSelected(Integer id, String sectionID) {
-
+        Intent intent = new Intent(getActivity(), TrackDetailsActivity.class);
+        intent.putExtra("songId", id);
+        intent.putExtra("sectionId", "Favourite Songs");
+        startActivity(intent);
     }
 
     @Override
