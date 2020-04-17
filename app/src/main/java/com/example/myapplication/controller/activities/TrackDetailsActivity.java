@@ -27,8 +27,6 @@ import com.example.myapplication.restapi.callback.TrackCallback;
 import com.example.myapplication.restapi.manager.PlaylistManager;
 import com.example.myapplication.restapi.manager.TrackManager;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -296,8 +294,9 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
             case "Recommended Tracks":
                 TrackManager.getInstance(this).getRecommendedTracks(this);
                 break;
-            case "Liked Playlists":
-                PlaylistManager.getInstance(this).getSpecificLikedPlaylist(playlistID, this);
+            case "User Liked Playlists":
+            case "User Playlists":
+                PlaylistManager.getInstance(this).getSpecificPlaylist(playlistID, this);
                 break;
         }
     }
@@ -307,7 +306,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         if(sectionID.equalsIgnoreCase("Recent Tracks") ||sectionID.equalsIgnoreCase("Recommended Tracks")){
             tvTitle.setText("Playing + from " + sectionID);
         }
-        if(sectionID.equalsIgnoreCase("Liked Playlists")){
+        if(sectionID.equalsIgnoreCase("User Liked Playlists") || sectionID.equalsIgnoreCase("User Playlists")){
             tvTitle.setText("Playing " + playlistName + " from " + sectionID );
         }
 
