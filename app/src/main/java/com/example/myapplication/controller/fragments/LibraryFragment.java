@@ -44,7 +44,7 @@ public class LibraryFragment extends Fragment {
         navigationTabStrip.setViewPager(mPager);
         navigationTabStrip.setTitles("My Playlists", "Liked Playlists", "Favourite Songs", "Artists");
         navigationTabStrip.setTitleSize(30);
-        navigationTabStrip.setStripColor(Color.RED);
+        navigationTabStrip.setStripColor(Color.GREEN);
         navigationTabStrip.setStripWeight(5);
         navigationTabStrip.setStripFactor(2);
         navigationTabStrip.setStripType(NavigationTabStrip.StripType.POINT);
