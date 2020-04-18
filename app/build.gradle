@@ -62,7 +62,7 @@ dependencies {
 
     //Button Effect
     implementation 'com.sackcentury:shinebutton:1.0.0'
-=======
+
     //CoverFlow
     implementation 'com.chenlittleping:recyclercoverflow:1.0.6'
 
