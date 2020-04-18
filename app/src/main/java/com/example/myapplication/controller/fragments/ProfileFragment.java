@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.adapters.UserPlaylistAdapter;
@@ -33,7 +36,17 @@ import recycler.coverflow.RecyclerCoverFlow;
 
 public class ProfileFragment extends Fragment implements PlaylistCallback, TrackCallback {
 
-    private String user;
+    private User user;
+    private String userName;
+
+    private TextView tvArtistName;
+    private TextView tvFirstName;
+    private TextView tvLastName;
+    private TextView tvLanguageKey;
+    private TextView tvFollowers;
+    private TextView tvFollowing;
+    private ImageView ivProfileImage;
+
     private RecyclerView mArtistSongsRecyclerView;
     private RecyclerCoverFlow mArtistAlbumsRecyclerView;
     private RecyclerView mArtistAlbumSongsRecyclerView;
@@ -45,6 +58,14 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        ivProfileImage = view.findViewById(R.id.artist_profile_image);
+        tvArtistName = view.findViewById(R.id.profile_artist_login);
+        tvFirstName = view.findViewById(R.id.profile_artist_first_name) ;
+        tvLastName = view.findViewById(R.id.profile_artist_last_name);
+        tvLanguageKey = view.findViewById(R.id.profile_artist_language);
+        tvFollowers = view.findViewById(R.id.profile_artist_num_followers);
+        tvFollowing = view.findViewById(R.id.profile_artist_num_following) ;
 
         mArtistAlbumsRecyclerView = (RecyclerCoverFlow) view.findViewById(R.id.profile_artist_albums);
         CoverFlowLayoutManger artistAlbumsManager = new CoverFlowLayoutManger(false, false, true, (float) 1);
@@ -68,15 +89,33 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
         LinearLayoutManager artistSongsManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mArtistSongsRecyclerView.setLayoutManager(artistSongsManager);
 
-        this.user = Sesion.getInstance(getContext()).getUser().getLogin();
-        System.out.println("UserName: " + this.user);
+        this.user = Sesion.getInstance(getContext()).getUser();
+        this.userName = Sesion.getInstance(getContext()).getUser().getLogin();
+        System.out.println("UserName: " + this.userName);
+
         getData();
+        updateData();
+
         return view;
     }
 
+    private void updateData(){
+        Glide.with(getContext())
+                .asBitmap()
+                .placeholder(R.drawable.no_user)
+                .load(this.user.getImageUrl())
+                .into(ivProfileImage);
+        tvArtistName.setText(this.user.getLogin());
+        tvFirstName.setText(this.user.getFirstName());
+        tvLastName.setText(this.user.getLastName());
+        tvLanguageKey.setText(this.user.getLangKey());
+        tvFollowers.setText(this.user.getFollowers().toString());
+        tvFollowing.setText(this.user.getFollowing().toString());
+    }
+
     private void getData(){
-        PlaylistManager.getInstance(this.getActivity()).getSpecificUserPlaylists(user,this);
-        UserResourcesManager.getInstance(getContext()).getSpecificArtistSongs( user, this);
+        PlaylistManager.getInstance(this.getActivity()).getSpecificUserPlaylists(userName,this);
+        UserResourcesManager.getInstance(getContext()).getSpecificArtistSongs( userName, this);
 
         mSongs = new ArrayList<>();
         mAlbums = new ArrayList<>();
@@ -174,7 +213,7 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
 
     @Override
     public void onTrackSelected(Integer id, String sectionID) {
-
+        //TODO: Music Player when a song is selected
     }
 
     @Override
