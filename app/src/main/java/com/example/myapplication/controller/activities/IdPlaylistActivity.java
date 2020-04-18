@@ -290,6 +290,26 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
     }
 
     @Override
+    public void onLikedTracksReceived(List<Track> likedTracks) {
+
+    }
+
+    @Override
+    public void onNoLikedTracks(Throwable noLikedTracks) {
+
+    }
+
+    @Override
+    public void onArtistTracksReceived(List<Track> artistTracks) {
+
+    }
+
+    @Override
+    public void onNoArtistTracks(Throwable noArtistTracks) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }
@@ -305,6 +325,26 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
 
     @Override
     public void onPlaylistFailure(Throwable throwable) {}
+
+    @Override
+    public void onUserPlaylistsReceived(List<Playlist> playlists) {
+
+    }
+
+    @Override
+    public void onNoUserPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onUserSpecificLikedPlaylistReceived(Playlist specificPlaylist) {
+
+    }
+
+    @Override
+    public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
+
+    }
 
     @Override
     public void onTrackSelected(Track track) {
