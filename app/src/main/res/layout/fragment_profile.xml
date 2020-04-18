@@ -2,6 +2,7 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:fillViewport="true">
@@ -193,7 +194,8 @@
                     android:layout_width="9dp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="#FFFFFF"
-                    android:src="@drawable/popular_songs_border"></ImageButton>
+                    android:src="@drawable/popular_songs_border">
+                </ImageButton>
             </LinearLayout>
 
             <LinearLayout
@@ -286,9 +288,10 @@
         <LinearLayout
             android:id="@+id/linearLayout10"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="670dp"
             android:orientation="vertical"
             android:paddingTop="20dp"
+            android:paddingBottom="20dp"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
             <TextView
@@ -312,24 +315,24 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="465dp"
+                android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/library_playlist">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/library_playlist_songs"
+                    android:id="@+id/profile_artist_albums_songs"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:requiresFadingEdge="vertical" />
             </LinearLayout>
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="300dp"
             android:orientation="vertical"
-            android:paddingTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout10">
 
             <TextView
@@ -342,9 +345,14 @@
                 android:text="Artist Songs"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/profile_artist_songs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:requiresFadingEdge="vertical" />
+
         </LinearLayout>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
