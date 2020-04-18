@@ -58,4 +58,11 @@ dependencies {
 
     //Audio Visualizer
     implementation 'com.gauravk.audiovisualizer:audiovisualizer:0.9.2'
+
+    //CoverFlow
+    implementation 'com.chenlittleping:recyclercoverflow:1.0.6'
+
+    implementation 'jp.wasabeef:glide-transformations:4.0.0'
+
+    implementation 'com.github.devlight.navigationtabstrip:navigationtabstrip:1.0.4'
 }

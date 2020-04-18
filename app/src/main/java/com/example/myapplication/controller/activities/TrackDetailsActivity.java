@@ -20,16 +20,18 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
+import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.Track;
+import com.example.myapplication.restapi.callback.PlaylistCallback;
 import com.example.myapplication.restapi.callback.TrackCallback;
+import com.example.myapplication.restapi.manager.PlaylistManager;
 import com.example.myapplication.restapi.manager.TrackManager;
-
-import org.w3c.dom.Text;
+import com.example.myapplication.restapi.manager.UserResourcesManager;
 
 import java.io.IOException;
 import java.util.List;
 
-public class TrackDetailsActivity extends AppCompatActivity implements TrackCallback {
+public class TrackDetailsActivity extends AppCompatActivity implements TrackCallback, PlaylistCallback {
 
     private static final String PLAY_VIEW = "PlayIcon";
     private static final String STOP_VIEW = "StopIcon";
@@ -65,6 +67,9 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
 
     private Integer songID;
     private String sectionID;
+    private Integer playlistID;
+    private String artistID;
+    private String playlistName;
 
 
     @Override
@@ -72,7 +77,9 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song);
         this.songID = getIntent().getIntExtra("songId", 0);
-         this.sectionID = getIntent().getStringExtra("sectionId");
+        this.sectionID = getIntent().getStringExtra("sectionId");
+        this.playlistID = getIntent().getIntExtra("playlistID", 0);
+        this.artistID = getIntent().getStringExtra("artistID");
         initViews();
         getData(sectionID);
     }
@@ -283,16 +290,37 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
 
     private void getData(String sectionID){
 
-        if(sectionID.equalsIgnoreCase("Recent Tracks")){
-            TrackManager.getInstance(this).getRecentTracks(this);
-        }else{
-            TrackManager.getInstance(this).getRecommendedTracks(this);
+        switch (sectionID){
+            case "Recent Tracks":
+                TrackManager.getInstance(this).getRecentTracks(this);
+                break;
+            case "Recommended Tracks":
+                TrackManager.getInstance(this).getRecommendedTracks(this);
+                break;
+            case "User Liked Playlists":
+            case "User Playlists":
+                PlaylistManager.getInstance(this).getSpecificPlaylist(playlistID, this);
+                break;
+            case "Favourite Songs":
+                TrackManager.getInstance(this).getLikedTracks(this);
+            case "Artists":
+                UserResourcesManager.getInstance(this).getFollowingArtistsTopSongs(artistID, this);
+                break;
         }
     }
 
     private void updateData(List<Track> tracks){
         mTracks = tracks;
-        tvTitle.setText("Playing from " + sectionID);
+        if(sectionID.equalsIgnoreCase("Recent Tracks") ||sectionID.equalsIgnoreCase("Recommended Tracks")
+                || sectionID.equalsIgnoreCase("Favourite Songs")){
+            tvTitle.setText("Playing from " + sectionID);
+        }
+        if(sectionID.equalsIgnoreCase("User Liked Playlists") || sectionID.equalsIgnoreCase("User Playlists")){
+            tvTitle.setText("Playing " + playlistName + " from " + sectionID );
+        }
+        if(sectionID.equalsIgnoreCase("Artists")){
+            tvTitle.setText("Playing " + artistID + " popular songs");
+        }
 
         tvArtist.setText(mTracks.get(songID).getUser().getLogin());
         tvSongName.setText(mTracks.get(songID).getName());
@@ -396,7 +424,69 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     }
 
     @Override
+    public void onLikedTracksReceived(List<Track> likedTracks) {
+        updateData(likedTracks);
+    }
+
+    @Override
+    public void onNoLikedTracks(Throwable noLikedTracks) {
+
+    }
+
+    @Override
+    public void onArtistTracksReceived(List<Track> artistTracks) {
+
+        updateData(artistTracks);
+    }
+
+    @Override
+    public void onNoArtistTracks(Throwable noArtistTracks) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistReceived(Playlist playlists) {
+
+    }
+
+    @Override
+    public void onNoPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistCreated(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onUserPlaylistsReceived(List<Playlist> playlists) {
+
+    }
+
+    @Override
+    public void onNoUserPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onUserSpecificLikedPlaylistReceived(Playlist specificPlaylist) {
+        this.playlistName = specificPlaylist.getName();
+        updateData(specificPlaylist.getTracks());
+    }
+
+    @Override
+    public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
 
     }
 }

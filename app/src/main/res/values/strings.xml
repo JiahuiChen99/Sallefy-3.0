@@ -36,6 +36,7 @@
     <!-- SONG -->
     <string name="song_name">Título cancion</string>
     <string name="song_artists">Autor/a</string>
+    <string name="song_duration">00:00</string>
 
     <!-- ADD SONG -->
     <string name="add_song_title">Añadir una cancion</string>
@@ -53,5 +54,8 @@
     <string name="recentlyPlayed">Recently Played</string>
     <string name="recommend">Recommended for you</string>
     <string name="recommendArtists">Artists you may like</string>
+
+    <!-- Library Fragment -->
+    <string name="top_artist_songs">Popular songs</string>
 
 </resources>
