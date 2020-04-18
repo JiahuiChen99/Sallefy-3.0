@@ -21,6 +21,8 @@ import com.example.myapplication.model.UserToken;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
 import com.example.myapplication.restapi.callback.TrackCallback;
 import com.example.myapplication.restapi.manager.PlaylistManager;
+import com.example.myapplication.restapi.manager.TrackManager;
+import com.example.myapplication.restapi.manager.UserResourcesManager;
 import com.example.myapplication.utils.Sesion;
 
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
     private RecyclerCoverFlow mArtistAlbumsRecyclerView;
     private RecyclerView mArtistAlbumSongsRecyclerView;
     private ArrayList<Playlist> mAlbums;
-    private ArrayList<Track> mAlbumSongs;
+    private ArrayList<Track> mSongs;
     private Integer playlistID = 0;
 
     @Nullable
@@ -62,9 +64,9 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
         LinearLayoutManager artistAlbumsSongsManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mArtistAlbumSongsRecyclerView.setLayoutManager(artistAlbumsSongsManager);
 
-        /*mArtistSongsRecyclerView =(RecyclerView) view.findViewById(R.id.profile_artist_songs);
+        mArtistSongsRecyclerView =(RecyclerView) view.findViewById(R.id.profile_artist_songs);
         LinearLayoutManager artistSongsManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mArtistSongsRecyclerView.setLayoutManager(artistAlbumsManager);*/
+        mArtistSongsRecyclerView.setLayoutManager(artistSongsManager);
 
         this.user = Sesion.getInstance(getContext()).getUser().getLogin();
         System.out.println("UserName: " + this.user);
@@ -74,6 +76,9 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
 
     private void getData(){
         PlaylistManager.getInstance(this.getActivity()).getSpecificUserPlaylists(user,this);
+        UserResourcesManager.getInstance(getContext()).getSpecificArtistSongs( user, this);
+
+        mSongs = new ArrayList<>();
         mAlbums = new ArrayList<>();
     }
 
@@ -189,7 +194,9 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
 
     @Override
     public void onArtistTracksReceived(List<Track> artistTracks) {
-
+        mSongs = (ArrayList) artistTracks;
+        TrackListAdapter adapter = new TrackListAdapter(this, getContext(), mSongs);
+        mArtistSongsRecyclerView.setAdapter(adapter);
     }
 
     @Override

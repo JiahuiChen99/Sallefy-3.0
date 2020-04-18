@@ -23,4 +23,8 @@ public interface UserResourceService {
 
     @GET("users/{login}/tracks?popular=true&size=5")
     Call<List<Track>> getFollowingArtistsTopTracks(@Path("login") String artistLogin, @Header("Authorization") String token);
+
+    @GET("users/{login}/tracks")
+    Call<List<Track>> getSpecificArtistSongs(@Path("login") String artistLogin, @Header("Authorization") String token);
+
 }
