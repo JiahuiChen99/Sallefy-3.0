@@ -80,4 +80,24 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
     public void onPlaylistFailure(Throwable throwable) {
 
     }
+
+    @Override
+    public void onUserPlaylistsReceived(List<Playlist> playlists) {
+
+    }
+
+    @Override
+    public void onNoUserPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onUserSpecificLikedPlaylistReceived(Playlist specificPlaylist) {
+
+    }
+
+    @Override
+    public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
+
+    }
 }

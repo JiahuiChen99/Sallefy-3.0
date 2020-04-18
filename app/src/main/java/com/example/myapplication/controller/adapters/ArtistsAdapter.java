@@ -1,5 +1,6 @@
 package com.example.myapplication.controller.adapters;
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,10 +24,10 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
 
     private static final String TAG = "ArtistsAdapter";
     private ArrayList<User> mUsers;
-    private ExploreFragment mContext;
+    private Context mContext;
     private int NUM_VIEWHOLDERS = 0;
 
-    public ArtistsAdapter(ExploreFragment context, ArrayList<User> users ) {
+    public ArtistsAdapter(Context context, ArrayList<User> users ) {
         this.mUsers = users;
         this.mContext = context;
     }

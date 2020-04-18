@@ -3,6 +3,8 @@ package com.example.myapplication.restapi.service;
 
 import com.example.myapplication.model.Playlist;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -20,4 +22,13 @@ public interface PlaylistService {
 
     @PUT("playlists")
     Call<Playlist> modifyPlaylist(@Body Playlist playlist, @Header("Authorization") String token);
+
+    @GET("me/playlists")
+    Call<List<Playlist>> getUserPlaylists(@Header("Authorization") String token);
+
+    @GET("me/playlists/following")
+    Call<List<Playlist>> getLikedPlaylists(@Header("Authorization") String token);
+
+    @GET("me/playlists/{id}")
+    Call<Playlist> getSpecificLikedPlaylist(@Path("id") int id, @Header("Authorization") String token);
 }

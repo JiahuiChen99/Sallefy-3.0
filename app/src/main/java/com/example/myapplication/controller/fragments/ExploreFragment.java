@@ -50,7 +50,7 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
 
         mArtistsRecyclerView = (RecyclerView) view.findViewById(R.id.recommendArtistsList);
         LinearLayoutManager artistManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        ArtistsAdapter artistAdapter = new ArtistsAdapter(this, null);
+        ArtistsAdapter artistAdapter = new ArtistsAdapter(getContext(), null);
         mArtistsRecyclerView.setLayoutManager(artistManager);
         mArtistsRecyclerView.setAdapter(artistAdapter);
 
@@ -132,11 +132,31 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
 
     }
 
+    @Override
+    public void onLikedTracksReceived(List<Track> likedTracks) {
+
+    }
+
+    @Override
+    public void onNoLikedTracks(Throwable noLikedTracks) {
+
+    }
+
+    @Override
+    public void onArtistTracksReceived(List<Track> artistTracks) {
+
+    }
+
+    @Override
+    public void onNoArtistTracks(Throwable noArtistTracks) {
+
+    }
+
 
     @Override
     public void onUsersReceived(List<User> artists) {
         mArtists = (ArrayList) artists;
-        ArtistsAdapter adapter = new ArtistsAdapter(this, mArtists);
+        ArtistsAdapter adapter = new ArtistsAdapter(getContext(), mArtists);
         mArtistsRecyclerView.setAdapter(adapter);
 
     }
@@ -148,6 +168,16 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
 
     @Override
     public void onFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowingArtistsReceived(List<User> followingArtists) {
+
+    }
+
+    @Override
+    public void onNoFollowingArtists(Throwable noFollowingArtists) {
 
     }
 }
