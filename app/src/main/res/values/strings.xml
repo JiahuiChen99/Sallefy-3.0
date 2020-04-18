@@ -59,4 +59,7 @@
     <!-- Library Fragment -->
     <string name="top_artist_songs">Popular songs</string>
 
+    <!-- User Profile Fragment -->
+    <string name="followButton">follow</string>
+
 </resources>
