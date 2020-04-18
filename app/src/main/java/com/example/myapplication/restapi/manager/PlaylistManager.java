@@ -158,6 +158,33 @@ public class PlaylistManager {
         });
     }
 
+    public synchronized void getSpecificUserPlaylists(String userLogin, final PlaylistCallback playlistcallback) {
+        UserToken userToken = Sesion.getInstance(mContext).getUserToken();
+
+        Call<List<Playlist>> call = mService.getSpecificUserPlaylists(userLogin,"Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<List<Playlist>>() {
+            @Override
+            public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
+                int code = response.code();
+
+                if (response.isSuccessful()) {
+                    playlistcallback.onUserPlaylistsReceived(response.body());
+                } else {
+                    try {
+                        playlistcallback.onNoUserPlaylists(new Throwable(response.errorBody().string()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Playlist>> call, Throwable t) {
+                playlistcallback.onPlaylistFailure(t);
+            }
+        });
+    }
+
     public synchronized void getLikedPlaylists(final PlaylistCallback playlistcallback) {
         UserToken userToken = Sesion.getInstance(mContext).getUserToken();
 
