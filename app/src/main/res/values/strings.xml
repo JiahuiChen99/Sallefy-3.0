@@ -54,6 +54,7 @@
     <string name="recentlyPlayed">Recently Played</string>
     <string name="recommend">Recommended for you</string>
     <string name="recommendArtists">Artists you may like</string>
+    <string name="sharedTransition">Shared Element Transition</string>
 
     <!-- Library Fragment -->
     <string name="top_artist_songs">Popular songs</string>
