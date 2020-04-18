@@ -61,4 +61,12 @@ dependencies {
 
     //Button Effect
     implementation 'com.sackcentury:shinebutton:1.0.0'
+
+    //CoverFlow
+    implementation 'com.chenlittleping:recyclercoverflow:1.0.6'
+
+    implementation 'jp.wasabeef:glide-transformations:4.0.0'
+
+    implementation 'com.github.devlight.navigationtabstrip:navigationtabstrip:1.0.4'
+
 }
