@@ -303,7 +303,7 @@
                 android:textStyle="bold" />
 
             <recycler.coverflow.RecyclerCoverFlow
-                android:id="@+id/library_playlist"
+                android:id="@+id/profile_artist_albums"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 app:layout_constraintEnd_toEndOf="parent"
