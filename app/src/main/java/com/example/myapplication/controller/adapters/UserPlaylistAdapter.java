@@ -1,5 +1,6 @@
 package com.example.myapplication.controller.adapters;
 
+import android.content.Context;
 import android.graphics.BlurMaskFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,11 +32,11 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
 
     public static final String TAG = "User Playlists";
     private ArrayList<Playlist> mPlaylists;
-    private LibraryUserPlaylistsFragment mContext;
+    private Context mContext;
     private PlaylistCallback callback;
     private int NUM_VIEWHOLDERS = 0;
 
-    public UserPlaylistAdapter(LibraryUserPlaylistsFragment context, ArrayList<Playlist> playlists){
+    public UserPlaylistAdapter(Context context, ArrayList<Playlist> playlists){
         this.callback = callback;
         this.mContext = context;
         this.mPlaylists = playlists;

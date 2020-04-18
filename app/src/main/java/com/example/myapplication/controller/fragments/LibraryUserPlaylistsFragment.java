@@ -51,7 +51,7 @@ public class LibraryUserPlaylistsFragment extends Fragment implements PlaylistCa
 
         mPlaylistRecyclerView = (RecyclerCoverFlow) view.findViewById(R.id.library_playlist);
         CoverFlowLayoutManger userPlaylistManager = new CoverFlowLayoutManger(false, false, true, (float) 1);
-        UserPlaylistAdapter userPlaylistAdapter = new UserPlaylistAdapter( this, null);
+        UserPlaylistAdapter userPlaylistAdapter = new UserPlaylistAdapter( getContext(), null);
         mPlaylistRecyclerView.setLayoutManager(userPlaylistManager);
         mPlaylistRecyclerView.setAdapter(userPlaylistAdapter);
         mPlaylistRecyclerView.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected(){
@@ -105,7 +105,7 @@ public class LibraryUserPlaylistsFragment extends Fragment implements PlaylistCa
     @Override
     public void onUserPlaylistsReceived(List<Playlist> playlists) {
         mPlaylists = (ArrayList) playlists;
-        UserPlaylistAdapter adapter = new UserPlaylistAdapter(this, mPlaylists);
+        UserPlaylistAdapter adapter = new UserPlaylistAdapter(getContext(), mPlaylists);
         mPlaylistRecyclerView.setAdapter(adapter);
         TrackListAdapter songsListAdapter = new TrackListAdapter(this, getContext(), (ArrayList<Track>) mPlaylists.get(0).getTracks());
         msongList.setAdapter(songsListAdapter);
