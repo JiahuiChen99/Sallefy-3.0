@@ -70,4 +70,7 @@ dependencies {
 
     implementation 'com.github.devlight.navigationtabstrip:navigationtabstrip:1.0.4'
 
+    //Boom Button
+    implementation 'com.nightonke:boommenu:2.1.1'
+
 }
