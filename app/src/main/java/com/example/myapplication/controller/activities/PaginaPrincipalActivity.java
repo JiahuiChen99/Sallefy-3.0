@@ -3,6 +3,7 @@ package com.example.myapplication.controller.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -22,8 +24,11 @@ import com.example.myapplication.controller.fragments.ProfileFragment;
 import com.example.myapplication.controller.fragments.LibraryFragment;
 import com.example.myapplication.controller.fragments.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class PaginaPrincipalActivity extends AppCompatActivity {
+
+    private SlidingUpPanelLayout mLayout;
 
     private FragmentManager fmFragment;
     private FragmentTransaction ftFragment;
@@ -47,13 +52,15 @@ public class PaginaPrincipalActivity extends AppCompatActivity {
         this.artistName = getIntent().getStringExtra("songArtist");
 
         if(url == null){
-            this.url = "https://www.crank-in.net/img/db/1263018_650.jpg";
+            this.url = "https://livedoor.blogimg.jp/future48/imgs/f/1/f1c032b5.jpg";
         }
+
 
         setContentView(R.layout.activity_menu_bar);
         setInicialFragment();
         initViews();
         loadData();
+        configSliding();
     }
 
     private void initViews() {
@@ -104,6 +111,29 @@ public class PaginaPrincipalActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void configSliding(){
+        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        mLayout.setPanelHeight(350);
+        mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+                Log.i("HELLO", "onPanelSlide, offset " + slideOffset);
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+
+            }
+        });
+
+        mLayout.setFadeOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            }
+        });
     }
 
     private void loadData(){
