@@ -1,6 +1,9 @@
 package com.example.myapplication.controller.fragments;
 
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +30,11 @@ import com.example.myapplication.restapi.manager.PlaylistManager;
 import com.example.myapplication.restapi.manager.TrackManager;
 import com.example.myapplication.restapi.manager.UserResourcesManager;
 import com.example.myapplication.utils.Sesion;
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
+import com.nightonke.boommenu.BoomButtons.TextInsideCircleButton;
+import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.ButtonEnum;
+import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +46,8 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
 
     private User user;
     private String userName;
+
+    private BoomMenuButton btnMore;
 
     private TextView tvArtistName;
     private TextView tvFirstName;
@@ -58,6 +68,33 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        btnMore = view.findViewById(R.id.profile_more_button);
+        btnMore.setButtonEnum(ButtonEnum.TextInsideCircle);
+        btnMore.setPiecePlaceEnum(PiecePlaceEnum.DOT_3_1);
+        btnMore.setButtonPlaceEnum(ButtonPlaceEnum.SC_3_1);
+        btnMore.setNormalColor(Color.rgb(255, 105, 105));
+        TextInsideCircleButton.Builder builder = new TextInsideCircleButton.Builder()
+                .normalImageRes(R.drawable.ic_cloud_upload_black_24dp)
+                .normalText("Upload Song");
+
+        builder.imageRect(new Rect(80, 70, 10, 10));
+        builder.textSize(10);
+        builder.ellipsize(TextUtils.TruncateAt.MARQUEE);
+        btnMore.addBuilder(builder);
+
+        builder = new TextInsideCircleButton.Builder()
+                .normalImageRes(R.drawable.ic_playlist_add_black_24dp)
+                .normalText("New Playlist");
+        builder.imageRect(new Rect(80, 70, 10, 10));
+        btnMore.addBuilder(builder);
+
+        builder = new TextInsideCircleButton.Builder()
+                .normalImageRes(R.drawable.ic_log_out_outline)
+                .normalText("Logout");
+        builder.imageRect(new Rect(80, 70, 10, 10));
+        btnMore.addBuilder(builder);
+
 
         ivProfileImage = view.findViewById(R.id.artist_profile_image);
         tvArtistName = view.findViewById(R.id.profile_artist_login);
