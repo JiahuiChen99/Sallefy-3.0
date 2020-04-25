@@ -83,7 +83,7 @@ public class LibraryUserPlaylistsFragment extends Fragment implements PlaylistCa
     }
 
     @Override
-    public void onPlaylistReceived(Playlist playlists) {
+    public void onPlaylistReceived(List<Playlist> playlists) {
 
     }
 

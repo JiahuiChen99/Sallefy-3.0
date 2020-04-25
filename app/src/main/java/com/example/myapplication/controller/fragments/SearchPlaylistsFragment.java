@@ -14,40 +14,39 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.controller.activities.TrackDetailsActivity;
+import com.example.myapplication.controller.adapters.SearchPlaylistAdapter;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
+import com.example.myapplication.controller.adapters.UserPlaylistAdapter;
+import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.SearchResult;
 import com.example.myapplication.model.Track;
+import com.example.myapplication.restapi.callback.PlaylistCallback;
 import com.example.myapplication.restapi.callback.SearchCallback;
 import com.example.myapplication.restapi.callback.TrackCallback;
+import com.example.myapplication.restapi.manager.PlaylistManager;
 import com.example.myapplication.restapi.manager.SearchManager;
 import com.example.myapplication.restapi.manager.TrackManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchSongsFragment extends Fragment implements SearchCallback, TrackCallback {
+import recycler.coverflow.CoverFlowLayoutManger;
+import recycler.coverflow.RecyclerCoverFlow;
+
+public class SearchPlaylistsFragment extends Fragment implements SearchCallback, PlaylistCallback {
 
     private ArrayList<Track> tracks;
+    private ArrayList<Playlist> playlists;
     private RecyclerView msongListRecyclerView;
-    private SearchSongsFragment instance;
-    private Boolean mode;
-
-    public Boolean getMode() {
-        return mode;
-    }
-
+    private SearchPlaylistsFragment instance;
     private String input;
 
-    public String getInput() {
-        return input;
-    }
-
-    public SearchSongsFragment(String input) {
+    public SearchPlaylistsFragment(String input) {
         this.input = input;
     }
 
-    public static SearchSongsFragment getInstance(String input){
-        return new SearchSongsFragment(input);
+    public static SearchPlaylistsFragment getInstance(String input){
+        return new SearchPlaylistsFragment(input);
     }
 
     @Nullable
@@ -57,15 +56,15 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
 
         msongListRecyclerView = (RecyclerView) v.findViewById(R.id.search_songs);
         LinearLayoutManager songsListManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        SearchPlaylistAdapter userPlaylistAdapter = new SearchPlaylistAdapter( getContext(), null);
         msongListRecyclerView.setLayoutManager(songsListManager);
+        msongListRecyclerView.setAdapter(userPlaylistAdapter);
 
         if (input == null) {
             getData();
         }else if (input.equals("")) {
-            mode = false;
             getData();
         }else {
-            mode = true;
             updateSongs(input);
         }
 
@@ -78,102 +77,66 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
     }
 
     private void getData(){
-        TrackManager.getInstance(this.getActivity()).getAllTracks(this);
+
+        PlaylistManager.getInstance(this.getActivity()).getAllPlaylists("0", this);
     }
 
     @Override
-    public void onLikedTracksReceived(List<Track> tracks) {
-
-    }
-
-    @Override
-    public void onTracksReceived(List<Track> tracks) {
-        this.tracks = (ArrayList)tracks;
-        TrackListAdapter adapter = new TrackListAdapter(this, getContext(), this.tracks);
+    public void onInfoReceived(SearchResult output) {
+        this.playlists = (ArrayList)output.getPlaylists();
+        SearchPlaylistAdapter adapter = new SearchPlaylistAdapter(getContext(), playlists);
         msongListRecyclerView.setAdapter(adapter);
     }
 
     @Override
-    public void onNoTracks(Throwable throwable) {
+    public void onNoInfo(Throwable throwable) {
 
     }
 
     @Override
-    public void onRecentTracksReceived(List<Track> tracks) {
+    public void onPlaylistReceived(List<Playlist> playlists) {
+        this.playlists = (ArrayList) playlists;
+        SearchPlaylistAdapter adapter = new SearchPlaylistAdapter(getContext(), this.playlists);
+        msongListRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onNoPlaylists(Throwable throwable) {
 
     }
 
     @Override
-    public void onNoRecentTracksReceived(Throwable throwable) {
+    public void onPlaylistCreated(Playlist playlist) {
 
     }
 
     @Override
-    public void onRecommendedTracksReceived(List<Track> tracks) {
+    public void onPlaylistFailure(Throwable throwable) {
 
     }
 
     @Override
-    public void onNoRecommendedTracks(Throwable throwable) {
+    public void onUserPlaylistsReceived(List<Playlist> playlists) {
 
     }
 
     @Override
-    public void onSpecificTrackReceived(Track track) {
+    public void onNoUserPlaylists(Throwable throwable) {
 
     }
 
     @Override
-    public void onNoSpecificTrack(Track track) {
+    public void onUserSpecificLikedPlaylistReceived(Playlist specificPlaylist) {
 
     }
 
     @Override
-    public void onTrackSelected(Integer id, String sectionID) {
-        Intent intent = new Intent(getActivity(), TrackDetailsActivity.class);
-        intent.putExtra("songId", id);
-        intent.putExtra("sectionId", "Searched song");
-        intent.putExtra("playlistID", tracks.get(id).getId());
-        intent.putExtra("mode", getMode());
-        intent.putExtra("input", getInput());
-        //intent.putExtra("artistID");
-        startActivity(intent);
-    }
-
-    @Override
-    public void onTrackLiked(Track like) {
-
-    }
-
-    @Override
-    public void onNoLikedTracks(Throwable noLikedTracks) {
-
-    }
-
-    @Override
-    public void onArtistTracksReceived(List<Track> artistTracks) {
-
-    }
-
-    @Override
-    public void onNoArtistTracks(Throwable noArtistTracks) {
+    public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
 
     }
 
     @Override
     public void onFailure(Throwable throwable) {
 
-    }
-
-    @Override
-    public void onInfoReceived(SearchResult output) {
-        this.tracks = (ArrayList)output.getTracks();
-        TrackListAdapter adapter = new TrackListAdapter(this, getContext(), this.tracks);
-        msongListRecyclerView.setAdapter(adapter);
-    }
-
-    @Override
-    public void onNoInfo(Throwable throwable) {
-        System.out.println("no");
     }
 }

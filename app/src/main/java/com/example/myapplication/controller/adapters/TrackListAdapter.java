@@ -54,28 +54,30 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         Log.d(TAG, "onBindViewHolder: called. viewHolder hashcode: " + holder.hashCode());
 
 
-        holder.mLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCallback.onTrackSelected(position, TAG);
+        if (mTracks.size()>0) {
+            holder.mLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCallback.onTrackSelected(position, TAG);
+                }
+            });
+            holder.tvTitle.setText(mTracks.get(position).getName());
+            holder.tvTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+            holder.tvTitle.setSelected(true);
+            holder.tvAuthor.setText(mTracks.get(position).getUserLogin());
+            if (mTracks.get(position).getDuration() != null) {
+                holder.ivDuration.setText(createTimeLabel(mTracks.get(position).getDuration()));
             }
-        });
-        holder.tvTitle.setText(mTracks.get(position).getName());
-        holder.tvTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        holder.tvTitle.setSelected(true);
-        holder.tvAuthor.setText(mTracks.get(position).getUserLogin());
-        if(mTracks.get(position).getDuration() != null){
-            holder.ivDuration.setText(createTimeLabel(mTracks.get(position).getDuration()));
-        }
-        if (mTracks.get(position).getThumbnail() != null) {
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(20));
-            Glide.with(mContext)
-                    .asBitmap()
-                    .placeholder(R.drawable.no_user)
-                    .load(mTracks.get(position).getThumbnail())
-                    .apply(requestOptions)
-                    .into(holder.ivPicture);
+            if (mTracks.get(position).getThumbnail() != null) {
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(20));
+                Glide.with(mContext)
+                        .asBitmap()
+                        .placeholder(R.drawable.no_user)
+                        .load(mTracks.get(position).getThumbnail())
+                        .apply(requestOptions)
+                        .into(holder.ivPicture);
+            }
         }
     }
 

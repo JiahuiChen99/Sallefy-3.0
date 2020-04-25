@@ -122,7 +122,7 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
     }
 
     @Override
-    public void onPlaylistReceived(Playlist playlists) {
+    public void onPlaylistReceived(List<Playlist> playlists) {
 
     }
 

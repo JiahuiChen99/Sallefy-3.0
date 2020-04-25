@@ -27,10 +27,13 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
 import com.example.myapplication.model.Playlist;
+import com.example.myapplication.model.SearchResult;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
+import com.example.myapplication.restapi.callback.SearchCallback;
 import com.example.myapplication.restapi.callback.TrackCallback;
 import com.example.myapplication.restapi.manager.PlaylistManager;
+import com.example.myapplication.restapi.manager.SearchManager;
 import com.example.myapplication.restapi.manager.TrackManager;
 
 import com.sackcentury.shinebuttonlib.ShineButton;
@@ -40,9 +43,10 @@ import com.example.myapplication.restapi.manager.UserResourcesManager;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class TrackDetailsActivity extends AppCompatActivity implements TrackCallback, PlaylistCallback {
+public class TrackDetailsActivity extends AppCompatActivity implements TrackCallback, PlaylistCallback, SearchCallback {
 
     private static final String PLAY_VIEW = "PlayIcon";
     private static final String STOP_VIEW = "StopIcon";
@@ -84,6 +88,9 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     private String artistID;
     private String playlistName;
 
+    private Boolean mode;
+    private String input;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -93,6 +100,8 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
         this.sectionID = getIntent().getStringExtra("sectionId");
         this.playlistID = getIntent().getIntExtra("playlistID", 0);
         this.artistID = getIntent().getStringExtra("artistID");
+        this.mode = getIntent().getBooleanExtra("mode", false);
+        this.input = getIntent().getStringExtra("input");
         initViews();
         getData(sectionID);
     }
@@ -339,6 +348,14 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
             case "Artists":
                 UserResourcesManager.getInstance(this).getFollowingArtistsTopSongs(artistID, this);
                 break;
+            case "Searched song":
+                if (!mode) {
+                    TrackManager.getInstance(this).getAllTracks(this);
+                } else {
+                    SearchManager.getInstance(this).searchSong(input,this);
+                }
+
+                break;
         }
     }
 
@@ -403,6 +420,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
 
     @Override
     public void onTracksReceived(List<Track> tracks) {
+        updateData(tracks);
     }
 
     @Override
@@ -492,7 +510,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
     }
 
     @Override
-    public void onPlaylistReceived(Playlist playlists) {
+    public void onPlaylistReceived(List<Playlist> playlists) {
 
     }
 
@@ -529,6 +547,16 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
 
     @Override
     public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onInfoReceived(SearchResult output) {
+        updateData((ArrayList)output.getTracks());
+    }
+
+    @Override
+    public void onNoInfo(Throwable throwable) {
 
     }
 }

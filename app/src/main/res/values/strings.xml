@@ -38,17 +38,39 @@
     <string name="song_artists">Autor/a</string>
     <string name="song_duration">00:00</string>
 
+    <!-- PLAYLIST -->
+    <string name="playlist_name">Título playlist</string>
+    <string name="playlist_artist">Autor/a</string>
+    <string name="playlist_follows">Followers</string>
+    <string name="playlist_likes">Likes</string>
+    <string name="playlist_songs">Songs</string>
+
     <!-- ADD SONG -->
     <string name="add_song_title">Añadir una cancion</string>
     <string name="add_song_id">Id de la cancion</string>
     <string name="add_song_playlist_id">Id de la playlist</string>
     <string name="add_song_playlist_name">Nombre de la playlist</string>
 
+    <!-- SEARCH -->
+    <string name="search_Songs">Songs</string>
+    <string name="search_Genres">Genres</string>
+    <string name="search_Artists">Artists</string>
+    <string name="search_Playlists">Playlists</string>
+
+    <!-- Artist -->
+    <string name="artist_name">Artist name</string>
+    <string name="artist_follows">Followers</string>
+    <string name="artist_playlists">Playlists</string>
+    <string name="artist_songs">Songs</string>
+
     <!-- Fragments -->
     <string name="explore">Explore</string>
     <string name="search">Search</string>
     <string name="library">Library</string>
     <string name="profile">User Profile</string>
+
+    <!-- Genre -->
+    <string name="genre_name">Genre name</string>
 
     <!-- Explore Fragment -->
     <string name="recentlyPlayed">Recently Played</string>

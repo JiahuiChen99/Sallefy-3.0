@@ -14,40 +14,36 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.controller.activities.TrackDetailsActivity;
-import com.example.myapplication.controller.adapters.TrackListAdapter;
+import com.example.myapplication.controller.adapters.SearchGenreAdapter;
+import com.example.myapplication.model.EssencialGenre;
+import com.example.myapplication.model.SearchGenre;
 import com.example.myapplication.model.SearchResult;
 import com.example.myapplication.model.Track;
+import com.example.myapplication.restapi.callback.GenreCallback;
 import com.example.myapplication.restapi.callback.SearchCallback;
 import com.example.myapplication.restapi.callback.TrackCallback;
+import com.example.myapplication.restapi.manager.GenreManager;
 import com.example.myapplication.restapi.manager.SearchManager;
 import com.example.myapplication.restapi.manager.TrackManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchSongsFragment extends Fragment implements SearchCallback, TrackCallback {
+public class SearchGenreFragment extends Fragment implements SearchCallback, TrackCallback, GenreCallback {
 
     private ArrayList<Track> tracks;
+    private static ArrayList<SearchGenre> list;
     private RecyclerView msongListRecyclerView;
-    private SearchSongsFragment instance;
-    private Boolean mode;
-
-    public Boolean getMode() {
-        return mode;
-    }
-
+    private SearchGenreFragment instance;
     private String input;
 
-    public String getInput() {
-        return input;
-    }
-
-    public SearchSongsFragment(String input) {
+    public SearchGenreFragment(String input) {
         this.input = input;
+        list = new ArrayList<>(0);
     }
 
-    public static SearchSongsFragment getInstance(String input){
-        return new SearchSongsFragment(input);
+    public static SearchGenreFragment getInstance(String input){
+        return new SearchGenreFragment(input);
     }
 
     @Nullable
@@ -55,17 +51,17 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_search_songs, container, false);
 
+        //**************************************************************
         msongListRecyclerView = (RecyclerView) v.findViewById(R.id.search_songs);
         LinearLayoutManager songsListManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         msongListRecyclerView.setLayoutManager(songsListManager);
+        //***************************************************************
 
         if (input == null) {
             getData();
         }else if (input.equals("")) {
-            mode = false;
             getData();
         }else {
-            mode = true;
             updateSongs(input);
         }
 
@@ -73,11 +69,11 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
     }
 
     public void updateSongs(String input) {
-        System.out.println(input);
         SearchManager.getInstance(this.getActivity()).searchSong(input,this);
     }
 
     private void getData(){
+        GenreManager.getInstance(this.getActivity()).getGenre(this);
         TrackManager.getInstance(this.getActivity()).getAllTracks(this);
     }
 
@@ -89,8 +85,28 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
     @Override
     public void onTracksReceived(List<Track> tracks) {
         this.tracks = (ArrayList)tracks;
-        TrackListAdapter adapter = new TrackListAdapter(this, getContext(), this.tracks);
+
+        for (int i = 0; i < list.size(); i++) {
+            for (int j = 0; j < this.tracks.size(); j++) {
+                for (int k = 0; k < this.tracks.get(j).getGenres().size(); k++) {
+                    if (this.tracks.get(j).getGenres().get(k).getId().compareTo(list.get(i).getId()) == 0) {
+                        list.get(i).setTracks(tracks.get(j));
+                    }
+                }
+            }
+        }
+        SearchGenreAdapter adapter = new SearchGenreAdapter(getContext(), list, getActivity());
         msongListRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onGenreReceived(List<EssencialGenre> essencial) {
+        list.clear();
+        for (int i = 0; i < essencial.size(); i++) {
+            list.add(new SearchGenre());
+            list.get(i).setGenre(essencial.get(i).getName());
+            list.get(i).setId(essencial.get(i).getId());
+        }
     }
 
     @Override
@@ -132,11 +148,7 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
     public void onTrackSelected(Integer id, String sectionID) {
         Intent intent = new Intent(getActivity(), TrackDetailsActivity.class);
         intent.putExtra("songId", id);
-        intent.putExtra("sectionId", "Searched song");
-        intent.putExtra("playlistID", tracks.get(id).getId());
-        intent.putExtra("mode", getMode());
-        intent.putExtra("input", getInput());
-        //intent.putExtra("artistID");
+        intent.putExtra("sectionId", "Favourite Songs");
         startActivity(intent);
     }
 
@@ -167,13 +179,17 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
 
     @Override
     public void onInfoReceived(SearchResult output) {
-        this.tracks = (ArrayList)output.getTracks();
+        /*this.tracks = (ArrayList)output.getTracks();
         TrackListAdapter adapter = new TrackListAdapter(this, getContext(), this.tracks);
-        msongListRecyclerView.setAdapter(adapter);
+        msongListRecyclerView.setAdapter(adapter);*/
     }
 
     @Override
     public void onNoInfo(Throwable throwable) {
-        System.out.println("no");
+    }
+
+    @Override
+    public void onNoGenre(Throwable throwable) {
+
     }
 }

@@ -15,6 +15,12 @@ import retrofit2.http.Path;
 
 public interface UserResourceService {
 
+    @GET("users")
+    Call<List<User>> getAllUsers(@Header("Authorization") String token);
+
+    @GET("users/{login}")
+    Call<User> getSpecificArtist(@Path("login") String artistLogin, @Header("Authorization") String token);
+
     @GET("users?popular=true")
     Call<List<User>> getPopularUsers(@Header("Authorization") String token);
 

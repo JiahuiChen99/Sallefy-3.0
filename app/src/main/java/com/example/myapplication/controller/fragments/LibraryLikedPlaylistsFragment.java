@@ -83,7 +83,7 @@ public class LibraryLikedPlaylistsFragment extends Fragment implements PlaylistC
     }
 
     @Override
-    public void onPlaylistReceived(Playlist playlists) {
+    public void onPlaylistReceived(List<Playlist> playlists) {
 
     }
 

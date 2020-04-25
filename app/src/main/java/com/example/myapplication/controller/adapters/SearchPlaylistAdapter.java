@@ -1,7 +1,7 @@
 package com.example.myapplication.controller.adapters;
 
 import android.content.Context;
-import android.graphics.BlurMaskFilter;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,17 +18,13 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
-import com.example.myapplication.controller.fragments.LibraryFragment;
-import com.example.myapplication.controller.fragments.LibraryUserPlaylistsFragment;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.wasabeef.glide.transformations.BlurTransformation;
-
-public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapter.ViewHolder> implements PlaylistCallback {
+public class SearchPlaylistAdapter extends RecyclerView.Adapter<SearchPlaylistAdapter.ViewHolder> implements PlaylistCallback {
 
     public static final String TAG = "User Playlists";
     private ArrayList<Playlist> mPlaylists;
@@ -36,7 +32,7 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
     private PlaylistCallback callback;
     private int NUM_VIEWHOLDERS = 0;
 
-    public UserPlaylistAdapter(Context context, ArrayList<Playlist> playlists){
+    public SearchPlaylistAdapter(Context context, ArrayList<Playlist> playlists){
         this.callback = callback;
         this.mContext = context;
         this.mPlaylists = playlists;
@@ -89,14 +85,24 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivThumbnail;
+        ImageView ivFollows;
+        ImageView ivLikes;
         TextView tvTrackName;
+        TextView tvArtistName;
+        TextView tvFollows;
+        TextView tvSongs;
         LinearLayout mLayout;
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);
-            mLayout = itemView.findViewById(R.id.artist_long);
-            ivThumbnail = (ImageView) itemView.findViewById(R.id.user_playlist_cover);
-            tvTrackName = (TextView) itemView.findViewById(R.id.user_playlist_name);
+            mLayout = itemView.findViewById(R.id.track_playlist_long_layout);
+            ivThumbnail = (ImageView) itemView.findViewById(R.id.playlist_img);
+            ivFollows = (ImageView) itemView.findViewById(R.id.playlist_follows_img);
+            ivLikes = (ImageView) itemView.findViewById(R.id.playlist_songs_img);
+            tvTrackName = (TextView) itemView.findViewById(R.id.playlist_title);
+            tvArtistName = (TextView) itemView.findViewById(R.id.playlist_author);
+            tvFollows = (TextView) itemView.findViewById(R.id.playlist_follows);
+            tvSongs = (TextView) itemView.findViewById(R.id.playlist_songs);
         }
     }
 
@@ -105,7 +111,7 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder: called. Num viewHolders: " + NUM_VIEWHOLDERS);
 
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_playlist_cover, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_playlist_long, parent, false);
 
         return new ViewHolder(itemView);
     }
@@ -131,7 +137,17 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
 
             System.out.println(mPlaylists.get(position).getName());
             holder.tvTrackName.setText(mPlaylists.get(position).getName());
-
+            holder.tvTrackName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+            holder.tvTrackName.setSelected(true);
+            holder.tvArtistName.setText(mPlaylists.get(position).getUser().getLogin());
+            holder.tvArtistName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+            holder.tvArtistName.setSelected(true);
+            holder.tvFollows.setText(mPlaylists.get(position).getFollowers().toString());
+            holder.tvFollows.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+            holder.tvFollows.setSelected(true);
+            holder.tvSongs.setText(String.valueOf(mPlaylists.get(position).getTracks().size()));
+            holder.tvSongs.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+            holder.tvSongs.setSelected(true);
         }
     }
 

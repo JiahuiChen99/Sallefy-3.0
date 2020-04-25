@@ -1,5 +1,6 @@
 package com.example.myapplication.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -8,27 +9,34 @@ import java.util.List;
 public class Playlist implements Serializable {
 
     @SerializedName("cover")
+    @Expose
     private String cover;
-
     @SerializedName("description")
+    @Expose
     private String description;
-
+    @SerializedName("followed")
+    @Expose
+    private Boolean followed;
+    @SerializedName("followers")
+    @Expose
+    private Integer followers;
     @SerializedName("id")
+    @Expose
     private Integer id;
-
     @SerializedName("name")
+    @Expose
     private String name;
-
-    @SerializedName("publicAccessible")
-    private Boolean publicAccessible;
-
-    @SerializedName("thumbnail")
-    private String thumbnail;
-
     @SerializedName("owner")
+    @Expose
     private User user;
-
+    @SerializedName("publicAccessible")
+    @Expose
+    private Boolean publicAccessible;
+    @SerializedName("thumbnail")
+    @Expose
+    private String thumbnail;
     @SerializedName("tracks")
+    @Expose
     private List<Track> tracks = null;
 
     public Playlist (String name, Boolean publico) {
@@ -42,8 +50,6 @@ public class Playlist implements Serializable {
         this.tracks = tracks;
         this.publicAccessible = publico;
     }
-
-    private boolean followed;
 
     public String getCover() {
         return cover;
@@ -108,6 +114,22 @@ public class Playlist implements Serializable {
     public void setUserLogin(String userLogin) {
         if (user == null) { user = new User(); }
         user.setLogin(userLogin);
+    }
+
+    public Boolean getFollowed() {
+        return followed;
+    }
+
+    public void setFollowed(Boolean followed) {
+        this.followed = followed;
+    }
+
+    public Integer getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Integer followers) {
+        this.followers = followers;
     }
 
     public List<Track> getTracks() {

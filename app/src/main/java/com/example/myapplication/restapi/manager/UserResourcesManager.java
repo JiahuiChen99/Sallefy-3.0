@@ -147,4 +147,54 @@ public class UserResourcesManager {
         });
     }
 
+    public synchronized void getUsers(final UserResourcesCallback userResourcesCallback) {
+        UserToken userToken = Sesion.getInstance(mContext).getUserToken();
+
+        Call<List<User>> call = mUserResourceService.getAllUsers("Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                int code = response.code();
+
+                if(response.isSuccessful()) {
+                    userResourcesCallback.onArtistsReceived(response.body());
+                }else{
+                    Log.d(TAG, "Error Not Successful: " + code);
+                    userResourcesCallback.onNoUsers(new Throwable("Error " + code + ": " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Log.d(TAG, "Error Not Successful: " + t.getStackTrace());
+                userResourcesCallback.onFailure(new Throwable("ERROR: " + t.getStackTrace()));
+            }
+        });
+    }
+
+    public synchronized void getSpecificUser(String artistLogin, final UserResourcesCallback userResourceCallback) {
+        UserToken userToken = Sesion.getInstance(mContext).getUserToken();
+
+        Call<User> call = mUserResourceService.getSpecificArtist(artistLogin,"Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                int code = response.code();
+
+                if (response.isSuccessful()) {
+                    userResourceCallback.onUserReceived(response.body());
+                } else {
+                    Log.d(TAG, "Error Not Successful: " + code);
+                    userResourceCallback.onNoUsers(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d(TAG, "Error Failure: " + t.getStackTrace());
+                userResourceCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+    }
+
 }

@@ -29,7 +29,7 @@
         app:itemTextColor="@drawable/bottom_navigation_selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/menu_inferior" />
-
+/*
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/footer_song"
         android:layout_width="match_parent"
