@@ -1,5 +1,6 @@
 package com.example.myapplication.controller.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,10 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.controller.activities.TrackDetailsActivity;
 import com.example.myapplication.controller.adapters.ArtistsAdapter;
 import com.example.myapplication.controller.adapters.RecentTracksAdapter;
 import com.example.myapplication.controller.adapters.RecommendAdapter;
+import com.example.myapplication.controller.music.MusicCallback;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.model.User;
 import com.example.myapplication.restapi.callback.TrackCallback;
@@ -32,14 +33,15 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
     private RecyclerView mRecentRecyclerView;
     private RecyclerView mArtistsRecyclerView;
     private RecyclerView mRecommendedRecyclerView;
-    private ArrayList mRecentTracks;
+    private ArrayList<Track> mRecentTracks;
     private ArrayList mArtists;
-    private ArrayList mRecommendedTracks;
+    private ArrayList<Track> mRecommendedTracks;
+
+    private MusicCallback sendTracksCallback;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
 
         mRecentRecyclerView = (RecyclerView) view.findViewById(R.id.recentList);
@@ -63,6 +65,24 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
         getData();
 
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+
+        try {
+            sendTracksCallback = (MusicCallback) context;
+        }catch (ClassCastException e){
+            System.out.println("Error, class doesn't implement the interface");
+        }
+    }
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+
+        sendTracksCallback = null;
     }
 
     private void getData() {
@@ -121,10 +141,19 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
 
     @Override
     public void onTrackSelected(Integer id, String sectionID) {
-        Intent intent = new Intent(getActivity(), TrackDetailsActivity.class);
+        /*Intent intent = new Intent(getActivity(), TrackDetailsActivity.class);
         intent.putExtra("songId", id);
         intent.putExtra("sectionId", sectionID);
-        startActivity(intent);
+        startActivity(intent);*/
+
+        switch (sectionID){
+            case "Recent Tracks":
+                sendTracksCallback.setTracks(mRecentTracks, id);
+            break;
+            case "Recommended Tracks":
+                sendTracksCallback.setTracks(mRecommendedTracks, id);
+                break;
+        }
     }
 
     @Override
@@ -180,4 +209,6 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
     public void onNoFollowingArtists(Throwable noFollowingArtists) {
 
     }
+
+    //TODO: onUserSelected
 }

@@ -4,7 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.media.AudioManager;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -20,13 +20,17 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
+import com.example.myapplication.controller.music.MusicCallback;
 import com.example.myapplication.controller.music.MusicService;
 import com.example.myapplication.model.Track;
+import com.example.myapplication.restapi.callback.TrackCallback;
 import com.example.myapplication.restapi.manager.TrackManager;
 import com.sackcentury.shinebuttonlib.ShineButton;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class TrackDetailsActivity extends AppCompatActivity {
+public class TrackDetailsActivity extends AppCompatActivity implements MusicCallback, TrackCallback {
 
     private MusicService musicService;
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -38,6 +42,7 @@ public class TrackDetailsActivity extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             musicService = ((MusicService.MusicBinder)service).getService();
+            musicService.setCallback(TrackDetailsActivity.this);
         }
 
         /************************************************************************
@@ -56,7 +61,6 @@ public class TrackDetailsActivity extends AppCompatActivity {
     private static final String LIKED = "LikeIcon";
     private static final String NOT_LIKED = "NotLikedIcon";
 
-    private List<Track> mTracks;
     private TextView tvTitle;
     private ImageView ivThumbnail;
     private TextView tvSongName;
@@ -79,17 +83,16 @@ public class TrackDetailsActivity extends AppCompatActivity {
     private ImageButton btnDownload;
     private ImageButton btnShareSong;
 
-
-    private MediaPlayer mPlayer;
     private int mDuration;
+    private int songID = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song);
 
-        initViews();
         initService();
+        initViews();
 
     }
 
@@ -118,7 +121,7 @@ public class TrackDetailsActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-
+                //TODO: Collapse Sliding Up Panel
             }
         });
         tvTitle = findViewById(R.id.track_header);
@@ -131,18 +134,19 @@ public class TrackDetailsActivity extends AppCompatActivity {
         btnPreviousSong.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                songID = ((songID-1)%(mTracks.size()));
-                songID = songID < 0 ? (mTracks.size()-1):songID;
+                songID = musicService.getCurrentPosition();
+                songID = ((songID-1)%(musicService.getTracks().size()));
+                songID = songID < 0 ? (musicService.getTracks().size()-1):songID;
 
-                updateTrack(mTracks.get(songID));
-                musicService.updateTrack();
+                musicService.updateTrack(-1);
+                musicService.playSong();
             }
         });
         btnBackward = (ImageButton) findViewById(R.id.backwards);
         btnBackward.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                mPlayer.seekTo(mPlayer.getCurrentPosition() - 5000);
+                musicService.seekTo(musicService.getCurrentPosition() - 5000);
             }
         });
         btnPlayStop = (ImageButton) findViewById(R.id.play_stop);
@@ -151,9 +155,13 @@ public class TrackDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 if(btnPlayStop.getTag().equals(PLAY_VIEW)){
+                    btnPlayStop.setImageResource(R.drawable.ic_pause_outline);
+                    btnPlayStop.setTag(STOP_VIEW);
                     musicService.playAudio();
                 }else{
                     musicService.pauseAudio();
+                    btnPlayStop.setImageResource(R.drawable.ic_play_outline);
+                    btnPlayStop.setTag(PLAY_VIEW);
                 }
             }
         });
@@ -161,42 +169,29 @@ public class TrackDetailsActivity extends AppCompatActivity {
         btnForward.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                mPlayer.seekTo(mPlayer.getCurrentPosition() + 5000);
+                musicService.seekTo(musicService.getCurrentPosition() + 5000);
             }
         });
         btnNextSong = (ImageButton) findViewById(R.id.next_song);
         btnNextSong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                songID = ((songID+1)%(mTracks.size()));
-                songID = songID >= mTracks.size() ? 0:songID;
+                songID = musicService.getCurrentPosition();
+                songID = ((songID+1)%(musicService.getTracks().size()));
+                songID = songID >= musicService.getTracks().size() ? 0:songID;
 
-                updateTrack(mTracks.get(songID));
-                musicService.updateTrack();
+
+                musicService.updateTrack(1);
+                musicService.playSong();
             }
         });
-        mPlayer = new MediaPlayer();
-        mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                //Set Seekbar maximum duration
-                mSeekBar.setMax(mPlayer.getDuration());
 
-                mDuration =  mPlayer.getDuration();
-
-                //Set end time of the song
-                tvEndTime.setText(createTimeLabel(mPlayer.getDuration()));
-
-                musicService.playAudio();
-            }
-        });
         mSeekBar = (SeekBar) findViewById(R.id.song_progress);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    mPlayer.seekTo(progress);
+                    musicService.seekTo(progress);
                 }
                 if (mDuration > 0) {
                     System.out.println(mDuration + ": " + progress);
@@ -224,7 +219,7 @@ public class TrackDetailsActivity extends AppCompatActivity {
         btnLikeSong.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-            TrackManager.getInstance(getApplicationContext()).likeTrack(mTracks.get(songID).getId(), TrackDetailsActivity.this);
+            TrackManager.getInstance(getApplicationContext()).likeTrack(musicService.getTracks().get(songID).getId(), TrackDetailsActivity.this);
             }
         });
         btnAddToPlaylist = (ImageButton) findViewById(R.id.add_to_playlist);
@@ -250,31 +245,83 @@ public class TrackDetailsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onMusicPlayerPrepared() {
 
-    
-    public void updateTrack(Track track){
-        tvArtist.setText(track.getUserLogin());
-        tvSongName.setText(track.getName());
+    }
+
+    @Override
+    public void setTracks(ArrayList<Track> playlist, int currentTrack) {
+
+    }
+
+    @Override
+    public void setTrack(Track song) {
+
+    }
+
+    @Override
+    public void updatePlayPauseButton(boolean playing) {
+        if(playing){
+            btnPlayStop.setImageResource(R.drawable.ic_pause_outline);
+            btnPlayStop.setTag(STOP_VIEW);
+        }else{
+            btnPlayStop.setImageResource(R.drawable.ic_play_outline);
+            btnPlayStop.setTag(PLAY_VIEW);
+        }
+    }
+
+    @Override
+    public void updateLikeButton(boolean liked) {
+        if(liked){
+            btnLikeSong.setChecked(true);
+            btnLikeSong.setShapeResource(R.drawable.ic_heart);
+            btnLikeSong.setBtnColor(Color.RED);
+            btnLikeSong.setBtnFillColor(Color.RED);
+            btnLikeSong.setColorFilter(Color.RED);
+            btnLikeSong.setTag(LIKED);
+        }else{
+            btnLikeSong.setChecked(false);
+            btnLikeSong.setShapeResource(R.drawable.ic_heart_outline);
+            btnLikeSong.setColorFilter(Color.WHITE);
+            btnLikeSong.setBtnColor(Color.WHITE);
+            btnLikeSong.setBtnFillColor(Color.WHITE);
+            btnLikeSong.setTag(NOT_LIKED);
+        }
+    }
+
+    @Override
+    public void updateSongTitle(String title) {
+        tvSongName.setText(title);
         tvSongName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         tvSongName.setSelected(true);
+    }
 
-        //TrackManager.getInstance(this).isLiked(mTracks.get(songID).getId(), TrackDetailsActivity.this);
+    @Override
+    public void updateArtist(String artistName) {
+        tvArtist.setText(artistName);
+    }
 
+    @Override
+    public void updateSongImage(String imageURL) {
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(20));
+        requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(30));
         Glide.with(this)
                 .asBitmap()
-                .load(track.getThumbnail())
+                .load(musicService.getTracks().get(songID).getThumbnail())
                 .apply(requestOptions)
                 .into(ivThumbnail);
+    }
 
-        try {
-            mPlayer.reset();
-            mPlayer.setDataSource(track.getUrl());
-            //mediaPlayer.pause();
-            mPlayer.prepare();
-        } catch(Exception e) {
-        }
+    @Override
+    public void updateSeekBar(int currentPosition) {
+        tvStartTime.setText(createTimeLabel(currentPosition));
+        mSeekBar.setProgress(currentPosition);
+    }
+
+    @Override
+    public void updateMaxSeekBar(int currentPosition) {
+        tvEndTime.setText(createTimeLabel(mDuration));
     }
 
     private String createTimeLabel(Integer duration){
@@ -292,4 +339,92 @@ public class TrackDetailsActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onRecentTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoRecentTracksReceived(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onRecommendedTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoRecommendedTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onSpecificTrackReceived(Track track) {
+
+    }
+
+    @Override
+    public void onNoSpecificTrack(Track track) {
+
+    }
+
+    @Override
+    public void onTrackSelected(Integer id, String sectionID) {
+
+    }
+
+    @Override
+    public void onTrackLiked(Track like) {
+        if(like.isLiked()){
+            btnLikeSong.setChecked(true);
+            btnLikeSong.setShapeResource(R.drawable.ic_heart);
+            btnLikeSong.setBtnColor(Color.RED);
+            btnLikeSong.setBtnFillColor(Color.RED);
+            btnLikeSong.setColorFilter(Color.RED);
+            btnLikeSong.setTag(LIKED);
+        }else{
+            btnLikeSong.setChecked(false);
+            btnLikeSong.setShapeResource(R.drawable.ic_heart_outline);
+            btnLikeSong.setColorFilter(Color.WHITE);
+            btnLikeSong.setBtnColor(Color.WHITE);
+            btnLikeSong.setBtnFillColor(Color.WHITE);
+            btnLikeSong.setTag(NOT_LIKED);
+        }
+    }
+
+    @Override
+    public void onLikedTracksReceived(List<Track> likedTracks) {
+
+    }
+
+    @Override
+    public void onNoLikedTracks(Throwable noLikedTracks) {
+
+    }
+
+    @Override
+    public void onArtistTracksReceived(List<Track> artistTracks) {
+
+    }
+
+    @Override
+    public void onNoArtistTracks(Throwable noArtistTracks) {
+
+    }
+
+    @Override
+    public void onFailure(Throwable throwable) {
+
+    }
 }
