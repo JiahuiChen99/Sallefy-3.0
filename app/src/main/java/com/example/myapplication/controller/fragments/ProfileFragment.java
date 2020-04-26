@@ -1,5 +1,6 @@
 package com.example.myapplication.controller.fragments;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.adapters.UserPlaylistAdapter;
+import com.example.myapplication.controller.music.MusicCallback;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.model.User;
@@ -63,6 +65,8 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
     private ArrayList<Playlist> mAlbums;
     private ArrayList<Track> mSongs;
     private Integer playlistID = 0;
+
+    private MusicCallback sendTracksCallback;
 
     @Nullable
     @Override
@@ -134,6 +138,23 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
         updateData();
 
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+
+        try {
+            sendTracksCallback = (MusicCallback) context;
+        }catch (ClassCastException e){
+            System.out.println("Error, class doesn't implement the interface");
+        }
+    }
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        sendTracksCallback = null;
     }
 
     private void updateData(){
@@ -250,7 +271,8 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
 
     @Override
     public void onTrackSelected(Integer id, String sectionID) {
-        //TODO: Music Player when a song is selected
+        //TODO: Discern between Artist Album and Artist Songs!
+        sendTracksCallback.setTracks(mSongs, id);
     }
 
     @Override

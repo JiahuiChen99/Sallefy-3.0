@@ -81,7 +81,6 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
     @Override
     public void onDetach(){
         super.onDetach();
-
         sendTracksCallback = null;
     }
 
@@ -141,11 +140,6 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
 
     @Override
     public void onTrackSelected(Integer id, String sectionID) {
-        /*Intent intent = new Intent(getActivity(), TrackDetailsActivity.class);
-        intent.putExtra("songId", id);
-        intent.putExtra("sectionId", sectionID);
-        startActivity(intent);*/
-
         switch (sectionID){
             case "Recent Tracks":
                 sendTracksCallback.setTracks(mRecentTracks, id);

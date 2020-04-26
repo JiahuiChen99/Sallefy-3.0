@@ -1,5 +1,6 @@
 package com.example.myapplication.controller.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.example.myapplication.controller.adapters.ArtistsAdapter;
 import com.example.myapplication.controller.adapters.LikedPlaylistAdapter;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.callbacks.TrackListCallback;
+import com.example.myapplication.controller.music.MusicCallback;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.model.User;
 import com.example.myapplication.restapi.callback.TrackCallback;
@@ -37,6 +39,8 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
     private ArrayList<Track> mArtistSongsList;
     private RecyclerView msongList;
     private Integer artistID = 0;
+
+    private MusicCallback sendTracksCallback;
 
     public static LibraryFollowingArtistsFragment getInstance(){
         return new LibraryFollowingArtistsFragment();
@@ -67,6 +71,23 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
         getData();
 
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+
+        try {
+            sendTracksCallback = (MusicCallback) context;
+        }catch (ClassCastException e){
+            System.out.println("Error, class doesn't implement the interface");
+        }
+    }
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        sendTracksCallback = null;
     }
 
     private void getData(){
@@ -144,11 +165,7 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
 
     @Override
     public void onTrackSelected(Integer id, String sectionID) {
-        Intent intent = new Intent(getActivity(), TrackDetailsActivity.class);
-        intent.putExtra("songId", id);
-        intent.putExtra("sectionId", "Artists");
-        intent.putExtra("artistID", mFollowingArtists.get(artistID).getLogin());
-        startActivity(intent);
+        sendTracksCallback.setTracks(mArtistSongsList, id);
     }
 
     @Override
