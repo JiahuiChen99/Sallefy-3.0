@@ -14,12 +14,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -110,6 +113,16 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
     private ImageButton btnDownload;
     private ImageButton btnShareSong;
 
+    private ImageView ivHeaderThumbnail;
+    private TextView tvHeaderSongName;
+    private TextView tvHeaderArtist;
+    private ImageButton btnHeaderPlayStop;
+
+    private LinearLayout expandedHeader;
+    private ConstraintLayout shrinkedHeader;
+
+
+
     private int mDuration;
     private int songID = 0;
     private Runnable mRunnable;
@@ -162,11 +175,6 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
         fmFragment = getSupportFragmentManager();
         ftFragment = fmFragment.beginTransaction();
 
-        /*ivThumbnail = (ImageView) findViewById(R.id.song_thumbnail);
-        tvSongName = (TextView) findViewById(R.id.song_title);
-        tvArtist = (TextView) findViewById(R.id.song_author);*/
-
-        //supportPostponeEnterTransition();
 
         bnvMenu = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bnvMenu.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -204,7 +212,7 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
         btnBack.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                //TODO: Collapse Sliding Up Panel
+                mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             }
         });
         tvTitle = findViewById(R.id.track_header);
@@ -316,16 +324,56 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
             }
         });
         mHandler = new Handler();
+
+
+        ivHeaderThumbnail = (ImageView) findViewById(R.id.artist_profile_image);
+        tvHeaderSongName = (TextView) findViewById(R.id.header_song_title);
+        tvHeaderArtist = (TextView) findViewById(R.id.header_song_artist);
+        btnHeaderPlayStop = (ImageButton) findViewById(R.id.header_play_button);
+        btnHeaderPlayStop.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                if(btnPlayStop.getTag().equals(PLAY_VIEW)){
+                    btnPlayStop.setImageResource(R.drawable.ic_pause_outline);
+                    btnPlayStop.setTag(STOP_VIEW);
+                    musicService.playAudio();
+                }else{
+                    musicService.pauseAudio();
+                    btnPlayStop.setImageResource(R.drawable.ic_play_outline);
+                    btnPlayStop.setTag(PLAY_VIEW);
+                }
+            }
+        });
+
+        shrinkedHeader = findViewById(R.id.shrinked_header);
+        shrinkedHeader.setVisibility(View.VISIBLE);
+
+        expandedHeader = findViewById(R.id.linearLayout3);
+        expandedHeader.setVisibility(View.INVISIBLE);
     }
 
     private void configSliding(){
         mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
-        mLayout.setPanelHeight(350);
+        mLayout.setPanelHeight(360);
         mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
                 Log.i("HELLO", "onPanelSlide, offset " + slideOffset);
                 //TODO: IF slideOffset 1 = Change UI
+                if(slideOffset >= 0.2){
+                    shrinkedHeader = findViewById(R.id.shrinked_header);
+                    shrinkedHeader.setVisibility(View.INVISIBLE);
+
+                    expandedHeader = findViewById(R.id.linearLayout3);
+                    expandedHeader.setVisibility(View.VISIBLE);
+                }
+                if(slideOffset == 0){
+                    shrinkedHeader = findViewById(R.id.shrinked_header);
+                    shrinkedHeader.setVisibility(View.VISIBLE);
+
+                    expandedHeader = findViewById(R.id.linearLayout3);
+                    expandedHeader.setVisibility(View.INVISIBLE);
+                }
             }
 
             @Override
@@ -351,6 +399,17 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
                 .asBitmap()
                 .load(this.url)
                 .into(ivThumbnail);
+
+        tvHeaderSongName.setText(this.songName);
+        tvHeaderSongName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        tvHeaderSongName.setSelected(true);
+
+        tvHeaderArtist.setText(this.artistName);
+
+        Glide.with(this)
+                .asBitmap()
+                .load(this.url)
+                .into(ivHeaderThumbnail);
     }
 
     private void setInicialFragment() {
@@ -384,9 +443,13 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
         if(playing){
             btnPlayStop.setImageResource(R.drawable.ic_pause_outline);
             btnPlayStop.setTag(STOP_VIEW);
+
+            btnHeaderPlayStop.setImageResource(R.drawable.ic_pause_outline);
         }else{
             btnPlayStop.setImageResource(R.drawable.ic_play_outline);
             btnPlayStop.setTag(PLAY_VIEW);
+
+            btnHeaderPlayStop.setImageResource(R.drawable.ic_play_outline);
         }
     }
 
@@ -414,11 +477,17 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
         tvSongName.setText(title);
         tvSongName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         tvSongName.setSelected(true);
+
+        tvHeaderSongName.setText(title);
+        tvHeaderSongName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        tvHeaderSongName.setSelected(true);
     }
 
     @Override
     public void updateArtist(String artistName) {
         tvArtist.setText(artistName);
+
+        tvHeaderArtist.setText(artistName);
     }
 
     @Override
@@ -430,6 +499,12 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
                 .load(imageURL)
                 .apply(requestOptions)
                 .into(ivThumbnail);
+
+        Glide.with(this)
+                .asBitmap()
+                .load(imageURL)
+                .into(ivHeaderThumbnail);
+
     }
 
     @Override
