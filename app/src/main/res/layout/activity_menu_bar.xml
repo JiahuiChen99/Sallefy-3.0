@@ -52,5 +52,6 @@
         app:itemIconTint="@drawable/bottom_navigation_selector"
         app:itemTextColor="@drawable/bottom_navigation_selector"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/menu_inferior" />
+        app:menu="@menu/menu_inferior"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

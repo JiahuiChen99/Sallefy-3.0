@@ -364,6 +364,7 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
                     shrinkedHeader = findViewById(R.id.shrinked_header);
                     shrinkedHeader.setVisibility(View.INVISIBLE);
 
+                    bnvMenu.setVisibility(View.GONE);
                     expandedHeader = findViewById(R.id.linearLayout3);
                     expandedHeader.setVisibility(View.VISIBLE);
                 }
@@ -371,6 +372,7 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
                     shrinkedHeader = findViewById(R.id.shrinked_header);
                     shrinkedHeader.setVisibility(View.VISIBLE);
 
+                    bnvMenu.setVisibility(View.VISIBLE);
                     expandedHeader = findViewById(R.id.linearLayout3);
                     expandedHeader.setVisibility(View.INVISIBLE);
                 }
