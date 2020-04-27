@@ -3,6 +3,9 @@ package com.example.myapplication.controller.fragments;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -10,6 +13,7 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
@@ -20,17 +24,21 @@ import com.gigamole.navigationtabstrip.NavigationTabStrip;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.JarOutputStream;
 
 public class SearchFragment extends Fragment {
 
     private EditText songId;
     private Button search;
-    private String input = null;
+    private String input = "";
     private List<Fragment> fragments = new ArrayList<>();
 
     private NavigationTabStrip navigationTabStrip;
     private ViewPager mPager;
     private SearchAdapter adapter;
+    SearchSongsFragment adapter2;
+
+    private SearchView searchView;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_search, container, false);
@@ -38,32 +46,87 @@ public class SearchFragment extends Fragment {
         navigationTabStrip = (NavigationTabStrip) view.findViewById(R.id.search_tabs);
         mPager = (ViewPager) view.findViewById(R.id.view_pager);
 
-        songId = view.findViewById(R.id.searching_bar);
-        search = view.findViewById(R.id.search_button_window);
+        searchView = view.findViewById(R.id.search);
+
+        //songId = view.findViewById(R.id.searching_bar);
+        //search = view.findViewById(R.id.search_button_window);
 
         init(input);
-        uploadFragments();
+        //uploadFragments();
 
-        search.setOnClickListener(new View.OnClickListener() {
+        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                switch (position) {
+                    case (0):
+
+                        break;
+                    case (1):
+
+                        break;
+                    case (2):
+
+                        break;
+                    case (3):
+
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case (0):
+                        System.out.println();
+                        break;
+                    case (1):
+                        System.out.println();
+                        break;
+                    case (2):
+                        System.out.println();
+                        break;
+                    case (3):
+                        System.out.println();
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                input = query;
+                adapter.getFilter().filter(query);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.equals("")) {
+                    input = "";
+                    adapter.getFilter().filter(newText);
+                }
+                return false;
+            }
+        });
+
+        /*search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 input = songId.getText().toString();
                 uploadFragments();
 
             }
-        });
+        });*/
 
         return view;
-    }
-
-    private void uploadFragments() {
-        fragments.clear();
-        fragments.add(SearchSongsFragment.getInstance(input));
-        fragments.add(SearchGenreFragment.getInstance(input));
-        fragments.add(SearchArtistFragment.getInstance(input));
-        fragments.add(SearchPlaylistsFragment.getInstance(input));
-        adapter.setInput(input);
-        adapter.setFragmentList1(fragments);
     }
 
     private void init(String input) {
@@ -81,7 +144,8 @@ public class SearchFragment extends Fragment {
         navigationTabStrip.setAnimationDuration(300);
         navigationTabStrip.setInactiveColor(Color.GRAY);
         navigationTabStrip.setActiveColor(Color.WHITE);
-
     }
+
+
 
 }

@@ -1,6 +1,8 @@
 package com.example.myapplication.controller.adapters;
 
 import android.content.Context;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
@@ -24,7 +26,7 @@ import java.util.List;
 
 
 
-public class SearchAdapter extends FragmentStatePagerAdapter {
+public class SearchAdapter extends FragmentStatePagerAdapter implements Filterable {
 
     private String input;
     private Integer index;
@@ -33,15 +35,13 @@ public class SearchAdapter extends FragmentStatePagerAdapter {
     public SearchAdapter (FragmentManager manager, String input) {
         super(manager);
         this.input = input;
-
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
         index = position;
-        return fragmentList.get(position);
-        /*switch (position) {
+        switch (position) {
             case 0:
                 return SearchSongsFragment.getInstance(input);
             case 1:
@@ -51,16 +51,19 @@ public class SearchAdapter extends FragmentStatePagerAdapter {
             case 3:
                 return SearchPlaylistsFragment.getInstance(input);
         }
-        return null;*/
+        return null;
     }
+
+
 
     @Override
     public int getCount() {
-        return fragmentList.size();
+        return 4;
     }
 
     public void setInput (String input) {
         this.input = input;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -68,10 +71,43 @@ public class SearchAdapter extends FragmentStatePagerAdapter {
         return super.getItemPosition(object);
     }
 
-    public void setFragmentList1 (List<Fragment> fragments) {
-        fragmentList = fragments;
-        notifyDataSetChanged();
+    @Override
+    public Filter getFilter() {
+        return exampleFilter;
     }
+
+    private Filter exampleFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            //List<ExampleItem> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.equals("") || constraint.length() == 0) {
+                setInput("");
+                //filteredList.addAll(exampleListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                setInput(filterPattern);
+
+                /*for (ExampleItem item : exampleListFull) {
+                    if (item.getText1().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }*/
+            }
+
+            FilterResults results = new FilterResults();
+            //results.values = filteredList;
+            notifyDataSetChanged();
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            //exampleList.clear();
+            //exampleList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }
 
 

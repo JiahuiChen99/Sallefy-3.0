@@ -7,4 +7,6 @@ import java.util.List;
 public interface GenreCallback extends FailureCallback {
     void onGenreReceived(List<EssencialGenre> essencial);
     void onNoGenre(Throwable throwable);
+
+    void onGenreSelected(Integer id, String sectionID);
 }

@@ -23,6 +23,7 @@ import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.TrackCallback;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.ViewHolder> {
 
@@ -50,9 +51,9 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         return vh;
     }
 
+    @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called. viewHolder hashcode: " + holder.hashCode());
-
 
         if (mTracks.size()>0) {
             holder.mLayout.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +104,12 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
 
     public void updateTrackLikeStateIcon(int position, boolean isLiked) {
         mTracks.get(position).setLiked(isLiked);
+        notifyDataSetChanged();
+    }
+
+    public void updateTracks (List<Track> tracks) {
+        mTracks.clear();
+        mTracks.addAll(tracks);
         notifyDataSetChanged();
     }
 

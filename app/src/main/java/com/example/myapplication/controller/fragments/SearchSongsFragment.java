@@ -29,7 +29,8 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
 
     private ArrayList<Track> tracks;
     private RecyclerView msongListRecyclerView;
-    private SearchSongsFragment instance;
+    private static SearchSongsFragment instance;
+    private TrackListAdapter adapter;
     private Boolean mode;
 
     public Boolean getMode() {
@@ -47,7 +48,12 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
     }
 
     public static SearchSongsFragment getInstance(String input){
-        return new SearchSongsFragment(input);
+        if (instance == null){
+            return new SearchSongsFragment(input);
+        } else {
+            return instance;
+        }
+
     }
 
     @Nullable
@@ -89,7 +95,15 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
     @Override
     public void onTracksReceived(List<Track> tracks) {
         this.tracks = (ArrayList)tracks;
-        TrackListAdapter adapter = new TrackListAdapter(this, getContext(), this.tracks);
+        adapter = new TrackListAdapter(this, getContext(), this.tracks);
+        msongListRecyclerView.setAdapter(adapter);
+
+    }
+
+    @Override
+    public void onInfoReceived(SearchResult output) {
+        this.tracks = (ArrayList)output.getTracks();
+        adapter = new TrackListAdapter(this, getContext(), this.tracks);
         msongListRecyclerView.setAdapter(adapter);
     }
 
@@ -163,13 +177,6 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
     @Override
     public void onFailure(Throwable throwable) {
 
-    }
-
-    @Override
-    public void onInfoReceived(SearchResult output) {
-        this.tracks = (ArrayList)output.getTracks();
-        TrackListAdapter adapter = new TrackListAdapter(this, getContext(), this.tracks);
-        msongListRecyclerView.setAdapter(adapter);
     }
 
     @Override

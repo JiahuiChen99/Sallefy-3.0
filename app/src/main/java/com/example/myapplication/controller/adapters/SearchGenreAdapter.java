@@ -30,7 +30,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchGenreAdapter extends RecyclerView.Adapter<SearchGenreAdapter.ViewHolder> implements GenreCallback, TrackCallback {
+public class SearchGenreAdapter extends RecyclerView.Adapter<SearchGenreAdapter.ViewHolder> implements TrackCallback {
 
     public static final String TAG = "User Playlists";
     private ArrayList<SearchGenre> genres;
@@ -42,6 +42,68 @@ public class SearchGenreAdapter extends RecyclerView.Adapter<SearchGenreAdapter.
 
     public Context getActivity() {
         return activity;
+    }
+    private int NUM_VIEWHOLDERS = 0;
+
+    public SearchGenreAdapter(Context context, ArrayList<SearchGenre> genres, Activity activity, GenreCallback callback){
+        this.callback = callback;
+        this.mContext = context;
+        this.genres = genres;
+        this.activity = activity;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvGenreName;
+        LinearLayout mLayout;
+
+        public ViewHolder(@NonNull View itemView){
+            super(itemView);
+            mLayout = itemView.findViewById(R.id.item_genre);
+            tvGenreName = (TextView) itemView.findViewById(R.id.textView_genre);
+        }
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder: called. Num viewHolders: " + NUM_VIEWHOLDERS);
+
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_genres, parent, false);
+        msongListRecyclerView = (RecyclerView) itemView.findViewById(R.id.genres_songs);
+        LinearLayoutManager songsListManager = new LinearLayoutManager(getmContext(), LinearLayoutManager.VERTICAL, false);
+        msongListRecyclerView.setLayoutManager(songsListManager);
+        return new ViewHolder(itemView);
+
+    }
+
+    public Context getmContext() {
+        return mContext;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+
+        if (genres.size() > 0) {
+            holder.mLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callback.onGenreSelected(position, TAG);
+                }
+            });
+                holder.tvGenreName.setText(genres.get(position).getGenre());
+                holder.tvGenreName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+                holder.tvGenreName.setSelected(true);
+                List<Track> tracks = genres.get(position).getTracks();
+                //if (genres.get(position).getTracks().get())
+
+                TrackListAdapter adapter = new TrackListAdapter(this, getmContext(), (ArrayList) tracks);
+                msongListRecyclerView.setAdapter(adapter);
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return genres != null ? genres.size():0;
     }
 
     @Override
@@ -114,79 +176,8 @@ public class SearchGenreAdapter extends RecyclerView.Adapter<SearchGenreAdapter.
 
     }
 
-    private int NUM_VIEWHOLDERS = 0;
-
-    public SearchGenreAdapter(Context context, ArrayList<SearchGenre> genres, Activity activity){
-        this.callback = callback;
-        this.mContext = context;
-        this.genres = genres;
-        this.activity = activity;
-    }
-
-    @Override
-    public void onGenreReceived(List<EssencialGenre> essencial) {
-
-    }
-
-    @Override
-    public void onNoGenre(Throwable throwable) {
-
-    }
-
     @Override
     public void onFailure(Throwable throwable) {
 
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvGenreName;
-        LinearLayout mLayout;
-
-        public ViewHolder(@NonNull View itemView){
-            super(itemView);
-            mLayout = itemView.findViewById(R.id.item_genre);
-            tvGenreName = (TextView) itemView.findViewById(R.id.textView_genre);
-        }
-    }
-
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: called. Num viewHolders: " + NUM_VIEWHOLDERS);
-
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_genres, parent, false);
-        msongListRecyclerView = (RecyclerView) itemView.findViewById(R.id.genres_songs);
-        LinearLayoutManager songsListManager = new LinearLayoutManager(getmContext(), LinearLayoutManager.VERTICAL, false);
-        msongListRecyclerView.setLayoutManager(songsListManager);
-        return new ViewHolder(itemView);
-
-    }
-
-    public Context getmContext() {
-        return mContext;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-
-        holder.mLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Clicked: " + genres.get(position).getGenre());
-            }
-        });
-        if (genres.get(position).getId() != null) {
-            holder.tvGenreName.setText(genres.get(position).getGenre());
-            holder.tvGenreName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-            holder.tvGenreName.setSelected(true);
-            List<Track> tracks = genres.get(position).getTracks();
-            TrackListAdapter adapter = new TrackListAdapter(this, getmContext(), (ArrayList) tracks);
-            msongListRecyclerView.setAdapter(adapter);
-        }
-    }
-
-    @Override
-    public int getItemCount() {
-        return genres != null ? genres.size():0;
     }
 }

@@ -74,7 +74,7 @@ public class SearchGenreFragment extends Fragment implements SearchCallback, Tra
 
     private void getData(){
         GenreManager.getInstance(this.getActivity()).getGenre(this);
-        TrackManager.getInstance(this.getActivity()).getAllTracks(this);
+
     }
 
     @Override
@@ -95,7 +95,7 @@ public class SearchGenreFragment extends Fragment implements SearchCallback, Tra
                 }
             }
         }
-        SearchGenreAdapter adapter = new SearchGenreAdapter(getContext(), list, getActivity());
+        SearchGenreAdapter adapter = new SearchGenreAdapter(getContext(), list, getActivity(), this);
         msongListRecyclerView.setAdapter(adapter);
     }
 
@@ -107,7 +107,9 @@ public class SearchGenreFragment extends Fragment implements SearchCallback, Tra
             list.get(i).setGenre(essencial.get(i).getName());
             list.get(i).setId(essencial.get(i).getId());
         }
+        TrackManager.getInstance(this.getActivity()).getAllTracks(this);
     }
+
 
     @Override
     public void onNoTracks(Throwable throwable) {
@@ -190,6 +192,11 @@ public class SearchGenreFragment extends Fragment implements SearchCallback, Tra
 
     @Override
     public void onNoGenre(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onGenreSelected(Integer id, String sectionID) {
 
     }
 }
