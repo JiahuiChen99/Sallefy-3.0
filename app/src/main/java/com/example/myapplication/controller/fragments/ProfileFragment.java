@@ -1,13 +1,16 @@
 package com.example.myapplication.controller.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.controller.activities.UsersListActivity;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.adapters.UserPlaylistAdapter;
 import com.example.myapplication.model.Playlist;
@@ -26,6 +30,7 @@ import com.example.myapplication.model.User;
 import com.example.myapplication.model.UserToken;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
 import com.example.myapplication.restapi.callback.TrackCallback;
+import com.example.myapplication.restapi.callback.UserResourcesCallback;
 import com.example.myapplication.restapi.manager.PlaylistManager;
 import com.example.myapplication.restapi.manager.TrackManager;
 import com.example.myapplication.restapi.manager.UserResourcesManager;
@@ -42,7 +47,7 @@ import java.util.List;
 import recycler.coverflow.CoverFlowLayoutManger;
 import recycler.coverflow.RecyclerCoverFlow;
 
-public class ProfileFragment extends Fragment implements PlaylistCallback, TrackCallback {
+public class ProfileFragment extends Fragment implements PlaylistCallback, TrackCallback, UserResourcesCallback {
 
     private User user;
     private String userName;
@@ -64,11 +69,28 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
     private ArrayList<Track> mSongs;
     private Integer playlistID = 0;
 
+    private LinearLayout followers;
+    private LinearLayout following;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        following = view.findViewById(R.id.linearLayout8);
+        following.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserResourcesManager.getInstance(getContext()).getUserFollowing(ProfileFragment.this);
+            }
+        });
+        followers = view.findViewById(R.id.linearLayout6);
+        followers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserResourcesManager.getInstance(getContext()).getUserFollowers(ProfileFragment.this);
+            }
+        });
         btnMore = view.findViewById(R.id.profile_more_button);
         btnMore.setButtonEnum(ButtonEnum.TextInsideCircle);
         btnMore.setPiecePlaceEnum(PiecePlaceEnum.DOT_3_1);
@@ -204,7 +226,57 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
     }
 
     @Override
+    public void onUsersReceived(List<User> tracks) {
+
+    }
+
+    @Override
+    public void onNoUsers(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowingArtistsReceived(List<User> followingArtists) {
+
+    }
+
+    @Override
+    public void onNoFollowingArtists(Throwable noFollowingArtists) {
+
+    }
+
+    @Override
+    public void onUserFollowingReceived(List<User> followingArtists) {
+        Intent intent = new Intent(getActivity(), UsersListActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("users", (ArrayList<User>) followingArtists);
+        intent.putExtras(bundle);
+        intent.putExtra("type", "following");
+        startActivity(intent);
+    }
+
+    @Override
+    public void onNoUserFollowing(Throwable noFollowingArtists) {
+
+    }
+
+    @Override
+    public void onUserFollowersReceived(List<User> followers) {
+        Intent intent = new Intent(getActivity(), UsersListActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("users", (ArrayList<User>) followers);
+        intent.putExtras(bundle);
+        intent.putExtra("type", "follower");
+        startActivity(intent);
+    }
+
+    @Override
+    public void onNoUserFollowers(Throwable noFollowers) {
 
     }
 
