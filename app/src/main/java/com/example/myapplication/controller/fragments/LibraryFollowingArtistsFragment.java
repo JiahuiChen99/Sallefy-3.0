@@ -103,6 +103,26 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
     }
 
     @Override
+    public void onUserFollowingReceived(List<User> followingArtists) {
+
+    }
+
+    @Override
+    public void onNoUserFollowing(Throwable noFollowingArtists) {
+
+    }
+
+    @Override
+    public void onUserFollowersReceived(List<User> followers) {
+
+    }
+
+    @Override
+    public void onNoUserFollowers(Throwable noFollowers) {
+
+    }
+
+    @Override
     public void onTracksReceived(List<Track> tracks) {
 
     }

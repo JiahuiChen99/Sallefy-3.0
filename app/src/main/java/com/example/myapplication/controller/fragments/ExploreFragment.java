@@ -180,4 +180,24 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
     public void onNoFollowingArtists(Throwable noFollowingArtists) {
 
     }
+
+    @Override
+    public void onUserFollowingReceived(List<User> followingArtists) {
+
+    }
+
+    @Override
+    public void onNoUserFollowing(Throwable noFollowingArtists) {
+
+    }
+
+    @Override
+    public void onUserFollowersReceived(List<User> followers) {
+
+    }
+
+    @Override
+    public void onNoUserFollowers(Throwable noFollowers) {
+
+    }
 }
