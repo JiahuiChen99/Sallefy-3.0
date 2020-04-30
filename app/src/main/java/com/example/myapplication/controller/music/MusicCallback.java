@@ -19,5 +19,5 @@ public interface MusicCallback {
     void updateSongImage(String imageURL);
     void updateSeekBar(int currentPosition);
     void updateMaxSeekBar(int currentPosition);
-
+    void showShrinkedBar(boolean show);
 }

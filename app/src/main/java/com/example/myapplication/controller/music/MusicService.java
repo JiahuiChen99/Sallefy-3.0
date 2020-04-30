@@ -147,6 +147,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     public void updateTrackUI(){
         //callback.updatePlayPauseButton();
+        callback.showShrinkedBar(true);
         callback.updateLikeButton(mTracks.get(currentTrack).isLiked());
         callback.updateSongTitle(mTracks.get(currentTrack).getName());
         callback.updateSongImage(mTracks.get(currentTrack).getThumbnail());

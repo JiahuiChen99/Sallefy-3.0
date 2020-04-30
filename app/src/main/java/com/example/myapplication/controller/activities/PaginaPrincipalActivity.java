@@ -120,6 +120,7 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
 
     private LinearLayout expandedHeader;
     private ConstraintLayout shrinkedHeader;
+    RelativeLayout shrinkedLayout;
 
 
 
@@ -355,6 +356,8 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
     private void configSliding(){
         mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         mLayout.setPanelHeight(360);
+        shrinkedLayout = findViewById(R.id.shrinked_player);
+        //shrinkedLayout.setVisibility(View.INVISIBLE);
         mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
@@ -530,6 +533,13 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
         mDuration = currentPosition;
         mSeekBar.setMax(currentPosition);
         tvEndTime.setText(createTimeLabel(currentPosition));
+    }
+
+    @Override
+    public void showShrinkedBar(boolean show) {
+        if(show){
+            shrinkedLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     private String createTimeLabel(Integer duration){

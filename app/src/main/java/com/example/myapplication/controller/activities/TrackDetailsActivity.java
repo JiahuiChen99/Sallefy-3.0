@@ -324,6 +324,11 @@ public class TrackDetailsActivity extends AppCompatActivity implements MusicCall
         tvEndTime.setText(createTimeLabel(mDuration));
     }
 
+    @Override
+    public void showShrinkedBar(boolean show) {
+
+    }
+
     private String createTimeLabel(Integer duration){
         String timerLabel = "";
         int min = duration / 1000 / 60;
