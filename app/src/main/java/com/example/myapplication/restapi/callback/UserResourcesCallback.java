@@ -11,4 +11,10 @@ public interface UserResourcesCallback {
 
     void onFollowingArtistsReceived(List<User> followingArtists);
     void onNoFollowingArtists(Throwable noFollowingArtists);
+
+    void onUserFollowingReceived(List<User> followingArtists);
+    void onNoUserFollowing(Throwable noFollowingArtists);
+
+    void onUserFollowersReceived(List<User> followers);
+    void onNoUserFollowers(Throwable noFollowers);
 }
