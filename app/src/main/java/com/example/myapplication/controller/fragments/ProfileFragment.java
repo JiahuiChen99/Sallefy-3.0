@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,12 +27,10 @@ import com.example.myapplication.controller.adapters.UserPlaylistAdapter;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.model.User;
-import com.example.myapplication.model.UserToken;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
 import com.example.myapplication.restapi.callback.TrackCallback;
 import com.example.myapplication.restapi.callback.UserResourcesCallback;
 import com.example.myapplication.restapi.manager.PlaylistManager;
-import com.example.myapplication.restapi.manager.TrackManager;
 import com.example.myapplication.restapi.manager.UserResourcesManager;
 import com.example.myapplication.utils.Sesion;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
@@ -49,6 +47,9 @@ import recycler.coverflow.RecyclerCoverFlow;
 
 public class ProfileFragment extends Fragment implements PlaylistCallback, TrackCallback, UserResourcesCallback {
 
+    private static final String FOLLOW = "FollowIcon";
+    private static final String FOLLOWING = "FollowingIcon";
+
     private User user;
     private String userName;
 
@@ -61,6 +62,7 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
     private TextView tvFollowers;
     private TextView tvFollowing;
     private ImageView ivProfileImage;
+    private Button btnFollowUnfollow;
 
     private RecyclerView mArtistSongsRecyclerView;
     private RecyclerCoverFlow mArtistAlbumsRecyclerView;
@@ -125,6 +127,13 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
         tvLanguageKey = view.findViewById(R.id.profile_artist_language);
         tvFollowers = view.findViewById(R.id.profile_artist_num_followers);
         tvFollowing = view.findViewById(R.id.profile_artist_num_following) ;
+        btnFollowUnfollow = view.findViewById(R.id.profile_artist_follow_button);
+        btnFollowUnfollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserResourcesManager.getInstance(getContext()).followUnfollowArtist(user.getLogin(), ProfileFragment.this);
+            }
+        });
 
         mArtistAlbumsRecyclerView = (RecyclerCoverFlow) view.findViewById(R.id.profile_artist_albums);
         CoverFlowLayoutManger artistAlbumsManager = new CoverFlowLayoutManger(false, false, true, (float) 1);
@@ -148,12 +157,13 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
         LinearLayoutManager artistSongsManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mArtistSongsRecyclerView.setLayoutManager(artistSongsManager);
 
-        this.user = Sesion.getInstance(getContext()).getUser();
-        this.userName = Sesion.getInstance(getContext()).getUser().getLogin();
+        Bundle bundle = getArguments();
+
+        this.user = bundle.getParcelable("artist");
+        this.userName = this.user.getLogin();
         System.out.println("UserName: " + this.userName);
 
         getData();
-        updateData();
 
         return view;
     }
@@ -170,9 +180,24 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
         tvLanguageKey.setText(this.user.getLangKey());
         tvFollowers.setText(this.user.getFollowers().toString());
         tvFollowing.setText(this.user.getFollowing().toString());
+
+        //If we are not looking at our profile
+        if(!this.userName.equals(Sesion.getInstance(getContext()).getUser().getLogin())){
+            UserResourcesManager.getInstance(getContext()).checkIfFollowed(user.getLogin(), ProfileFragment.this);
+        }
+    }
+    public void followUnfollow(boolean isFollowing){
+        if(isFollowing){
+            btnFollowUnfollow.setBackgroundResource(R.drawable.ic_following);
+            btnFollowUnfollow.setTag(FOLLOWING);
+        }else{
+            btnFollowUnfollow.setBackgroundResource(R.drawable.ic_follow);
+            btnFollowUnfollow.setTag(FOLLOW);
+        }
     }
 
     private void getData(){
+        UserResourcesManager.getInstance(getContext()).getUser(userName, this);
         PlaylistManager.getInstance(this.getActivity()).getSpecificUserPlaylists(userName,this);
         UserResourcesManager.getInstance(getContext()).getSpecificArtistSongs( userName, this);
 
@@ -241,6 +266,17 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
     }
 
     @Override
+    public void onUserReceived(User user) {
+        this.user = user;
+        updateData();
+    }
+
+    @Override
+    public void onNoUserReceived(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFollowingArtistsReceived(List<User> followingArtists) {
 
     }
@@ -277,6 +313,21 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
 
     @Override
     public void onNoUserFollowers(Throwable noFollowers) {
+
+    }
+
+    @Override
+    public void onUserFollowedUnfollowed(User user) {
+        followUnfollow(user.getFollowed());
+    }
+
+    @Override
+    public void onNoUserFollowedUnfollowed(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onArtistClicked(User clickedArtist) {
 
     }
 
