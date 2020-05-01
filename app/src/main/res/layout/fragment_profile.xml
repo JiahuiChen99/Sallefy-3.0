@@ -291,11 +291,10 @@
 
                     <Button
                         android:id="@+id/profile_artist_follow_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:background="@drawable/boton_follow"
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:background="@drawable/ic_follow"
                         android:fontFamily="sans-serif-light"
-                        android:text="@string/followButton"
                         android:textAlignment="center"
                         android:textColor="@color/colorWhite" />
                 </LinearLayout>
