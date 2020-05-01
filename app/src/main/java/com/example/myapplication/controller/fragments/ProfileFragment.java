@@ -94,6 +94,7 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
             }
         });
         btnMore = view.findViewById(R.id.profile_more_button);
+
         btnMore.setButtonEnum(ButtonEnum.TextInsideCircle);
         btnMore.setPiecePlaceEnum(PiecePlaceEnum.DOT_3_1);
         btnMore.setButtonPlaceEnum(ButtonPlaceEnum.SC_3_1);
@@ -162,6 +163,11 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
         this.user = bundle.getParcelable("artist");
         this.userName = this.user.getLogin();
         System.out.println("UserName: " + this.userName);
+        if(userName.equalsIgnoreCase(Sesion.getInstance(getContext()).getUser().getLogin())){
+            btnMore.setVisibility(View.VISIBLE);
+        }else{
+            btnMore.setVisibility(View.INVISIBLE);
+        }
 
         getData();
 
