@@ -15,9 +15,10 @@
     <string name="register_register_button">Register</string>
 
     <!-- MENU BAR ACTIVITY-->
-    <string name="menu_home">Home</string>
+    <string name="menu_home">Explore</string>
     <string name="menu_search">Search</string>
     <string name="menu_library">Library</string>
+    <string name="menu_account">Profile</string>
 
     <!-- OPTIONS ACTIVITY-->
     <string name="opciones_1">Follow una playlist</string>
@@ -35,10 +36,42 @@
     <!-- SONG -->
     <string name="song_name">Título cancion</string>
     <string name="song_artists">Autor/a</string>
+    <string name="song_duration">00:00</string>
 
     <!-- ADD SONG -->
     <string name="add_song_title">Añadir una cancion</string>
     <string name="add_song_id">Id de la cancion</string>
     <string name="add_song_playlist_id">Id de la playlist</string>
     <string name="add_song_playlist_name">Nombre de la playlist</string>
+
+    <!-- Fragments -->
+    <string name="explore">Explore</string>
+    <string name="search">Search</string>
+    <string name="library">Library</string>
+    <string name="profile">User Profile</string>
+
+    <!-- Explore Fragment -->
+    <string name="recentlyPlayed">Recently Played</string>
+    <string name="recommend">Recommended for you</string>
+    <string name="recommendArtists">Artists you may like</string>
+    <string name="sharedTransition">Shared Element Transition</string>
+
+    <!-- Library Fragment -->
+    <string name="top_artist_songs">Popular songs</string>
+
+    <!-- User Profile Fragment -->
+    <string name="followButton">follow</string>
+    <string name="followers">followers</string>
+    <string name="following">following</string>
+    <string name="userslist">Users list</string>
+
+    <!-- Artist -->
+    <string name="artist_name">Artist name</string>
+    <string name="artist_follows">Followers</string>
+    <string name="artist_playlists">Playlists</string>
+    <string name="artist_songs">Songs</string>
+
+    <!-- Playlist -->
+    <string name="playlist_follows">Followers</string>
+
 </resources>

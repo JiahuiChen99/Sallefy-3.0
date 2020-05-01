@@ -24,7 +24,6 @@ import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
 import com.example.myapplication.restapi.callback.TrackCallback;
 import com.example.myapplication.restapi.manager.PlaylistManager;
-import com.example.myapplication.restapi.manager.TrackManager;
 import com.gauravk.audiovisualizer.visualizer.BarVisualizer;
 
 import java.io.IOException;
@@ -175,13 +174,13 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
     private void playAudio() {
         mPlayer.start();
         updateSeekBar();
-        btnPlayStop.setImageResource(R.drawable.ic_pause);
+        btnPlayStop.setImageResource(R.drawable.ic_pause_outline);
         btnPlayStop.setTag(STOP_VIEW);
     }
 
     private void pauseAudio() {
         mPlayer.pause();
-        btnPlayStop.setImageResource(R.drawable.ic_play);
+        btnPlayStop.setImageResource(R.drawable.ic_play_outline);
         btnPlayStop.setTag(PLAY_VIEW);
     }
 
@@ -251,6 +250,66 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
     }
 
     @Override
+    public void onRecentTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoRecentTracksReceived(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onRecommendedTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoRecommendedTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onSpecificTrackReceived(Track track) {
+
+    }
+
+    @Override
+    public void onNoSpecificTrack(Track track) {
+
+    }
+
+    @Override
+    public void onTrackSelected(Integer id, String sectionID) {
+
+    }
+
+    @Override
+    public void onTrackLiked(Track like) {
+
+    }
+
+    @Override
+    public void onLikedTracksReceived(List<Track> likedTracks) {
+
+    }
+
+    @Override
+    public void onNoLikedTracks(Throwable noLikedTracks) {
+
+    }
+
+    @Override
+    public void onArtistTracksReceived(List<Track> artistTracks) {
+
+    }
+
+    @Override
+    public void onNoArtistTracks(Throwable noArtistTracks) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }
@@ -266,6 +325,26 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
 
     @Override
     public void onPlaylistFailure(Throwable throwable) {}
+
+    @Override
+    public void onUserPlaylistsReceived(List<Playlist> playlists) {
+
+    }
+
+    @Override
+    public void onNoUserPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onUserSpecificLikedPlaylistReceived(Playlist specificPlaylist) {
+
+    }
+
+    @Override
+    public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
+
+    }
 
     @Override
     public void onTrackSelected(Track track) {
