@@ -26,12 +26,16 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
+import com.example.myapplication.model.EssencialGenre;
 import com.example.myapplication.model.Playlist;
+import com.example.myapplication.model.SearchGenre;
 import com.example.myapplication.model.SearchResult;
 import com.example.myapplication.model.Track;
+import com.example.myapplication.restapi.callback.GenreCallback;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
 import com.example.myapplication.restapi.callback.SearchCallback;
 import com.example.myapplication.restapi.callback.TrackCallback;
+import com.example.myapplication.restapi.manager.GenreManager;
 import com.example.myapplication.restapi.manager.PlaylistManager;
 import com.example.myapplication.restapi.manager.SearchManager;
 import com.example.myapplication.restapi.manager.TrackManager;
@@ -90,6 +94,8 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
 
     private Boolean mode;
     private String input;
+
+    private static ArrayList<SearchGenre> list;
 
 
     @Override
@@ -354,8 +360,8 @@ public class TrackDetailsActivity extends AppCompatActivity implements TrackCall
                 } else {
                     SearchManager.getInstance(this).searchSong(input,this);
                 }
-
                 break;
+
         }
     }
 

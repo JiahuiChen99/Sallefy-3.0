@@ -71,6 +71,7 @@
 
     <!-- Genre -->
     <string name="genre_name">Genre name</string>
+    <string name="genre_empty">Genre empty</string>
 
     <!-- Explore Fragment -->
     <string name="recentlyPlayed">Recently Played</string>

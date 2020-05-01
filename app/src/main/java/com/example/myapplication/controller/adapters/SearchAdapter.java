@@ -19,6 +19,8 @@ import com.example.myapplication.controller.fragments.SearchFragment;
 import com.example.myapplication.controller.fragments.SearchGenreFragment;
 import com.example.myapplication.controller.fragments.SearchPlaylistsFragment;
 import com.example.myapplication.controller.fragments.SearchSongsFragment;
+import com.example.myapplication.model.ListItem;
+import com.example.myapplication.model.SearchGenre;
 
 import java.lang.invoke.CallSite;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class SearchAdapter extends FragmentStatePagerAdapter implements Filterab
 
     private String input;
     private Integer index;
+    private ArrayList<SearchGenre> list = new ArrayList<>();
     private List<Fragment> fragmentList = new ArrayList<>();
 
     public SearchAdapter (FragmentManager manager, String input) {
@@ -45,7 +48,10 @@ public class SearchAdapter extends FragmentStatePagerAdapter implements Filterab
             case 0:
                 return SearchSongsFragment.getInstance(input);
             case 1:
-                return SearchGenreFragment.getInstance(input);
+
+                Fragment f = SearchGenreFragment.getInstance(input, list);
+                list = SearchGenreFragment.getList();
+                return f;
             case 2:
                 return SearchArtistFragment.getInstance(input);
             case 3:
@@ -53,8 +59,6 @@ public class SearchAdapter extends FragmentStatePagerAdapter implements Filterab
         }
         return null;
     }
-
-
 
     @Override
     public int getCount() {

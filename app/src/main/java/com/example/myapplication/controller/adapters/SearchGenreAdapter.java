@@ -20,7 +20,11 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
+import com.example.myapplication.model.EmptyItem;
 import com.example.myapplication.model.EssencialGenre;
+import com.example.myapplication.model.EventItem;
+import com.example.myapplication.model.HeaderItem;
+import com.example.myapplication.model.ListItem;
 import com.example.myapplication.model.SearchGenre;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.GenreCallback;
@@ -33,10 +37,11 @@ import java.util.List;
 public class SearchGenreAdapter extends RecyclerView.Adapter<SearchGenreAdapter.ViewHolder> implements TrackCallback {
 
     public static final String TAG = "User Playlists";
-    private ArrayList<SearchGenre> genres;
+    private List<ListItem> items;
     private Context mContext;
     private Context activity;
     private GenreCallback callback;
+    private TrackCallback tCallback;
     private RecyclerView msongListRecyclerView;
     private ArrayList<Track> tracksEmpty = new ArrayList<>(0);
 
@@ -45,21 +50,41 @@ public class SearchGenreAdapter extends RecyclerView.Adapter<SearchGenreAdapter.
     }
     private int NUM_VIEWHOLDERS = 0;
 
-    public SearchGenreAdapter(Context context, ArrayList<SearchGenre> genres, Activity activity, GenreCallback callback){
+    public SearchGenreAdapter(Context context, List<ListItem> items, Activity activity, GenreCallback callback, TrackCallback tCallback){
         this.callback = callback;
         this.mContext = context;
-        this.genres = genres;
+        this.items = items;
         this.activity = activity;
+        this.tCallback = tCallback;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvGenreName;
         LinearLayout mLayout;
 
-        public ViewHolder(@NonNull View itemView){
+        TextView tvGenreEmpty;
+
+        TextView tvTitle;
+        TextView tvAuthor;
+        TextView ivDuration;
+        ImageView ivPicture;
+
+        public ViewHolder(@NonNull View itemView, Integer id){
             super(itemView);
-            mLayout = itemView.findViewById(R.id.item_genre);
-            tvGenreName = (TextView) itemView.findViewById(R.id.textView_genre);
+            if (id == ListItem.TYPE_HEADER) {
+                mLayout = itemView.findViewById(R.id.item_genre);
+                tvGenreName = (TextView) itemView.findViewById(R.id.textView_genre);
+            } else if (id == ListItem.TYPE_EMPTY) {
+                mLayout = itemView.findViewById(R.id.item_genre_empty);
+                tvGenreEmpty = (TextView) itemView.findViewById(R.id.textView_genre_empty);
+            } else {
+                mLayout = itemView.findViewById(R.id.track_item_layout);
+                tvTitle = (TextView) itemView.findViewById(R.id.song_title);
+                tvAuthor = (TextView) itemView.findViewById(R.id.song_author);
+                ivDuration = (TextView) itemView.findViewById(R.id.song_duration);
+                ivPicture = (ImageView) itemView.findViewById(R.id.song_img);
+            }
+
         }
     }
 
@@ -68,11 +93,16 @@ public class SearchGenreAdapter extends RecyclerView.Adapter<SearchGenreAdapter.
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder: called. Num viewHolders: " + NUM_VIEWHOLDERS);
 
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_genres, parent, false);
-        msongListRecyclerView = (RecyclerView) itemView.findViewById(R.id.genres_songs);
-        LinearLayoutManager songsListManager = new LinearLayoutManager(getmContext(), LinearLayoutManager.VERTICAL, false);
-        msongListRecyclerView.setLayoutManager(songsListManager);
-        return new ViewHolder(itemView);
+        if (viewType == ListItem.TYPE_HEADER) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_genres, parent, false);
+            return new ViewHolder(itemView, viewType);
+        } else if (viewType == ListItem.TYPE_EMPTY) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_genres_empty, parent, false);
+            return new ViewHolder(itemView, viewType);
+        } else {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_song, parent, false);
+            return new ViewHolder(itemView, viewType);
+        }
 
     }
 
@@ -83,27 +113,86 @@ public class SearchGenreAdapter extends RecyclerView.Adapter<SearchGenreAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
 
-        if (genres.size() > 0) {
-            holder.mLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    callback.onGenreSelected(position, TAG);
-                }
-            });
-                holder.tvGenreName.setText(genres.get(position).getGenre());
+        int type = getItemViewType(position);
+        if (items.size() > 0) {
+            if (type == ListItem.TYPE_HEADER) {
+                holder.mLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        callback.onGenreSelected(position, TAG);
+                    }
+                });
+                HeaderItem header;
+                header = (HeaderItem) items.get(position);
+                holder.tvGenreName.setText(header.getGenre());
                 holder.tvGenreName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
                 holder.tvGenreName.setSelected(true);
-                List<Track> tracks = genres.get(position).getTracks();
-                //if (genres.get(position).getTracks().get())
+            } else if (type == ListItem.TYPE_EMPTY) {
+                holder.mLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        callback.onGenreSelected(position, TAG);
+                    }
+                });
+                EmptyItem emptyItem;
+                emptyItem = (EmptyItem) items.get(position);
+                holder.tvGenreEmpty.setText(emptyItem.getGenre());
+                holder.tvGenreEmpty.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+                holder.tvGenreEmpty.setSelected(true);
+            } else {
+                holder.mLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tCallback.onTrackSelected(position, TAG);
+                    }
+                });
+                EventItem event;
+                event = (EventItem) items.get(position);
+                holder.tvTitle.setText(event.getTrack().getName());
+                holder.tvTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+                holder.tvTitle.setSelected(true);
+                holder.tvAuthor.setText(event.getTrack().getUserLogin());
+                if (event.getTrack().getDuration() != null) {
+                    holder.ivDuration.setText(createTimeLabel(event.getTrack().getDuration()));
+                }
+                if (event.getTrack().getThumbnail() != null) {
+                    RequestOptions requestOptions = new RequestOptions();
+                    requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(20));
+                    Glide.with(mContext)
+                            .asBitmap()
+                            .placeholder(R.drawable.no_user)
+                            .load(event.getTrack().getThumbnail())
+                            .apply(requestOptions)
+                            .into(holder.ivPicture);
+                }
+            }
 
-                TrackListAdapter adapter = new TrackListAdapter(this, getmContext(), (ArrayList) tracks);
-                msongListRecyclerView.setAdapter(adapter);
         }
+    }
+
+    private String createTimeLabel(Integer duration){
+        String timerLabel = "";
+        duration *= 1000;
+        int min = duration / 1000 / 60;
+        int sec = duration / 1000 % 60;
+
+        timerLabel += min + ":";
+
+        if(sec < 10) timerLabel += "0";
+
+        timerLabel += sec;
+
+        return timerLabel;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return items.get(position).getType();
     }
 
     @Override
     public int getItemCount() {
-        return genres != null ? genres.size():0;
+        return items != null ? items.size():0;
     }
 
     @Override

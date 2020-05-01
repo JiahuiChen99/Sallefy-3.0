@@ -150,7 +150,6 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
         intent.putExtra("playlistID", tracks.get(id).getId());
         intent.putExtra("mode", getMode());
         intent.putExtra("input", getInput());
-        //intent.putExtra("artistID");
         startActivity(intent);
     }
 

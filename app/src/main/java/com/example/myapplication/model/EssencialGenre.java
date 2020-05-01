@@ -1,6 +1,6 @@
 package com.example.myapplication.model;
 
-public class EssencialGenre {
+public class EssencialGenre{
     private Integer id;
     private String name;
 
@@ -21,4 +21,5 @@ public class EssencialGenre {
     public void setName(String name) {
         this.name = name;
     }
+
 }
