@@ -21,6 +21,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.User;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
+import com.example.myapplication.restapi.callback.UserResourcesCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,16 +31,16 @@ public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.
     public static final String TAG = "User Playlists";
     private ArrayList<User> users;
     private Context mContext;
-    private PlaylistCallback callback;
+    private UserResourcesCallback callback;
     private int NUM_VIEWHOLDERS = 0;
 
-    public SearchUsersAdapter(Context context, ArrayList<User> users){
+    public SearchUsersAdapter(Context context, ArrayList<User> users, UserResourcesCallback callback){
         this.callback = callback;
         this.mContext = context;
         this.users = users;
     }
 
-    public SearchUsersAdapter(Context context, User user){
+    public SearchUsersAdapter(Context context, User user, UserResourcesCallback callback){
         this.callback = callback;
         this.mContext = context;
         this.users = new ArrayList<>();
@@ -139,7 +140,7 @@ public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Clicked: " + users.get(position).getLogin());
+                callback.onArtistClicked(users.get(position));
             }
         });
         if (users.get(position).getLogin() != null) {
