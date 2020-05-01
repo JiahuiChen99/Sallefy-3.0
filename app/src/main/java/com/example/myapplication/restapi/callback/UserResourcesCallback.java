@@ -8,6 +8,8 @@ public interface UserResourcesCallback {
     void onUsersReceived(List<User> tracks);
     void onNoUsers(Throwable throwable);
     void onFailure(Throwable throwable);
+    void onUserReceived(User user);
+    void onNoUserReceived(Throwable throwable);
 
     void onFollowingArtistsReceived(List<User> followingArtists);
     void onNoFollowingArtists(Throwable noFollowingArtists);
@@ -17,4 +19,9 @@ public interface UserResourcesCallback {
 
     void onUserFollowersReceived(List<User> followers);
     void onNoUserFollowers(Throwable noFollowers);
+
+    void onUserFollowedUnfollowed(User user);
+    void onNoUserFollowedUnfollowed(Throwable throwable);
+
+    void onArtistClicked(User clickedArtist);
 }
