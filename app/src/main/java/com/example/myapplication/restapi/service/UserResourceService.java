@@ -11,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface UserResourceService {
@@ -27,4 +28,18 @@ public interface UserResourceService {
     @GET("users/{login}/tracks")
     Call<List<Track>> getSpecificArtistSongs(@Path("login") String artistLogin, @Header("Authorization") String token);
 
+    @PUT("users/{login}/follow")
+    Call<User> followUnfollowUser(@Path("login") String artistLogin, @Header("Authorization") String token);
+
+    @GET("users/{login}/follow")
+    Call<User> checkIfFollowed(@Path("login") String artistLogin, @Header("Authorization") String token);
+
+    @GET("users/{login}")
+    Call<User> getUser(@Path("login") String artistLogin, @Header("Authorization") String token);
+
+    @GET("me/followers")
+    Call<List<User>> getUserFollowers(@Header("Authorization") String token);
+
+    @GET("me/followings")
+    Call<List<User>> getUserFollowing(@Header("Authorization") String token);
 }

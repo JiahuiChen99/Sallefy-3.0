@@ -36,6 +36,8 @@ import com.example.myapplication.controller.fragments.ExploreFragment;
 import com.example.myapplication.controller.fragments.ProfileFragment;
 import com.example.myapplication.controller.fragments.LibraryFragment;
 import com.example.myapplication.controller.fragments.SearchFragment;
+import com.example.myapplication.model.User;
+import com.example.myapplication.utils.Sesion;
 import com.example.myapplication.controller.music.MusicCallback;
 import com.example.myapplication.controller.music.MusicService;
 import com.example.myapplication.model.Track;
@@ -196,7 +198,10 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
                         fragment = new LibraryFragment();
                         break;
                     case R.id.action_profile:
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("artist", Sesion.getInstance(getApplicationContext()).getUser());
                         fragment = new ProfileFragment();
+                        fragment.setArguments(bundle);
                         break;
 
                 }

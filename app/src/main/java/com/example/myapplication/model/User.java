@@ -1,11 +1,14 @@
 package com.example.myapplication.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class User implements Serializable {
+public class User implements Serializable, Parcelable {
 
     @SerializedName("activated")
     private Boolean activated;
@@ -58,10 +61,21 @@ public class User implements Serializable {
     @SerializedName("login")
     private String login;
 
+    @SerializedName("followed")
+    private Boolean followed;
+
+    public Boolean getFollowed() {
+        return followed;
+    }
+
+    public void setFollowed(Boolean followed) {
+        this.followed = followed;
+    }
+
     public User() {
     }
 
-    public User(Boolean activated, List<String> authorities, String createdBy, String createdDate, String email, String firstName, Integer id, String imageUrl, String langKey, String lastModifiedBy, String lastModifiedDate, String lastName, Integer playlists, Integer tracks, Integer followers, Integer following, String login) {
+    public User(Boolean activated, List<String> authorities, String createdBy, String createdDate, String email, String firstName, Integer id, String imageUrl, String langKey, String lastModifiedBy, String lastModifiedDate, String lastName, Integer playlists, Integer tracks, Integer followers, Integer following, String login, Boolean followed) {
         this.activated = activated;
         this.authorities = authorities;
         this.createdBy = createdBy;
@@ -79,7 +93,66 @@ public class User implements Serializable {
         this.followers = followers;
         this.following = following;
         this.login = login;
+        this.followed = followed;
     }
+
+    protected User(Parcel in) {
+        byte tmpActivated = in.readByte();
+        activated = tmpActivated == 0 ? null : tmpActivated == 1;
+        authorities = in.createStringArrayList();
+        createdBy = in.readString();
+        createdDate = in.readString();
+        email = in.readString();
+        firstName = in.readString();
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
+        imageUrl = in.readString();
+        langKey = in.readString();
+        lastModifiedBy = in.readString();
+        lastModifiedDate = in.readString();
+        lastName = in.readString();
+        if (in.readByte() == 0) {
+            playlists = null;
+        } else {
+            playlists = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            tracks = null;
+        } else {
+            tracks = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            followers = null;
+        } else {
+            followers = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            following = null;
+        } else {
+            following = in.readInt();
+        }
+        login = in.readString();
+        if(in.readByte() == 0){
+            followed = null;
+        }else{
+            followed = in.readBoolean();
+        }
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public Boolean getActivated() {
         return activated;
@@ -215,5 +288,61 @@ public class User implements Serializable {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (activated == null ? 0 : activated ? 1 : 2));
+        dest.writeStringList(authorities);
+        dest.writeString(createdBy);
+        dest.writeString(createdDate);
+        dest.writeString(email);
+        dest.writeString(firstName);
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(id);
+        }
+        dest.writeString(imageUrl);
+        dest.writeString(langKey);
+        dest.writeString(lastModifiedBy);
+        dest.writeString(lastModifiedDate);
+        dest.writeString(lastName);
+        if (playlists == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(playlists);
+        }
+        if (tracks == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(tracks);
+        }
+        if (followers == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(followers);
+        }
+        if (following == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(following);
+        }
+        dest.writeString(login);
+        if(followed == null){
+            dest.writeByte((byte) 0);
+        }else{
+            dest.writeBoolean(followed);
+        }
     }
 }
