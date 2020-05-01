@@ -197,4 +197,78 @@ public class UserResourcesManager {
         });
     }
 
+    public synchronized void followUnfollowArtist(String artistLogin, final UserResourcesCallback userResourcesCallback) {
+        UserToken userToken = Sesion.getInstance(mContext).getUserToken();
+
+        Call<User> call = mUserResourceService.followUnfollowUser( artistLogin,"Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                int code = response.code();
+
+                if (response.isSuccessful()) {
+                    userResourcesCallback.onUserFollowedUnfollowed(response.body());
+                } else {
+                    Log.d(TAG, "Error Not Successful: " + code);
+                    userResourcesCallback.onNoUserFollowedUnfollowed(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d(TAG, "Error Failure: " + t.getStackTrace());
+                userResourcesCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+    }
+
+    public synchronized void checkIfFollowed(String artistLogin, final UserResourcesCallback userResourcesCallback) {
+        UserToken userToken = Sesion.getInstance(mContext).getUserToken();
+
+        Call<User> call = mUserResourceService.checkIfFollowed( artistLogin,"Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                int code = response.code();
+
+                if (response.isSuccessful()) {
+                    userResourcesCallback.onUserFollowedUnfollowed(response.body());
+                } else {
+                    Log.d(TAG, "Error Not Successful: " + code);
+                    userResourcesCallback.onNoUserFollowedUnfollowed(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d(TAG, "Error Failure: " + t.getStackTrace());
+                userResourcesCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+    }
+
+    public synchronized void getUser(String artistLogin, final UserResourcesCallback userResourcesCallback) {
+        UserToken userToken = Sesion.getInstance(mContext).getUserToken();
+
+        Call<User> call = mUserResourceService.getUser( artistLogin,"Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                int code = response.code();
+
+                if (response.isSuccessful()) {
+                    userResourcesCallback.onUserReceived(response.body());
+                } else {
+                    Log.d(TAG, "Error Not Successful: " + code);
+                    userResourcesCallback.onNoUserReceived(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d(TAG, "Error Failure: " + t.getStackTrace());
+                userResourcesCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+    }
 }

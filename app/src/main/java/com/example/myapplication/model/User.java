@@ -61,10 +61,21 @@ public class User implements Serializable, Parcelable {
     @SerializedName("login")
     private String login;
 
+    @SerializedName("followed")
+    private Boolean followed;
+
+    public Boolean getFollowed() {
+        return followed;
+    }
+
+    public void setFollowed(Boolean followed) {
+        this.followed = followed;
+    }
+
     public User() {
     }
 
-    public User(Boolean activated, List<String> authorities, String createdBy, String createdDate, String email, String firstName, Integer id, String imageUrl, String langKey, String lastModifiedBy, String lastModifiedDate, String lastName, Integer playlists, Integer tracks, Integer followers, Integer following, String login) {
+    public User(Boolean activated, List<String> authorities, String createdBy, String createdDate, String email, String firstName, Integer id, String imageUrl, String langKey, String lastModifiedBy, String lastModifiedDate, String lastName, Integer playlists, Integer tracks, Integer followers, Integer following, String login, Boolean followed) {
         this.activated = activated;
         this.authorities = authorities;
         this.createdBy = createdBy;
@@ -82,6 +93,7 @@ public class User implements Serializable, Parcelable {
         this.followers = followers;
         this.following = following;
         this.login = login;
+        this.followed = followed;
     }
 
     protected User(Parcel in) {
@@ -123,6 +135,11 @@ public class User implements Serializable, Parcelable {
             following = in.readInt();
         }
         login = in.readString();
+        if(in.readByte() == 0){
+            followed = null;
+        }else{
+            followed = in.readBoolean();
+        }
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -322,5 +339,10 @@ public class User implements Serializable, Parcelable {
             dest.writeInt(following);
         }
         dest.writeString(login);
+        if(followed == null){
+            dest.writeByte((byte) 0);
+        }else{
+            dest.writeBoolean(followed);
+        }
     }
 }
