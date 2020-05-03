@@ -107,7 +107,7 @@ public class SearchGenreFragment extends Fragment implements SearchCallback, Tra
         msongListRecyclerView.setAdapter(adapter);
     }
 
-    private void getData(){
+    public void getData(){
         GenreManager.getInstance(this.getActivity()).getGenre(this);
 
     }

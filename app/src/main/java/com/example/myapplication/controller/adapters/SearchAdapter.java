@@ -47,19 +47,18 @@ public class SearchAdapter extends FragmentStatePagerAdapter implements Filterab
         index = position;
         switch (position) {
             case 0:
-                currentFragment = SearchSongsFragment.getInstance(input);
-                return currentFragment;
+                fragmentList.add(0, SearchSongsFragment.getInstance(input));
+                return fragmentList.get(0);
             case 1:
-
-                currentFragment = SearchGenreFragment.getInstance(input, list);
+                fragmentList.add(1, SearchGenreFragment.getInstance(input, list));
                 list = SearchGenreFragment.getList();
-                return currentFragment;
+                return fragmentList.get(1);
             case 2:
-                currentFragment = SearchArtistFragment.getInstance(input);
-                return currentFragment;
+                fragmentList.add(2,SearchArtistFragment.getInstance(input));
+                return fragmentList.get(2);
             case 3:
-                currentFragment = SearchPlaylistsFragment.getInstance(input);
-                return currentFragment;
+                fragmentList.add(3, SearchPlaylistsFragment.getInstance(input));
+                return fragmentList.get(3);
         }
         return null;
     }
@@ -72,9 +71,36 @@ public class SearchAdapter extends FragmentStatePagerAdapter implements Filterab
     public void setInput (String input, int currentItem) {
         this.input = input;
 
-        currentFragment = getItem(currentItem);
-        if(currentFragment instanceof SearchSongsFragment){
-          ((SearchSongsFragment) currentFragment).updateSongs(input);
+        currentFragment = fragmentList.get(currentItem);
+        switch (currentItem){
+            case 0:
+                if(input.equalsIgnoreCase("")){
+                    ((SearchSongsFragment) currentFragment).getData();
+                }else{
+                    ((SearchSongsFragment) currentFragment).updateSongs(input);
+                }
+                break;
+            case 1:
+                if(input.equalsIgnoreCase("")){
+                    ((SearchGenreFragment) currentFragment).getData();
+                }else{
+                    ((SearchGenreFragment) currentFragment).updateSongs(input);
+                }
+                break;
+            case 2:
+                if(input.equalsIgnoreCase("")){
+                    ((SearchArtistFragment) currentFragment).getData();
+                }else{
+                    ((SearchArtistFragment) currentFragment).updateSongs(input);
+                }
+                break;
+            case 3:
+                if(input.equalsIgnoreCase("")){
+                    ((SearchPlaylistsFragment) currentFragment).getData();
+                }else{
+                    ((SearchPlaylistsFragment) currentFragment).updateSongs(input);
+                }
+                break;
         }
 
 

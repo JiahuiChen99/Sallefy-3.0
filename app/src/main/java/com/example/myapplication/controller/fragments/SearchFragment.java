@@ -69,43 +69,17 @@ public class SearchFragment extends Fragment {
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                switch (position) {
-                    case (0):
-
-                        break;
-                    case (1):
-
-                        break;
-                    case (2):
-
-                        break;
-                    case (3):
-
-                        break;
-                }
             }
 
             @Override
             public void onPageSelected(int position) {
-                switch (position) {
-                    case (0):
-                        System.out.println();
-                        break;
-                    case (1):
-                        System.out.println();
-                        break;
-                    case (2):
-                        System.out.println();
-                        break;
-                    case (3):
-                        System.out.println();
-                        break;
-                }
+
             }
+
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+                adapter.setInput(input, mPager.getCurrentItem());
             }
         });
 
@@ -126,7 +100,7 @@ public class SearchFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 if (newText.equals("")) {
                     input = "";
-                    //adapter.getFilter().filter(newText);
+                    adapter.setInput(input, mPager.getCurrentItem());
                 }
                 return false;
             }
@@ -145,12 +119,9 @@ public class SearchFragment extends Fragment {
     }
 
     private void init(String input) {
-        if(SearchSongsFragment.getInstance("") != null){
-            SearchSongsFragment.getInstance("").resetInstance();
-        }
         adapter = new SearchAdapter(this.getFragmentManager(), input);
         mPager.setAdapter(adapter);
-        mPager.setOffscreenPageLimit(0);
+        mPager.setOffscreenPageLimit(4);
         navigationTabStrip.setViewPager(mPager);
         navigationTabStrip.setTitles("Songs", "Genre", "Artists", "Playlists");
         navigationTabStrip.setTitleSize(30);

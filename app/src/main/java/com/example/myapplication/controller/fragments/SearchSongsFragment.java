@@ -29,7 +29,6 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
 
     private ArrayList<Track> tracks;
     private RecyclerView msongListRecyclerView;
-    private static SearchSongsFragment instance;
     private TrackListAdapter adapter;
     private Boolean mode;
 
@@ -48,13 +47,7 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
     }
 
     public static SearchSongsFragment getInstance(String input){
-        if (instance == null){
-            instance = new SearchSongsFragment(input);
-            return instance;
-        } else {
-            return instance;
-        }
-
+        return new SearchSongsFragment(input);
     }
 
     @Nullable
@@ -79,28 +72,6 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
         return v;
     }
 
-    @Override
-    public void onDestroy() {
-        instance = null;
-        super.onDestroy();
-    }
-
-    @Override
-    public void onPause() {
-        instance = null;
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        instance = null;
-        super.onStop();
-    }
-
-    public void resetInstance(){
-        instance = null;
-    }
-
     public void updateSongs(String input) {
         System.out.println(input);
         SearchManager.getInstance(this.getActivity()).searchSong(input,this);
@@ -110,7 +81,7 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
         SearchManager.getInstance(this.getActivity()).searchSong(this.input,this);
     }
 
-    private void getData(){
+    public void getData(){
         TrackManager.getInstance(this.getActivity()).getAllTracks(this);
     }
 

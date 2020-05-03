@@ -76,8 +76,7 @@ public class SearchPlaylistsFragment extends Fragment implements SearchCallback,
         SearchManager.getInstance(this.getActivity()).searchSong(input,this);
     }
 
-    private void getData(){
-
+    public void getData(){
         PlaylistManager.getInstance(this.getActivity()).getAllPlaylists("0", this);
     }
 

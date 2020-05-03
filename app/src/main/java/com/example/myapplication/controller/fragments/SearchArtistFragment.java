@@ -73,7 +73,7 @@ public class SearchArtistFragment extends Fragment implements SearchCallback, Us
         UserResourcesManager.getInstance(this.getActivity()).getSpecificUser(input,this);
     }
 
-    private void getData(){
+    public void getData(){
         UserResourcesManager.getInstance(this.getActivity()).getUsers(this);
     }
 
