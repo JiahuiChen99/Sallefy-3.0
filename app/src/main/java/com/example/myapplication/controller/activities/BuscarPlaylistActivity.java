@@ -43,15 +43,15 @@ public class BuscarPlaylistActivity extends AppCompatActivity implements Playlis
     }
 
     private void getData(Integer num) {
-        PlaylistManager.getInstance(this).seePlaylists(num,this);
+        /*PlaylistManager.getInstance(this).seePlaylists(num,this);*/
     }
     private void updateList(String list) {
         tvList.setText(list);
     }
 
     @Override
-    public void onPlaylistReceived(Playlist playlists) {
-
+    public void onPlaylistReceived(List<Playlist> playlists) {
+/*
         if (playlists.getTracks().isEmpty()) {
             Toast.makeText(getApplicationContext(), "No hay canciones en la playlist", Toast.LENGTH_LONG).show();
         }
@@ -59,7 +59,7 @@ public class BuscarPlaylistActivity extends AppCompatActivity implements Playlis
             Intent intent = new Intent(getApplicationContext(), IdPlaylistActivity.class);
             intent.putExtra("playlistId", playlists.getId());
             startActivity(intent);
-        }
+        }*/
     }
 
     @Override

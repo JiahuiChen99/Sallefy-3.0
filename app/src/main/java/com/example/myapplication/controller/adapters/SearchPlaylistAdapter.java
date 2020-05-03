@@ -19,42 +19,28 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
 import com.example.myapplication.model.Playlist;
-import com.example.myapplication.model.User;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
-import com.example.myapplication.restapi.callback.UserResourcesCallback;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.ViewHolder> implements PlaylistCallback {
+public class SearchPlaylistAdapter extends RecyclerView.Adapter<SearchPlaylistAdapter.ViewHolder> implements PlaylistCallback {
 
     public static final String TAG = "User Playlists";
-    private ArrayList<User> users;
+    private ArrayList<Playlist> mPlaylists;
     private Context mContext;
     private PlaylistCallback callback;
     private int NUM_VIEWHOLDERS = 0;
 
-    private UserResourcesCallback callback;
-    private int NUM_VIEWHOLDERS = 0;
-  
-    public SearchUsersAdapter(Context context, ArrayList<User> users, UserResourcesCallback callback){
+    public SearchPlaylistAdapter(Context context, ArrayList<Playlist> playlists){
         this.callback = callback;
         this.mContext = context;
-        this.users = users;
-    }
-
-    public SearchUsersAdapter(Context context, User user, UserResourcesCallback callback){
-
-        this.callback = callback;
-        this.mContext = context;
-        this.users = new ArrayList<>();
-        users.add(user);
+        this.mPlaylists = playlists;
     }
 
     @Override
+    public void onPlaylistReceived(List<Playlist> playlists) {
 
-    public void onPlaylistReceived(Playlist playlists) {
     }
 
     @Override
@@ -100,28 +86,23 @@ public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivThumbnail;
         ImageView ivFollows;
-        ImageView ivPlaylists;
-        ImageView ivSongs;
-        ImageView ivOptions;
+        ImageView ivLikes;
+        TextView tvTrackName;
         TextView tvArtistName;
         TextView tvFollows;
-        TextView tvPlaylists;
         TextView tvSongs;
         LinearLayout mLayout;
 
-
         public ViewHolder(@NonNull View itemView){
             super(itemView);
-            mLayout = itemView.findViewById(R.id.artist_long);
-            ivThumbnail = (ImageView) itemView.findViewById(R.id.artist_img);
-            tvArtistName = (TextView) itemView.findViewById(R.id.artist_title);
-            ivFollows = (ImageView) itemView.findViewById(R.id.artist_follows_img);
-            ivPlaylists = (ImageView) itemView.findViewById(R.id.artist_playlists_img);
-            ivOptions = (ImageView) itemView.findViewById(R.id.artist_options);
-            ivSongs = (ImageView) itemView.findViewById(R.id.artist_songs_img);
-            tvFollows = (TextView) itemView.findViewById(R.id.artist_follows);
-            tvPlaylists = (TextView) itemView.findViewById(R.id.artist_playlists);
-            tvSongs = (TextView) itemView.findViewById(R.id.artist_songs);
+            mLayout = itemView.findViewById(R.id.track_playlist_long_layout);
+            ivThumbnail = (ImageView) itemView.findViewById(R.id.playlist_img);
+            ivFollows = (ImageView) itemView.findViewById(R.id.playlist_follows_img);
+            ivLikes = (ImageView) itemView.findViewById(R.id.playlist_songs_img);
+            tvTrackName = (TextView) itemView.findViewById(R.id.playlist_title);
+            tvArtistName = (TextView) itemView.findViewById(R.id.playlist_author);
+            tvFollows = (TextView) itemView.findViewById(R.id.playlist_follows);
+            tvSongs = (TextView) itemView.findViewById(R.id.playlist_songs);
         }
     }
 
@@ -130,7 +111,7 @@ public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder: called. Num viewHolders: " + NUM_VIEWHOLDERS);
 
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_artist_long, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_playlist_long, parent, false);
 
         return new ViewHolder(itemView);
     }
@@ -138,45 +119,40 @@ public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
 
-        Log.d(TAG, "onBindViewHolder: Called.");
-
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(20));
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Clicked: " + users.get(position).getLogin());
-                callback.onArtistClicked(users.get(position));
+                Log.d(TAG, "Clicked: " + mPlaylists.get(position).getName());
             }
         });
-        if (users.get(position).getLogin() != null) {
+        if (mPlaylists.get(position).getThumbnail() != null) {
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(20));
             Glide.with(mContext)
                     .asBitmap()
-                    .placeholder(R.drawable.no_user)
-                    .load(users.get(position).getImageUrl())
+                    .placeholder(R.drawable.logo)
+                    .load(mPlaylists.get(position).getThumbnail())
                     .apply(requestOptions)
                     .into(holder.ivThumbnail);
-            holder.tvArtistName.setText(users.get(position).getLogin());
+
+            System.out.println(mPlaylists.get(position).getName());
+            holder.tvTrackName.setText(mPlaylists.get(position).getName());
+            holder.tvTrackName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+            holder.tvTrackName.setSelected(true);
+            holder.tvArtistName.setText(mPlaylists.get(position).getUser().getLogin());
             holder.tvArtistName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
             holder.tvArtistName.setSelected(true);
-
-            holder.tvFollows.setText(users.get(position).getFollowers().toString());
+            holder.tvFollows.setText(mPlaylists.get(position).getFollowers().toString());
             holder.tvFollows.setEllipsize(TextUtils.TruncateAt.MARQUEE);
             holder.tvFollows.setSelected(true);
-            holder.tvPlaylists.setText(users.get(position).getPlaylists().toString());
-            holder.tvPlaylists.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-            holder.tvPlaylists.setSelected(true);
-            holder.tvSongs.setText(users.get(position).getTracks().toString());
-
+            holder.tvSongs.setText(String.valueOf(mPlaylists.get(position).getTracks().size()));
             holder.tvSongs.setEllipsize(TextUtils.TruncateAt.MARQUEE);
             holder.tvSongs.setSelected(true);
-
         }
     }
 
     @Override
     public int getItemCount() {
-        return users != null ? users.size():0;
+        return mPlaylists != null ? mPlaylists.size():0;
     }
 }
-

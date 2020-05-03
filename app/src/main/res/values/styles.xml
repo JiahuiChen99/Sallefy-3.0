@@ -37,4 +37,7 @@
         <item name="android:fontFamily">@font/gotham_book</item>
     </style>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+
 </resources>

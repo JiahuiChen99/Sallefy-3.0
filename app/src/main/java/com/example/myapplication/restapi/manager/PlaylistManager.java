@@ -77,13 +77,13 @@ public class PlaylistManager {
         });
     }
 
-    public synchronized void seePlaylists(Integer num, final PlaylistCallback playlistCallback) {
+    public synchronized void getAllPlaylists(String page, final PlaylistCallback playlistCallback) {
         UserToken userToken = Sesion.getInstance(mContext).getUserToken();
 
-        Call<Playlist> call = mService.getAllPlaylist(num, "Bearer " + userToken.getIdToken());
-        call.enqueue(new Callback<Playlist>() {
+        Call<List<Playlist>> call = mService.getAllPlaylist(page,"Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<List<Playlist>>() {
             @Override
-            public void onResponse(Call<Playlist> call, Response<Playlist> response) {
+            public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
                 int code = response.code();
 
                 if (response.isSuccessful()) {
@@ -95,7 +95,7 @@ public class PlaylistManager {
             }
 
             @Override
-            public void onFailure(Call<Playlist> call, Throwable t) {
+            public void onFailure(Call<List<Playlist>> call, Throwable t) {
                 Log.d(TAG, "Error Failure: " + t.getStackTrace());
                 playlistCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
             }

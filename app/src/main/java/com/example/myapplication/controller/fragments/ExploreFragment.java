@@ -34,6 +34,7 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
     private RecyclerView mArtistsRecyclerView;
     private RecyclerView mRecommendedRecyclerView;
     private ArrayList<Track> mRecentTracks;
+
     private ArrayList mArtists;
     private ArrayList<Track> mRecommendedTracks;
 
@@ -67,6 +68,11 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
         return view;
     }
 
+    @Override
+      public void onArtistsReceived(List<User> users) {
+
+    }
+  
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
@@ -181,6 +187,11 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
         mArtists = (ArrayList) artists;
         ArtistsAdapter adapter = new ArtistsAdapter(getContext(), mArtists);
         mArtistsRecyclerView.setAdapter(adapter);
+
+    }
+
+    @Override
+    public void onUserReceived(User user) {
 
     }
 

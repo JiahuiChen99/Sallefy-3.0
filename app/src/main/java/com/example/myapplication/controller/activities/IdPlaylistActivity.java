@@ -227,16 +227,16 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
     }
 
     private void getData(Integer id) {
-        PlaylistManager.getInstance(this).seePlaylists(id,this);
+        //PlaylistManager.getInstance(this).seePlaylists(id,this);
         mTracks = new ArrayList<>();
     }
 
     @Override
-    public void onPlaylistReceived(Playlist playlists) {
-        mTracks = (ArrayList) playlists.getTracks();
+    public void onPlaylistReceived(List<Playlist> playlists) {
+       /* mTracks = (ArrayList) playlists.getTracks();
         TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks);
         tvPlaylist.setText(playlists.getName());
-        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setAdapter(adapter);*/
     }
 
     @Override

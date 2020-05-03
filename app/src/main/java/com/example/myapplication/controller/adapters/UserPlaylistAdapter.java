@@ -43,7 +43,7 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
     }
 
     @Override
-    public void onPlaylistReceived(Playlist playlists) {
+    public void onPlaylistReceived(List<Playlist> playlists) {
 
     }
 
@@ -94,7 +94,7 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);
-            mLayout = itemView.findViewById(R.id.playlist_cover_item_layout);
+            mLayout = itemView.findViewById(R.id.artist_long);
             ivThumbnail = (ImageView) itemView.findViewById(R.id.user_playlist_cover);
             tvTrackName = (TextView) itemView.findViewById(R.id.user_playlist_name);
         }
@@ -131,6 +131,7 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
 
             System.out.println(mPlaylists.get(position).getName());
             holder.tvTrackName.setText(mPlaylists.get(position).getName());
+
         }
     }
 

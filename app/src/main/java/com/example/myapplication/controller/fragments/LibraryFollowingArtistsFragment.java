@@ -101,6 +101,11 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
     }
 
     @Override
+    public void onUserReceived(User user) {
+
+    }
+
+    @Override
     public void onNoUsers(Throwable throwable) {
 
     }
@@ -110,6 +115,11 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
 
     }
 
+    @Override
+    public void onArtistsReceived(List<User> users) {
+    
+    }
+  
     @Override
     public void onUserReceived(User user) {
 

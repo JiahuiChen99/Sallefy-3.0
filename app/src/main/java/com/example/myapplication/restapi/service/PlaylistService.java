@@ -12,13 +12,14 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface PlaylistService {
     @POST("playlists")
     Call<Playlist> createPlaylist(@Body Playlist playlist, @Header("Authorization") String token);
 
-    @GET("playlists/{id}")
-    Call<Playlist> getAllPlaylist(@Path("id") int id, @Header("Authorization") String token);
+    @GET("playlists?")
+    Call<List<Playlist>> getAllPlaylist(@Query("page") String input, @Header("Authorization") String token);
 
     @PUT("playlists")
     Call<Playlist> modifyPlaylist(@Body Playlist playlist, @Header("Authorization") String token);

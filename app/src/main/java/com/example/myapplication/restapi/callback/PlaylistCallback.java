@@ -6,7 +6,7 @@ import com.example.myapplication.model.Playlist;
 import java.util.List;
 
 public interface PlaylistCallback extends FailureCallback{
-    void onPlaylistReceived(Playlist playlists);
+    void onPlaylistReceived(List<Playlist> playlists);
     void onNoPlaylists(Throwable throwable);
     void onPlaylistCreated(Playlist playlist);
     void onPlaylistFailure(Throwable throwable);

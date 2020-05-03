@@ -20,10 +20,24 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
+
+import com.example.myapplication.model.EssencialGenre;
+import com.example.myapplication.model.Playlist;
+import com.example.myapplication.model.SearchGenre;
+import com.example.myapplication.model.SearchResult;
+import com.example.myapplication.model.Track;
+import com.example.myapplication.restapi.callback.GenreCallback;
+import com.example.myapplication.restapi.callback.PlaylistCallback;
+import com.example.myapplication.restapi.callback.SearchCallback;
+import com.example.myapplication.restapi.callback.TrackCallback;
+import com.example.myapplication.restapi.manager.GenreManager;
+import com.example.myapplication.restapi.manager.PlaylistManager;
+import com.example.myapplication.restapi.manager.SearchManager;
 import com.example.myapplication.controller.music.MusicCallback;
 import com.example.myapplication.controller.music.MusicService;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.TrackCallback;
+
 import com.example.myapplication.restapi.manager.TrackManager;
 import com.sackcentury.shinebuttonlib.ShineButton;
 
@@ -35,6 +49,11 @@ public class TrackDetailsActivity extends AppCompatActivity implements MusicCall
     private MusicService musicService;
     private ServiceConnection mConnection = new ServiceConnection() {
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class TrackDetailsActivity extends AppCompatActivity implements TrackCallback, PlaylistCallback, SearchCallback {
         /************************************************************************
          * This is called when the connection with the service has been stablished,
          * giving us the service object we can use to interact with the service
@@ -84,14 +103,36 @@ public class TrackDetailsActivity extends AppCompatActivity implements MusicCall
     private ImageButton btnShareSong;
 
     private int mDuration;
+    private Handler mHandler;
+    private Runnable mRunnable;
+
+    private Integer songID;
+    private String sectionID;
+    private Integer playlistID;
+    private String artistID;
+    private String playlistName;
+
+    private Boolean mode;
+    private String input;
+
+    private static ArrayList<SearchGenre> list;
+
     private int songID = 0;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song);
+        this.songID = getIntent().getIntExtra("songId", 0);
+        this.sectionID = getIntent().getStringExtra("sectionId");
+        this.playlistID = getIntent().getIntExtra("playlistID", 0);
+        this.artistID = getIntent().getStringExtra("artistID");
+        this.mode = getIntent().getBooleanExtra("mode", false);
+        this.input = getIntent().getStringExtra("input");
 
         initService();
+
         initViews();
 
     }
@@ -260,6 +301,36 @@ public class TrackDetailsActivity extends AppCompatActivity implements MusicCall
 
     }
 
+
+    private void getData(String sectionID){
+
+        switch (sectionID){
+            case "Recent Tracks":
+                TrackManager.getInstance(this).getRecentTracks(this);
+                break;
+            case "Recommended Tracks":
+                TrackManager.getInstance(this).getRecommendedTracks(this);
+                break;
+            case "User Liked Playlists":
+            case "User Playlists":
+                PlaylistManager.getInstance(this).getSpecificPlaylist(playlistID, this);
+                break;
+            case "Favourite Songs":
+                TrackManager.getInstance(this).getLikedTracks(this);
+            case "Artists":
+                UserResourcesManager.getInstance(this).getFollowingArtistsTopSongs(artistID, this);
+                break;
+            case "Searched song":
+                if (!mode) {
+                    TrackManager.getInstance(this).getAllTracks(this);
+                } else {
+                    SearchManager.getInstance(this).searchSong(input,this);
+                }
+                break;
+            
+    }
+
+
     @Override
     public void updatePlayPauseButton(boolean playing) {
         if(playing){
@@ -268,6 +339,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements MusicCall
         }else{
             btnPlayStop.setImageResource(R.drawable.ic_play_outline);
             btnPlayStop.setTag(PLAY_VIEW);
+
         }
     }
 
@@ -346,7 +418,7 @@ public class TrackDetailsActivity extends AppCompatActivity implements MusicCall
 
     @Override
     public void onTracksReceived(List<Track> tracks) {
-
+        updateData(tracks);
     }
 
     @Override
@@ -430,6 +502,57 @@ public class TrackDetailsActivity extends AppCompatActivity implements MusicCall
 
     @Override
     public void onFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistReceived(List<Playlist> playlists) {
+
+    }
+
+    @Override
+    public void onNoPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistCreated(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onUserPlaylistsReceived(List<Playlist> playlists) {
+
+    }
+
+    @Override
+    public void onNoUserPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onUserSpecificLikedPlaylistReceived(Playlist specificPlaylist) {
+        this.playlistName = specificPlaylist.getName();
+        updateData(specificPlaylist.getTracks());
+    }
+
+    @Override
+    public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onInfoReceived(SearchResult output) {
+        updateData((ArrayList)output.getTracks());
+    }
+
+    @Override
+    public void onNoInfo(Throwable throwable) {
 
     }
 }

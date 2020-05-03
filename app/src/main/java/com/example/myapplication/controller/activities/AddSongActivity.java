@@ -46,12 +46,12 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
     }
 
     private void getData(Integer idPlaylist) {
-        PlaylistManager.getInstance(this).seePlaylists(idPlaylist,this);
+        //PlaylistManager.getInstance(this).seePlaylists(idPlaylist,this);
     }
 
     @Override
-    public void onPlaylistReceived(Playlist playlist) {
-        if (playlist.getUser().getLogin().equals(Sesion.getInstance(this).getUser().getLogin())) {
+    public void onPlaylistReceived(List<Playlist> playlist) {
+        /*if (playlist.getUser().getLogin().equals(Sesion.getInstance(this).getUser().getLogin())) {
             List<Track> tracks = null;
             tracks = playlist.getTracks();
             tracks.add(new Track(Integer.parseInt(etIdSong.getText().toString())));
@@ -60,7 +60,7 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
         }
         else{
             Toast.makeText(getApplicationContext(), "No eres dueño de la playlist o no tienes permisos", Toast.LENGTH_LONG).show();
-        }
+        }*/
     }
 
     @Override
