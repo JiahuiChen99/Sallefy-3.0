@@ -34,6 +34,7 @@ public class SearchAdapter extends FragmentStatePagerAdapter implements Filterab
     private Integer index;
     private ArrayList<SearchGenre> list = new ArrayList<>();
     private List<Fragment> fragmentList = new ArrayList<>();
+    private Fragment currentFragment;
 
     public SearchAdapter (FragmentManager manager, String input) {
         super(manager);
@@ -46,16 +47,19 @@ public class SearchAdapter extends FragmentStatePagerAdapter implements Filterab
         index = position;
         switch (position) {
             case 0:
-                return SearchSongsFragment.getInstance(input);
+                currentFragment = SearchSongsFragment.getInstance(input);
+                return currentFragment;
             case 1:
 
-                Fragment f = SearchGenreFragment.getInstance(input, list);
+                currentFragment = SearchGenreFragment.getInstance(input, list);
                 list = SearchGenreFragment.getList();
-                return f;
+                return currentFragment;
             case 2:
-                return SearchArtistFragment.getInstance(input);
+                currentFragment = SearchArtistFragment.getInstance(input);
+                return currentFragment;
             case 3:
-                return SearchPlaylistsFragment.getInstance(input);
+                currentFragment = SearchPlaylistsFragment.getInstance(input);
+                return currentFragment;
         }
         return null;
     }
@@ -65,8 +69,15 @@ public class SearchAdapter extends FragmentStatePagerAdapter implements Filterab
         return 4;
     }
 
-    public void setInput (String input) {
+    public void setInput (String input, int currentItem) {
         this.input = input;
+
+        currentFragment = getItem(currentItem);
+        if(currentFragment instanceof SearchSongsFragment){
+          ((SearchSongsFragment) currentFragment).updateSongs(input);
+        }
+
+
         notifyDataSetChanged();
     }
 
@@ -77,41 +88,8 @@ public class SearchAdapter extends FragmentStatePagerAdapter implements Filterab
 
     @Override
     public Filter getFilter() {
-        return exampleFilter;
+        return null;
     }
-
-    private Filter exampleFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            //List<ExampleItem> filteredList = new ArrayList<>();
-
-            if (constraint == null || constraint.equals("") || constraint.length() == 0) {
-                setInput("");
-                //filteredList.addAll(exampleListFull);
-            } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-                setInput(filterPattern);
-
-                /*for (ExampleItem item : exampleListFull) {
-                    if (item.getText1().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
-                    }
-                }*/
-            }
-
-            FilterResults results = new FilterResults();
-            //results.values = filteredList;
-            notifyDataSetChanged();
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            //exampleList.clear();
-            //exampleList.addAll((List) results.values);
-            notifyDataSetChanged();
-        }
-    };
 }
 
 

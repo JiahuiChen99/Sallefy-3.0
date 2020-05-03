@@ -40,6 +40,18 @@ public class SearchFragment extends Fragment {
 
     private SearchView searchView;
 
+    @Override
+    public void onDestroyView() {
+        mPager.removeAllViews();
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onStop() {
+        mPager.removeAllViews();
+        super.onStop();
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_search, container, false);
 
@@ -98,11 +110,14 @@ public class SearchFragment extends Fragment {
         });
 
 
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 input = query;
-                adapter.getFilter().filter(query);
+                //adapter.getFilter().filter(query);
+                adapter.setInput(input, mPager.getCurrentItem());
 
                 return false;
             }
@@ -111,7 +126,7 @@ public class SearchFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 if (newText.equals("")) {
                     input = "";
-                    adapter.getFilter().filter(newText);
+                    //adapter.getFilter().filter(newText);
                 }
                 return false;
             }
@@ -130,8 +145,12 @@ public class SearchFragment extends Fragment {
     }
 
     private void init(String input) {
+        if(SearchSongsFragment.getInstance("") != null){
+            SearchSongsFragment.getInstance("").resetInstance();
+        }
         adapter = new SearchAdapter(this.getFragmentManager(), input);
         mPager.setAdapter(adapter);
+        mPager.setOffscreenPageLimit(0);
         navigationTabStrip.setViewPager(mPager);
         navigationTabStrip.setTitles("Songs", "Genre", "Artists", "Playlists");
         navigationTabStrip.setTitleSize(30);
@@ -145,7 +164,4 @@ public class SearchFragment extends Fragment {
         navigationTabStrip.setInactiveColor(Color.GRAY);
         navigationTabStrip.setActiveColor(Color.WHITE);
     }
-
-
-
 }
