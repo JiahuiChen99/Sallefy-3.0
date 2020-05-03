@@ -21,6 +21,8 @@ import com.example.myapplication.R;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.User;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
+import com.example.myapplication.restapi.callback.UserResourcesCallback;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +35,17 @@ public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.
     private PlaylistCallback callback;
     private int NUM_VIEWHOLDERS = 0;
 
-    public SearchUsersAdapter(Context context, ArrayList<User> users){
+    private UserResourcesCallback callback;
+    private int NUM_VIEWHOLDERS = 0;
+  
+    public SearchUsersAdapter(Context context, ArrayList<User> users, UserResourcesCallback callback){
         this.callback = callback;
         this.mContext = context;
         this.users = users;
     }
 
-    public SearchUsersAdapter(Context context, User user){
+    public SearchUsersAdapter(Context context, User user, UserResourcesCallback callback){
+
         this.callback = callback;
         this.mContext = context;
         this.users = new ArrayList<>();
@@ -47,8 +53,8 @@ public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.
     }
 
     @Override
-    public void onPlaylistReceived(List<Playlist> playlists) {
 
+    public void onPlaylistReceived(Playlist playlists) {
     }
 
     @Override
@@ -140,6 +146,7 @@ public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Clicked: " + users.get(position).getLogin());
+                callback.onArtistClicked(users.get(position));
             }
         });
         if (users.get(position).getLogin() != null) {
@@ -152,6 +159,7 @@ public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.
             holder.tvArtistName.setText(users.get(position).getLogin());
             holder.tvArtistName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
             holder.tvArtistName.setSelected(true);
+
             holder.tvFollows.setText(users.get(position).getFollowers().toString());
             holder.tvFollows.setEllipsize(TextUtils.TruncateAt.MARQUEE);
             holder.tvFollows.setSelected(true);
@@ -159,6 +167,7 @@ public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.
             holder.tvPlaylists.setEllipsize(TextUtils.TruncateAt.MARQUEE);
             holder.tvPlaylists.setSelected(true);
             holder.tvSongs.setText(users.get(position).getTracks().toString());
+
             holder.tvSongs.setEllipsize(TextUtils.TruncateAt.MARQUEE);
             holder.tvSongs.setSelected(true);
 
@@ -170,3 +179,4 @@ public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.
         return users != null ? users.size():0;
     }
 }
+

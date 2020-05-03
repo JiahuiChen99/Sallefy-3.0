@@ -42,6 +42,7 @@ public class LibraryFragment extends Fragment {
         adapter = new LibraryAdapter(this.getFragmentManager());
         mPager.setAdapter(adapter);
         navigationTabStrip.setViewPager(mPager);
+        mPager.setOffscreenPageLimit(4);
         navigationTabStrip.setTitles("My Playlists", "Liked Playlists", "Favourite Songs", "Artists");
         navigationTabStrip.setTitleSize(30);
         navigationTabStrip.setStripColor(Color.GREEN);

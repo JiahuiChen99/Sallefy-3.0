@@ -29,6 +29,9 @@
         <activity android:name=".controller.activities.IdPlaylistActivity"/>
         <activity android:name=".controller.activities.AddSongActivity"/>
         <activity android:name=".controller.activities.TrackDetailsActivity"/>
+        <activity android:name=".controller.activities.UsersListActivity"/>
+        <service android:enabled="true" android:name=".controller.music.MusicService"></service>
     </application>
+
 
 </manifest>
