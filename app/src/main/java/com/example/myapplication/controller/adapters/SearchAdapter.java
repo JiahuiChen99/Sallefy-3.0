@@ -71,8 +71,37 @@ public class SearchAdapter extends FragmentStatePagerAdapter implements Filterab
     public void setInput (String input, int currentItem) {
         this.input = input;
 
-        currentFragment = fragmentList.get(currentItem);
-        switch (currentItem){
+        for (int i = 0; i < fragmentList.size(); i++) {
+            currentFragment = fragmentList.get(i);
+            if(input.equalsIgnoreCase("")){
+                if(currentFragment instanceof SearchSongsFragment){
+                    ((SearchSongsFragment) currentFragment).getData();
+                }
+                if(currentFragment instanceof SearchGenreFragment){
+                    ((SearchGenreFragment) currentFragment).getData();
+                }
+                if(currentFragment instanceof SearchArtistFragment){
+                    ((SearchArtistFragment) currentFragment).getData(input);
+                }
+                if(currentFragment instanceof SearchPlaylistsFragment){
+                    ((SearchPlaylistsFragment) currentFragment).getData();
+                }
+            }else{
+                if(currentFragment instanceof SearchSongsFragment){
+                    ((SearchSongsFragment) currentFragment).updateSongs(input);
+                }
+                if(currentFragment instanceof SearchGenreFragment){
+                    ((SearchGenreFragment) currentFragment).updateSongs(input);
+                }
+                if(currentFragment instanceof SearchArtistFragment){
+                    ((SearchArtistFragment) currentFragment).getData(input);
+                }
+                if(currentFragment instanceof SearchPlaylistsFragment){
+                    ((SearchPlaylistsFragment) currentFragment).updateSongs(input);
+                }
+            }
+        }
+        /*switch (currentItem){
             case 0:
                 if(input.equalsIgnoreCase("")){
                     ((SearchSongsFragment) currentFragment).getData();
@@ -101,7 +130,7 @@ public class SearchAdapter extends FragmentStatePagerAdapter implements Filterab
                     ((SearchPlaylistsFragment) currentFragment).updateSongs(input);
                 }
                 break;
-        }
+        }*/
 
 
         notifyDataSetChanged();

@@ -79,7 +79,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                adapter.setInput(input, mPager.getCurrentItem());
+                //adapter.setInput(input, mPager.getCurrentItem());
             }
         });
 
