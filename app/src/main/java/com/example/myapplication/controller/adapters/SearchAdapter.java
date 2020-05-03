@@ -89,9 +89,9 @@ public class SearchAdapter extends FragmentStatePagerAdapter implements Filterab
                 break;
             case 2:
                 if(input.equalsIgnoreCase("")){
-                    ((SearchArtistFragment) currentFragment).getData();
+                    ((SearchArtistFragment) currentFragment).getData(input);
                 }else{
-                    ((SearchArtistFragment) currentFragment).updateSongs(input);
+                    ((SearchArtistFragment) currentFragment).getData(input);
                 }
                 break;
             case 3:

@@ -57,13 +57,9 @@ public class SearchArtistFragment extends Fragment implements SearchCallback, Us
         msongListRecyclerView.setLayoutManager(songsListManager);
         msongListRecyclerView.setAdapter(userPlaylistAdapter);
 
-        if (input == null) {
-            getData();
-        }else if (input.equals("")) {
-            getData();
-        }else {
-            updateSongs(input);
-        }
+
+            getData(input);
+
 
         return v;
     }
@@ -73,8 +69,8 @@ public class SearchArtistFragment extends Fragment implements SearchCallback, Us
         UserResourcesManager.getInstance(this.getActivity()).getSpecificUser(input,this);
     }
 
-    public void getData(){
-        UserResourcesManager.getInstance(this.getActivity()).getUsers(this);
+    public void getData(String input){
+        SearchManager.getInstance(this.getActivity()).searchSong(input,this);
     }
 
     @Override
