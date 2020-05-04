@@ -175,6 +175,7 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
         System.out.println("UserName: " + this.userName);
         if(userName.equalsIgnoreCase(Sesion.getInstance(getContext()).getUser().getLogin())){
             btnMore.setVisibility(View.VISIBLE);
+            btnFollowUnfollow.setVisibility(View.INVISIBLE);
         }else{
             btnMore.setVisibility(View.INVISIBLE);
             resize();
