@@ -59,7 +59,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     @Override
     public boolean onUnbind(Intent intent) {
-        mediaPlayer.stop();;
+        mediaPlayer.stop();
         mediaPlayer.release();
         stopSelf();
         onDestroy();
@@ -146,7 +146,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     }
 
     public void updateTrackUI(){
-        //callback.updatePlayPauseButton();
+        callback.setSongID(currentTrack);
         callback.showShrinkedBar(true);
         callback.updateLikeButton(mTracks.get(currentTrack).isLiked());
         callback.updateSongTitle(mTracks.get(currentTrack).getName());

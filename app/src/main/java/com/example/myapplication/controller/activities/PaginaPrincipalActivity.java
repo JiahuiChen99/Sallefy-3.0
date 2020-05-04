@@ -547,6 +547,11 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
         }
     }
 
+    @Override
+    public void setSongID(int songID) {
+        this.songID = songID;
+    }
+
     private String createTimeLabel(Integer duration){
         String timerLabel = "";
         int min = duration / 1000 / 60;
