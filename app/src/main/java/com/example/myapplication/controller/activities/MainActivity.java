@@ -68,10 +68,6 @@ public class MainActivity extends AppCompatActivity implements UserCallback {
 
         //Get Current User Profile
         UserManager.getInstance(this).accountAttempt(this);
-
-        Intent intent = new Intent(getApplicationContext(), PaginaPrincipalActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     @Override
@@ -97,6 +93,10 @@ public class MainActivity extends AppCompatActivity implements UserCallback {
     @Override
     public void onAccountSucces(User user) {
         Sesion.getInstance(getApplicationContext()).setUser(user);
+
+        Intent intent = new Intent(getApplicationContext(), PaginaPrincipalActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     @Override
