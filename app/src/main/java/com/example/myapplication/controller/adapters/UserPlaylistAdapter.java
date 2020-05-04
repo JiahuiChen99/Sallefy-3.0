@@ -1,7 +1,6 @@
 package com.example.myapplication.controller.adapters;
 
 import android.content.Context;
-import android.graphics.BlurMaskFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,17 +17,12 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
-import com.example.myapplication.controller.fragments.LibraryFragment;
-import com.example.myapplication.controller.fragments.LibraryUserPlaylistsFragment;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import jp.wasabeef.glide.transformations.BlurTransformation;
-
-public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapter.ViewHolder> implements PlaylistCallback {
+public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapter.ViewHolder> {
 
     public static final String TAG = "User Playlists";
     private ArrayList<Playlist> mPlaylists;
@@ -42,50 +36,6 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
         this.mPlaylists = playlists;
     }
 
-    @Override
-    public void onPlaylistReceived(List<Playlist> playlists) {
-
-    }
-
-    @Override
-    public void onNoPlaylists(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onPlaylistCreated(Playlist playlist) {
-
-    }
-
-    @Override
-    public void onPlaylistFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onUserPlaylistsReceived(List<Playlist> playlists) {
-
-    }
-
-    @Override
-    public void onNoUserPlaylists(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onUserSpecificLikedPlaylistReceived(Playlist specificPlaylist) {
-
-    }
-
-    @Override
-    public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onFailure(Throwable throwable) {
-
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivThumbnail;

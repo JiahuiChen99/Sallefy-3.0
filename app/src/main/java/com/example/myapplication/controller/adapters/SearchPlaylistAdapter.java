@@ -22,9 +22,8 @@ import com.example.myapplication.model.Playlist;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class SearchPlaylistAdapter extends RecyclerView.Adapter<SearchPlaylistAdapter.ViewHolder> implements PlaylistCallback {
+public class SearchPlaylistAdapter extends RecyclerView.Adapter<SearchPlaylistAdapter.ViewHolder> {
 
     public static final String TAG = "User Playlists";
     private ArrayList<Playlist> mPlaylists;
@@ -38,50 +37,6 @@ public class SearchPlaylistAdapter extends RecyclerView.Adapter<SearchPlaylistAd
         this.mPlaylists = playlists;
     }
 
-    @Override
-    public void onPlaylistReceived(List<Playlist> playlists) {
-
-    }
-
-    @Override
-    public void onNoPlaylists(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onPlaylistCreated(Playlist playlist) {
-
-    }
-
-    @Override
-    public void onPlaylistFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onUserPlaylistsReceived(List<Playlist> playlists) {
-
-    }
-
-    @Override
-    public void onNoUserPlaylists(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onUserSpecificLikedPlaylistReceived(Playlist specificPlaylist) {
-
-    }
-
-    @Override
-    public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onFailure(Throwable throwable) {
-
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivThumbnail;

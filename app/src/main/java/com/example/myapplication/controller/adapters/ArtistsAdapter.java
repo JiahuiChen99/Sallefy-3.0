@@ -1,7 +1,6 @@
 package com.example.myapplication.controller.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
-import com.example.myapplication.controller.fragments.ExploreFragment;
 import com.example.myapplication.model.User;
 
 import java.util.ArrayList;

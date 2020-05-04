@@ -21,12 +21,10 @@ import com.example.myapplication.controller.fragments.ExploreFragment;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.TrackCallback;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class RecentTracksAdapter extends RecyclerView.Adapter<RecentTracksAdapter.ViewHolder> implements TrackCallback {
+public class RecentTracksAdapter extends RecyclerView.Adapter<RecentTracksAdapter.ViewHolder> {
 
     private static final String TAG = "Recent Tracks";
     private ArrayList<Track> mTracks;
@@ -38,81 +36,6 @@ public class RecentTracksAdapter extends RecyclerView.Adapter<RecentTracksAdapte
         this.callback = callback;
         this.mTracks = tracks;
         this.mContext = context;
-    }
-
-    @Override
-    public void onTracksReceived(List<Track> tracks) {
-
-    }
-
-    @Override
-    public void onNoTracks(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onRecentTracksReceived(List<Track> tracks) {
-
-    }
-
-    @Override
-    public void onNoRecentTracksReceived(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onRecommendedTracksReceived(List<Track> tracks) {
-
-    }
-
-    @Override
-    public void onNoRecommendedTracks(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onSpecificTrackReceived(Track track) {
-
-    }
-
-    @Override
-    public void onNoSpecificTrack(Track track) {
-
-    }
-
-    @Override
-    public void onTrackSelected(Integer id, String sectionID) {
-
-    }
-
-    @Override
-    public void onTrackLiked(Track like) {
-
-    }
-
-    @Override
-    public void onLikedTracksReceived(List<Track> likedTracks) {
-
-    }
-
-    @Override
-    public void onNoLikedTracks(Throwable noLikedTracks) {
-
-    }
-
-    @Override
-    public void onArtistTracksReceived(List<Track> artistTracks) {
-
-    }
-
-    @Override
-    public void onNoArtistTracks(Throwable noArtistTracks) {
-
-    }
-
-    @Override
-    public void onFailure(Throwable throwable) {
-
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

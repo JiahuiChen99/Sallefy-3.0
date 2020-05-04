@@ -11,7 +11,6 @@ import com.example.myapplication.controller.fragments.LibraryFollowingArtistsFra
 import com.example.myapplication.controller.fragments.LibraryLikedPlaylistsFragment;
 import com.example.myapplication.controller.fragments.LibraryUserPlaylistsFragment;
 
-import java.util.List;
 
 public class LibraryAdapter extends FragmentStatePagerAdapter {
 

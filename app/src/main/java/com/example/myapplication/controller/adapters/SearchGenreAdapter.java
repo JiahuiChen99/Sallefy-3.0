@@ -10,27 +10,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
 import com.example.myapplication.model.EmptyItem;
-import com.example.myapplication.model.EssencialGenre;
 import com.example.myapplication.model.EventItem;
 import com.example.myapplication.model.HeaderItem;
 import com.example.myapplication.model.ListItem;
-import com.example.myapplication.model.SearchGenre;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.GenreCallback;
 import com.example.myapplication.restapi.callback.TrackCallback;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 

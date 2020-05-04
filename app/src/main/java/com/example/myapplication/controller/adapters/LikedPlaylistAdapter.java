@@ -17,16 +17,12 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
 import com.example.myapplication.controller.fragments.LibraryLikedPlaylistsFragment;
-import com.example.myapplication.controller.fragments.LibraryUserPlaylistsFragment;
 import com.example.myapplication.model.Playlist;
-import com.example.myapplication.model.Track;
-import com.example.myapplication.restapi.callback.PlaylistCallback;
 import com.example.myapplication.restapi.callback.TrackCallback;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class LikedPlaylistAdapter extends RecyclerView.Adapter<LikedPlaylistAdapter.ViewHolder> implements  TrackCallback {
+public class LikedPlaylistAdapter extends RecyclerView.Adapter<LikedPlaylistAdapter.ViewHolder> {
 
     public static final String TAG = "User Liked Playlists";
     private ArrayList<Playlist> mPlaylists;
@@ -90,80 +86,5 @@ public class LikedPlaylistAdapter extends RecyclerView.Adapter<LikedPlaylistAdap
     @Override
     public int getItemCount() {
         return mPlaylists != null ? mPlaylists.size():0;
-    }
-
-    @Override
-    public void onFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onTracksReceived(List<Track> tracks) {
-
-    }
-
-    @Override
-    public void onNoTracks(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onRecentTracksReceived(List<Track> tracks) {
-
-    }
-
-    @Override
-    public void onNoRecentTracksReceived(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onRecommendedTracksReceived(List<Track> tracks) {
-
-    }
-
-    @Override
-    public void onNoRecommendedTracks(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onSpecificTrackReceived(Track track) {
-
-    }
-
-    @Override
-    public void onNoSpecificTrack(Track track) {
-
-    }
-
-    @Override
-    public void onTrackSelected(Integer id, String sectionID) {
-
-    }
-
-    @Override
-    public void onTrackLiked(Track like) {
-
-    }
-
-    @Override
-    public void onLikedTracksReceived(List<Track> likedTracks) {
-
-    }
-
-    @Override
-    public void onNoLikedTracks(Throwable noLikedTracks) {
-
-    }
-
-    @Override
-    public void onArtistTracksReceived(List<Track> artistTracks) {
-
-    }
-
-    @Override
-    public void onNoArtistTracks(Throwable noArtistTracks) {
-
     }
 }

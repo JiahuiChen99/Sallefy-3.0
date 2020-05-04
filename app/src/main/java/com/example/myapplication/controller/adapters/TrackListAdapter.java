@@ -129,6 +129,4 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
             ivPicture = (ImageView) itemView.findViewById(R.id.song_img);
         }
     }
-
-
 }
