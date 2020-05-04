@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_fondo"
+    android:gravity="center_horizontal|fill_vertical"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/colorWhite"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="34sp"
+        android:text="@string/add_song_title"/>
+
+    <LinearLayout
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/add_song_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorBoton"
+                android:fontFamily="@font/gotham_light"
+                android:hint="@string/add_song_id"
+                android:autofillHints=""
+                android:layout_marginTop="20dp"
+                android:inputType="textPersonName"
+                android:textAlignment="center"
+                android:textColorHint="@color/colorGrey" />
+
+            <EditText
+                android:id="@+id/add_song_playlist_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorBoton"
+                android:ems="10"
+                android:fontFamily="@font/gotham_light"
+                android:hint="@string/add_song_playlist_id"
+                android:autofillHints=""
+                android:inputType="textPersonName"
+                android:textAlignment="center"
+                android:layout_marginTop="20dp"
+                android:textColorHint="@color/colorGrey" />
+
+            <EditText
+                android:id="@+id/add_song_playlist_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorBoton"
+                android:ems="10"
+                android:fontFamily="@font/gotham_light"
+                android:hint="@string/add_song_playlist_name"
+                android:autofillHints=""
+                android:inputType="textPersonName"
+                android:textAlignment="center"
+                android:layout_marginTop="20dp"
+                android:textColorHint="@color/colorGrey" />
+
+            <Button
+                android:id="@+id/add_song_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="@string/action_accept"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/boton_borde_verde"
+                android:textColor="@color/colorWhite"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
