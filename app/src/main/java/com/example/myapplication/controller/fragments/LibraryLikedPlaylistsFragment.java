@@ -121,10 +121,12 @@ public class LibraryLikedPlaylistsFragment extends Fragment implements PlaylistC
     @Override
     public void onUserPlaylistsReceived(List<Playlist> playlists) {
         mPlaylists = (ArrayList) playlists;
-        LikedPlaylistAdapter adapter = new LikedPlaylistAdapter(this, mPlaylists);
-        mPlaylistRecyclerView.setAdapter(adapter);
-        TrackListAdapter songsListAdapter = new TrackListAdapter(this, getContext(), (ArrayList<Track>) mPlaylists.get(0).getTracks());
-        msongList.setAdapter(songsListAdapter);
+        if(mPlaylists.size() != 0){
+            LikedPlaylistAdapter adapter = new LikedPlaylistAdapter(this, mPlaylists);
+            mPlaylistRecyclerView.setAdapter(adapter);
+            TrackListAdapter songsListAdapter = new TrackListAdapter(this, getContext(), (ArrayList<Track>) mPlaylists.get(0).getTracks());
+            msongList.setAdapter(songsListAdapter);
+        }
     }
 
     @Override

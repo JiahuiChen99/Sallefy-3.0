@@ -121,10 +121,12 @@ public class LibraryUserPlaylistsFragment extends Fragment implements PlaylistCa
     @Override
     public void onUserPlaylistsReceived(List<Playlist> playlists) {
         mPlaylists = (ArrayList) playlists;
-        UserPlaylistAdapter adapter = new UserPlaylistAdapter(getContext(), mPlaylists);
-        mPlaylistRecyclerView.setAdapter(adapter);
-        TrackListAdapter songsListAdapter = new TrackListAdapter(this, getContext(), (ArrayList<Track>) mPlaylists.get(0).getTracks());
-        msongList.setAdapter(songsListAdapter);
+        if(mPlaylists.size() != 0){
+            UserPlaylistAdapter adapter = new UserPlaylistAdapter(getContext(), mPlaylists);
+            mPlaylistRecyclerView.setAdapter(adapter);
+            TrackListAdapter songsListAdapter = new TrackListAdapter(this, getContext(), (ArrayList<Track>) mPlaylists.get(0).getTracks());
+            msongList.setAdapter(songsListAdapter);
+        }
     }
 
     @Override

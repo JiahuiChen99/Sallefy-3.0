@@ -126,9 +126,11 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
     @Override
     public void onFollowingArtistsReceived(List<User> followingArtists) {
         mFollowingArtists = (ArrayList<User>) followingArtists;
-        ArtistsAdapter adapter = new ArtistsAdapter(getContext(), mFollowingArtists);
-        mArtistsRecyclerView.setAdapter(adapter);
-        UserResourcesManager.getInstance(getContext()).getFollowingArtistsTopSongs( mFollowingArtists.get(0).getLogin(), LibraryFollowingArtistsFragment.this);
+        if(mFollowingArtists.size() != 0){
+            ArtistsAdapter adapter = new ArtistsAdapter(getContext(), mFollowingArtists);
+            mArtistsRecyclerView.setAdapter(adapter);
+            UserResourcesManager.getInstance(getContext()).getFollowingArtistsTopSongs( mFollowingArtists.get(0).getLogin(), LibraryFollowingArtistsFragment.this);
+        }
     }
 
     @Override
