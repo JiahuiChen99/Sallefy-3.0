@@ -32,9 +32,6 @@ public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.
     public static final String TAG = "User Playlists";
     private ArrayList<User> users;
     private Context mContext;
-    private PlaylistCallback callback;
-    private int NUM_VIEWHOLDERS = 0;
-
     private UserResourcesCallback callback;
     private int NUM_VIEWHOLDERS = 0;
   
@@ -52,9 +49,10 @@ public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.
         users.add(user);
     }
 
-    @Override
 
-    public void onPlaylistReceived(Playlist playlists) {
+    @Override
+    public void onPlaylistReceived(List<Playlist> playlists) {
+
     }
 
     @Override
@@ -160,7 +158,7 @@ public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.
             holder.tvArtistName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
             holder.tvArtistName.setSelected(true);
 
-            holder.tvFollows.setText(users.get(position).getFollowers().toString());
+            /*holder.tvFollows.setText(users.get(position).getFollowers().toString());
             holder.tvFollows.setEllipsize(TextUtils.TruncateAt.MARQUEE);
             holder.tvFollows.setSelected(true);
             holder.tvPlaylists.setText(users.get(position).getPlaylists().toString());
@@ -169,7 +167,7 @@ public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.
             holder.tvSongs.setText(users.get(position).getTracks().toString());
 
             holder.tvSongs.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-            holder.tvSongs.setSelected(true);
+            holder.tvSongs.setSelected(true);*/
 
         }
     }

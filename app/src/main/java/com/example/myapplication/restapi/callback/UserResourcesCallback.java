@@ -11,8 +11,6 @@ public interface UserResourcesCallback {
     void onFailure(Throwable throwable);
   
     void onArtistsReceived(List<User> users);
-
-    void onUserReceived(User user);
     void onNoUserReceived(Throwable throwable);
 
     void onFollowingArtistsReceived(List<User> followingArtists);

@@ -88,13 +88,6 @@
     <string name="following">following</string>
     <string name="userslist">Users list</string>
 
-    <!-- Artist -->
-    <string name="artist_name">Artist name</string>
-    <string name="artist_follows">Followers</string>
-    <string name="artist_playlists">Playlists</string>
-    <string name="artist_songs">Songs</string>
 
-    <!-- Playlist -->
-    <string name="playlist_follows">Followers</string>
 
 </resources>

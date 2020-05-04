@@ -1,6 +1,5 @@
 package com.example.myapplication.controller.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.controller.activities.TrackDetailsActivity;
 import com.example.myapplication.controller.adapters.SearchGenreAdapter;
 import com.example.myapplication.model.EmptyItem;
 import com.example.myapplication.model.EssencialGenre;
@@ -27,7 +25,6 @@ import com.example.myapplication.restapi.callback.GenreCallback;
 import com.example.myapplication.restapi.callback.SearchCallback;
 import com.example.myapplication.restapi.callback.TrackCallback;
 import com.example.myapplication.restapi.manager.GenreManager;
-import com.example.myapplication.restapi.manager.SearchManager;
 import com.example.myapplication.restapi.manager.TrackManager;
 
 import java.util.ArrayList;

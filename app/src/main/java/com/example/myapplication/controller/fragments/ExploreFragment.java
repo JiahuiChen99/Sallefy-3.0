@@ -205,10 +205,6 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
 
     }
 
-    @Override
-    public void onUserReceived(User user) {
-
-    }
 
     @Override
     public void onNoUserReceived(Throwable throwable) {

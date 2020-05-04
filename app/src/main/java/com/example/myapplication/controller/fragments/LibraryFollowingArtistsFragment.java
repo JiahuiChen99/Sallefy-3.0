@@ -1,7 +1,6 @@
 package com.example.myapplication.controller.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.controller.activities.TrackDetailsActivity;
 import com.example.myapplication.controller.adapters.ArtistsAdapter;
-import com.example.myapplication.controller.adapters.LikedPlaylistAdapter;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.callbacks.TrackListCallback;
 import com.example.myapplication.controller.music.MusicCallback;
@@ -119,11 +116,7 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
     public void onArtistsReceived(List<User> users) {
     
     }
-  
-    @Override
-    public void onUserReceived(User user) {
 
-    }
 
     @Override
     public void onNoUserReceived(Throwable throwable) {

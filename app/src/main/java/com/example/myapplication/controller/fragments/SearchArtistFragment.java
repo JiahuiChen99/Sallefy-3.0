@@ -76,7 +76,7 @@ public class SearchArtistFragment extends Fragment implements SearchCallback, Us
     @Override
     public void onInfoReceived(SearchResult output) {
         this.users = (ArrayList)output.getUsers();
-        SearchUsersAdapter adapter = new SearchUsersAdapter(getContext(), this.users);
+        SearchUsersAdapter adapter = new SearchUsersAdapter(getContext(), this.users, this);
         msongListRecyclerView.setAdapter(adapter);
     }
 
@@ -87,7 +87,7 @@ public class SearchArtistFragment extends Fragment implements SearchCallback, Us
 
     @Override
     public void onUserReceived(User user) {
-        SearchUsersAdapter adapter = new SearchUsersAdapter(getContext(), user);
+        SearchUsersAdapter adapter = new SearchUsersAdapter(getContext(), user, this);
         msongListRecyclerView.setAdapter(adapter);
     }
 
@@ -109,8 +109,13 @@ public class SearchArtistFragment extends Fragment implements SearchCallback, Us
     @Override
     public void onArtistsReceived(List<User> users) {
         this.users = (ArrayList) users;
-        SearchUsersAdapter adapter = new SearchUsersAdapter(getContext(), this.users);
+        SearchUsersAdapter adapter = new SearchUsersAdapter(getContext(), this.users, this);
         msongListRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onNoUserReceived(Throwable throwable) {
+
     }
 
     @Override
@@ -120,6 +125,41 @@ public class SearchArtistFragment extends Fragment implements SearchCallback, Us
 
     @Override
     public void onNoFollowingArtists(Throwable noFollowingArtists) {
+
+    }
+
+    @Override
+    public void onUserFollowingReceived(List<User> followingArtists) {
+
+    }
+
+    @Override
+    public void onNoUserFollowing(Throwable noFollowingArtists) {
+
+    }
+
+    @Override
+    public void onUserFollowersReceived(List<User> followers) {
+
+    }
+
+    @Override
+    public void onNoUserFollowers(Throwable noFollowers) {
+
+    }
+
+    @Override
+    public void onUserFollowedUnfollowed(User user) {
+
+    }
+
+    @Override
+    public void onNoUserFollowedUnfollowed(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onArtistClicked(User clickedArtist) {
 
     }
 }

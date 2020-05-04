@@ -75,6 +75,11 @@ public class UsersListActivity extends AppCompatActivity implements UserResource
     }
 
     @Override
+    public void onArtistsReceived(List<User> users) {
+
+    }
+
+    @Override
     public void onUserReceived(User user) {
 
     }

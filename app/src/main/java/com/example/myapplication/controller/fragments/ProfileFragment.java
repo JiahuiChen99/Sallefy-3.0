@@ -47,7 +47,7 @@ import java.util.List;
 import recycler.coverflow.CoverFlowLayoutManger;
 import recycler.coverflow.RecyclerCoverFlow;
 
-public class ProfileFragment extends Fragment implements PlaylistCallback, TrackCallback, UserResourcesCallback {
+public  class ProfileFragment extends Fragment implements PlaylistCallback, TrackCallback, UserResourcesCallback {
 
     private static final String FOLLOW = "FollowIcon";
     private static final String FOLLOWING = "FollowingIcon";
@@ -290,6 +290,11 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
 
     @Override
     public void onFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onArtistsReceived(List<User> users) {
 
     }
 

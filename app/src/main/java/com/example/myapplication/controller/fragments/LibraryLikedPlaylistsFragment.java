@@ -1,7 +1,6 @@
 package com.example.myapplication.controller.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.controller.activities.TrackDetailsActivity;
 import com.example.myapplication.controller.adapters.LikedPlaylistAdapter;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
-import com.example.myapplication.controller.adapters.UserPlaylistAdapter;
-import com.example.myapplication.controller.callbacks.TrackListCallback;
 import com.example.myapplication.controller.music.MusicCallback;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.Track;
