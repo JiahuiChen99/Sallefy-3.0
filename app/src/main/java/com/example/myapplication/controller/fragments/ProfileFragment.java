@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
-import com.example.myapplication.controller.activities.UsersListActivity;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.adapters.UserPlaylistAdapter;
 import com.example.myapplication.controller.music.MusicCallback;
@@ -178,7 +177,7 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
             btnFollowUnfollow.setVisibility(View.INVISIBLE);
         }else{
             btnMore.setVisibility(View.INVISIBLE);
-            //resize();
+            resize();
         }
 
         getData();
@@ -334,12 +333,13 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
 
     @Override
     public void onUserFollowingReceived(List<User> followingArtists) {
-        Intent intent = new Intent(getActivity(), UsersListActivity.class);
+        btnMore.setVisibility(View.INVISIBLE);
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("users", (ArrayList<User>) followingArtists);
-        intent.putExtras(bundle);
-        intent.putExtra("type", "following");
-        startActivity(intent);
+        bundle.putString("type", "following");
+        Fragment fragment = new UsersListFragment();
+        fragment.setArguments(bundle);
+        getFragmentManager().beginTransaction().replace(R.id.user_profile_layout, fragment).commit();
     }
 
     @Override
@@ -349,12 +349,13 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
 
     @Override
     public void onUserFollowersReceived(List<User> followers) {
-        Intent intent = new Intent(getActivity(), UsersListActivity.class);
+        btnMore.setVisibility(View.INVISIBLE);
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("users", (ArrayList<User>) followers);
-        intent.putExtras(bundle);
-        intent.putExtra("type", "follower");
-        startActivity(intent);
+        bundle.putString("type", "follower");
+        Fragment fragment = new UsersListFragment();
+        fragment.setArguments(bundle);
+        getFragmentManager().beginTransaction().replace(R.id.user_profile_layout, fragment).commit();
     }
 
     @Override

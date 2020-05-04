@@ -5,7 +5,8 @@
     android:background="@drawable/gradient_fondo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/profile_users_list_layout">
+    android:id="@+id/profile_users_list_layout"
+    android:paddingBottom="40dp">
 
     <TextView
         android:id="@+id/profile_users_list_header"
