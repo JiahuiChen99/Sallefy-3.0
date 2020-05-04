@@ -35,6 +35,7 @@ import java.util.List;
 public class SearchGenreFragment extends Fragment implements SearchCallback, TrackCallback, GenreCallback {
 
     private ArrayList<Track> tracks;
+    private ArrayList<Track> tracks2 = new ArrayList<>();
     private static ArrayList<SearchGenre> list;
     private RecyclerView msongListRecyclerView;
     private String input;
@@ -101,7 +102,9 @@ public class SearchGenreFragment extends Fragment implements SearchCallback, Tra
     }
 
     public void updateSongs(String input) {
+        this.input = input;
         List<ListItem> items = new ArrayList<>();
+        tracks2.clear();
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getGenre().toLowerCase().equals(input.toLowerCase())) {
                 HeaderItem header = new HeaderItem();
@@ -112,6 +115,7 @@ public class SearchGenreFragment extends Fragment implements SearchCallback, Tra
                         EventItem item = new EventItem();
                         item.setTrack(list.get(i).getTracks().get(j));
                         items.add(item);
+                        tracks2.add(list.get(i).getTracks().get(j));
                     }
                 } else {
                     EmptyItem empty = new EmptyItem();
@@ -126,7 +130,6 @@ public class SearchGenreFragment extends Fragment implements SearchCallback, Tra
 
     public void getData(){
         GenreManager.getInstance(this.getActivity()).getGenre(this);
-
     }
 
     @Override
@@ -135,8 +138,8 @@ public class SearchGenreFragment extends Fragment implements SearchCallback, Tra
     }
 
     private void sendInfo() {
-
         List<ListItem> items = new ArrayList<>();
+        tracks2.clear();
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getTracks().size() > 0) {
                 HeaderItem header = new HeaderItem();
@@ -147,6 +150,7 @@ public class SearchGenreFragment extends Fragment implements SearchCallback, Tra
                     EventItem item = new EventItem();
                     item.setTrack(list.get(i).getTracks().get(j));
                     items.add(item);
+                    tracks2.add(list.get(i).getTracks().get(j));
                 }
             }
         }
@@ -178,6 +182,8 @@ public class SearchGenreFragment extends Fragment implements SearchCallback, Tra
             list.get(i).setGenre(essencial.get(i).getName());
             list.get(i).setId(essencial.get(i).getId());
         }
+
+        //TODO: Change API endpoint to /api/genres/{id}/tracks
         TrackManager.getInstance(this.getActivity()).getAllTracks(this);
     }
 
@@ -223,7 +229,17 @@ public class SearchGenreFragment extends Fragment implements SearchCallback, Tra
 
     @Override
     public void onTrackSelected(Integer id, String sectionID) {
-        sendTracksCallback.setTracks(tracks, id);
+        ArrayList<Track> searchSongs = new ArrayList<>();
+        if(input.equalsIgnoreCase("")){
+            for (int i = 0; i < list.size(); i++){
+                searchSongs.addAll(list.get(i).getTracks());
+            }
+        }else{
+            for (int i = 0; i < tracks2.size(); i++){
+                searchSongs.addAll(tracks2);
+            }
+        }
+        sendTracksCallback.setTracks(searchSongs, id);
     }
 
     @Override

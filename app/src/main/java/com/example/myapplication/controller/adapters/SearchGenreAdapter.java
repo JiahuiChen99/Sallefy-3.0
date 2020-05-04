@@ -136,7 +136,15 @@ public class SearchGenreAdapter extends RecyclerView.Adapter<SearchGenreAdapter.
                 holder.mLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        tCallback.onTrackSelected(position, TAG);
+                        int offset = 0;
+
+                        //Necessitem l'offset perquè els títols dels genres també compten com a item dins l'arraylist
+                        for(int i = 0; i < position; i++){
+                            if(items.get(i).getType() == ListItem.TYPE_HEADER || items.get(i).getType() == ListItem.TYPE_EMPTY){
+                                offset++;
+                            }
+                        }
+                        tCallback.onTrackSelected(position - offset, TAG);
                     }
                 });
                 EventItem event;
