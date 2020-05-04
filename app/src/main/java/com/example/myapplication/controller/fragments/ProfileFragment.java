@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -79,10 +80,14 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
 
     private MusicCallback sendTracksCallback;
 
+    private ConstraintLayout userProfileLayout;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        userProfileLayout = view.findViewById(R.id.user_profile_layout);
 
         following = view.findViewById(R.id.linearLayout8);
         following.setOnClickListener(new View.OnClickListener() {
@@ -172,11 +177,16 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
             btnMore.setVisibility(View.VISIBLE);
         }else{
             btnMore.setVisibility(View.INVISIBLE);
+            resize();
         }
 
         getData();
 
         return view;
+    }
+
+    public void resize(){
+        userProfileLayout.setPadding(0,0,0,0);
     }
 
     @Override
@@ -256,11 +266,13 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
     @Override
     public void onUserPlaylistsReceived(List<Playlist> playlists) {
         mAlbums = (ArrayList) playlists;
-        UserPlaylistAdapter adapter = new UserPlaylistAdapter(getContext(), mAlbums);
-        mArtistAlbumsRecyclerView.setAdapter(adapter);
+        if(mAlbums.size() != 0){
+            UserPlaylistAdapter adapter = new UserPlaylistAdapter(getContext(), mAlbums);
+            mArtistAlbumsRecyclerView.setAdapter(adapter);
 
-        TrackListAdapter albumSongsListAdapter = new TrackListAdapter(ProfileFragment.this, getContext(), (ArrayList<Track>) mAlbums.get(0).getTracks());
-        mArtistAlbumSongsRecyclerView.setAdapter(albumSongsListAdapter);
+            TrackListAdapter albumSongsListAdapter = new TrackListAdapter(ProfileFragment.this, getContext(), (ArrayList<Track>) mAlbums.get(0).getTracks());
+            mArtistAlbumSongsRecyclerView.setAdapter(albumSongsListAdapter);
+        }
     }
 
     @Override

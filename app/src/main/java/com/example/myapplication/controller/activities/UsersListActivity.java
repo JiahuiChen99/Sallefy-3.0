@@ -135,6 +135,7 @@ public class UsersListActivity extends AppCompatActivity implements UserResource
         bundle.putParcelable("artist", clickedArtist);
         ProfileFragment profileFragment = new ProfileFragment();
         profileFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().add(android.R.id.content, profileFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.profile_users_list_layout, profileFragment).commit();
+
     }
 }
