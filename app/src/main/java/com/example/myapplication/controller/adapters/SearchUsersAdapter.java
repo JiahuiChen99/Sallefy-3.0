@@ -27,7 +27,7 @@ import com.example.myapplication.restapi.callback.UserResourcesCallback;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.ViewHolder> implements PlaylistCallback {
+public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.ViewHolder> {
 
     public static final String TAG = "User Playlists";
     private ArrayList<User> users;
@@ -42,57 +42,10 @@ public class SearchUsersAdapter extends RecyclerView.Adapter<SearchUsersAdapter.
     }
 
     public SearchUsersAdapter(Context context, User user, UserResourcesCallback callback){
-
         this.callback = callback;
         this.mContext = context;
         this.users = new ArrayList<>();
         users.add(user);
-    }
-
-
-    @Override
-    public void onPlaylistReceived(List<Playlist> playlists) {
-
-    }
-
-    @Override
-    public void onNoPlaylists(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onPlaylistCreated(Playlist playlist) {
-
-    }
-
-    @Override
-    public void onPlaylistFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onUserPlaylistsReceived(List<Playlist> playlists) {
-
-    }
-
-    @Override
-    public void onNoUserPlaylists(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onUserSpecificLikedPlaylistReceived(Playlist specificPlaylist) {
-
-    }
-
-    @Override
-    public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onFailure(Throwable throwable) {
-
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
