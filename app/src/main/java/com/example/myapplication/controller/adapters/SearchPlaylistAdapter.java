@@ -77,7 +77,7 @@ public class SearchPlaylistAdapter extends RecyclerView.Adapter<SearchPlaylistAd
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Clicked: " + mPlaylists.get(position).getName());
+                //TODO: callback method onSearchPlaylistClicked
             }
         });
         if (mPlaylists.get(position).getThumbnail() != null) {

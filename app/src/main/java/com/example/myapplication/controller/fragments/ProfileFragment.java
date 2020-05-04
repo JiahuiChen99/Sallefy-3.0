@@ -178,7 +178,7 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
             btnFollowUnfollow.setVisibility(View.INVISIBLE);
         }else{
             btnMore.setVisibility(View.INVISIBLE);
-            resize();
+            //resize();
         }
 
         getData();

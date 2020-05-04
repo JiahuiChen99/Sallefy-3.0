@@ -115,10 +115,6 @@ public class LibraryFavouriteSongsFragment extends Fragment implements TrackCall
 
     @Override
     public void onTrackSelected(Integer id, String sectionID) {
-        /*Intent intent = new Intent(getActivity(), TrackDetailsActivity.class);
-        intent.putExtra("songId", id);
-        intent.putExtra("sectionId", "Favourite Songs");
-        startActivity(intent);*/
         sendTracksCallback.setTracks(favouriteSongsList, id);
     }
 

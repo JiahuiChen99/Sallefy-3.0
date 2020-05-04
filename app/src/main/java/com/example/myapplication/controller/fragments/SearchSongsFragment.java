@@ -1,5 +1,6 @@
 package com.example.myapplication.controller.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
+import com.example.myapplication.controller.music.MusicCallback;
 import com.example.myapplication.model.SearchResult;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.SearchCallback;
@@ -29,6 +31,8 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
     private RecyclerView msongListRecyclerView;
     private TrackListAdapter adapter;
     private Boolean mode;
+
+    private MusicCallback sendTracksCallback;
 
     public Boolean getMode() {
         return mode;
@@ -68,6 +72,23 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
         }
 
         return v;
+    }
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+
+        try {
+            sendTracksCallback = (MusicCallback) context;
+        }catch (ClassCastException e){
+            System.out.println("Error, class doesn't implement the interface");
+        }
+    }
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        sendTracksCallback = null;
     }
 
     public void updateSongs(String input) {
@@ -141,6 +162,7 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
 
     @Override
     public void onTrackSelected(Integer id, String sectionID) {
+        sendTracksCallback.setTracks(tracks, id);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.myapplication.controller.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.controller.adapters.SearchPlaylistAdapter;
+import com.example.myapplication.controller.music.MusicCallback;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.SearchResult;
 import com.example.myapplication.model.Track;
@@ -31,6 +33,8 @@ public class SearchPlaylistsFragment extends Fragment implements SearchCallback,
     private RecyclerView msongListRecyclerView;
     private SearchPlaylistsFragment instance;
     private String input;
+
+    private MusicCallback sendTracksCallback;
 
     public SearchPlaylistsFragment(String input) {
         this.input = input;
@@ -60,6 +64,23 @@ public class SearchPlaylistsFragment extends Fragment implements SearchCallback,
         }
 
         return v;
+    }
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+
+        try {
+            sendTracksCallback = (MusicCallback) context;
+        }catch (ClassCastException e){
+            System.out.println("Error, class doesn't implement the interface");
+        }
+    }
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        sendTracksCallback = null;
     }
 
     public void updateSongs(String input) {
@@ -129,4 +150,6 @@ public class SearchPlaylistsFragment extends Fragment implements SearchCallback,
     public void onFailure(Throwable throwable) {
 
     }
+
+    //TODO implement onSearchPlaylistClicked - open a music list
 }

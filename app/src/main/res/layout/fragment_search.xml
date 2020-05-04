@@ -6,7 +6,8 @@
     android:background="@drawable/gradient_fondo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/search_layout">
 
 
     <LinearLayout

@@ -1,5 +1,6 @@
 package com.example.myapplication.controller.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.controller.adapters.SearchPlaylistAdapter;
 import com.example.myapplication.controller.adapters.SearchUsersAdapter;
+import com.example.myapplication.controller.music.MusicCallback;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.SearchResult;
 import com.example.myapplication.model.Track;
@@ -37,6 +39,8 @@ public class SearchArtistFragment extends Fragment implements SearchCallback, Us
     private RecyclerView msongListRecyclerView;
     private SearchArtistFragment instance;
     private String input;
+
+    private MusicCallback sendTracksCallback;
 
     public SearchArtistFragment(String input) {
         this.input = input;
@@ -62,6 +66,23 @@ public class SearchArtistFragment extends Fragment implements SearchCallback, Us
 
 
         return v;
+    }
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+
+        try {
+            sendTracksCallback = (MusicCallback) context;
+        }catch (ClassCastException e){
+            System.out.println("Error, class doesn't implement the interface");
+        }
+    }
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        sendTracksCallback = null;
     }
 
     public void updateSongs(String input) {
@@ -160,6 +181,10 @@ public class SearchArtistFragment extends Fragment implements SearchCallback, Us
 
     @Override
     public void onArtistClicked(User clickedArtist) {
-
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("artist", clickedArtist);
+        ProfileFragment profileFragment = new ProfileFragment();
+        profileFragment.setArguments(bundle);
+        getFragmentManager().beginTransaction().add(R.id.search_layout, profileFragment).commit();
     }
 }
