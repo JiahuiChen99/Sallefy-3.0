@@ -53,7 +53,7 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
 
         mArtistsRecyclerView = (RecyclerView) view.findViewById(R.id.recommendArtistsList);
         LinearLayoutManager artistManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        ArtistsAdapter artistAdapter = new ArtistsAdapter(getContext(), null);
+        ArtistsAdapter artistAdapter = new ArtistsAdapter(getContext(), null, this);
         mArtistsRecyclerView.setLayoutManager(artistManager);
         mArtistsRecyclerView.setAdapter(artistAdapter);
 
@@ -185,7 +185,7 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
     @Override
     public void onUsersReceived(List<User> artists) {
         mArtists = (ArrayList) artists;
-        ArtistsAdapter adapter = new ArtistsAdapter(getContext(), mArtists);
+        ArtistsAdapter adapter = new ArtistsAdapter(getContext(), mArtists, this);
         mArtistsRecyclerView.setAdapter(adapter);
 
     }
@@ -253,8 +253,10 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
 
     @Override
     public void onArtistClicked(User clickedArtist) {
-
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("artist", clickedArtist);
+        ProfileFragment profileFragment = new ProfileFragment();
+        profileFragment.setArguments(bundle);
+        getFragmentManager().beginTransaction().replace(R.id.explore_layout, profileFragment).commit();
     }
-
-    //TODO: onUserSelected
 }

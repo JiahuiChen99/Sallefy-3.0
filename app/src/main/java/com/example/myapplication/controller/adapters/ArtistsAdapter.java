@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.model.User;
+import com.example.myapplication.restapi.callback.UserResourcesCallback;
 
 import java.util.ArrayList;
 
@@ -24,10 +25,12 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
     private ArrayList<User> mUsers;
     private Context mContext;
     private int NUM_VIEWHOLDERS = 0;
+    private UserResourcesCallback callback;
 
-    public ArtistsAdapter(Context context, ArrayList<User> users ) {
+    public ArtistsAdapter(Context context, ArrayList<User> users, UserResourcesCallback callback ) {
         this.mUsers = users;
         this.mContext = context;
+        this.callback = callback;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -60,7 +63,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ViewHold
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Clicked: " + mUsers.get(position).getLogin());
+                callback.onArtistClicked(mUsers.get(position));
             }
         });
         if (mUsers.get(position).getLogin() != null) {
