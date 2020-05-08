@@ -1,29 +1,32 @@
 package com.example.myapplication.controller.activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.myapplication.R;
 import com.example.myapplication.model.Playlist;
-import com.example.myapplication.model.Track;
-import com.example.myapplication.model.User;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
-import com.example.myapplication.restapi.manager.PlaylistManager;
-import com.example.myapplication.utils.Sesion;
+import com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView;
+
 
 import java.util.List;
 
 public class AddSongActivity extends AppCompatActivity implements PlaylistCallback {
 
-    private EditText etIdSong;
-    private EditText etIdPlaylist;
-    private EditText etNamePlaylist;
+    private TextView tvTitle;
+    private EditText etSongName;
+    private EditText etSongDuration;
     private Button etUpload;
+    private AnimatedCircleLoadingView loadingView;
+    private ConstraintLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +36,63 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
     }
 
     private void initViews() {
-        etIdSong = (EditText) findViewById(R.id.add_song_id);
-        etIdPlaylist = (EditText) findViewById(R.id.add_song_playlist_id);
-        etNamePlaylist = (EditText) findViewById(R.id.add_song_playlist_name);
+        tvTitle = findViewById(R.id.textView2);
+        etSongName = (EditText) findViewById(R.id.add_song_name);
+        etSongDuration = (EditText) findViewById(R.id.add_song_duration);
         etUpload = (Button) findViewById(R.id.add_song_button);
+        layout = findViewById(R.id.constraintLayout2);
         etUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getData(Integer.parseInt(etIdPlaylist.getText().toString()));
+                //getData(Integer.parseInt(etIdPlaylist.getText().toString()));
+                tvTitle.setText("Uploading ...");
+                layout.setVisibility(View.INVISIBLE);
+                startLoading();
+                uploading();
+            }
+        });
+        loadingView = findViewById(R.id.circle_loading_view);
+
+        loadingView.setAnimationListener(new AnimatedCircleLoadingView.AnimationListener() {
+            @Override
+            public void onAnimationEnd(boolean success) {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        finish();
+                    }
+                }, 1000);
+            }
+        });
+    }
+
+    private void startLoading(){
+        loadingView.startDeterminate();
+    }
+
+    private void uploading(){
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1500);
+                    for (int i = 0; i <= 100 ; i++) {
+                        Thread.sleep(100);
+                        changePercent(i);
+                    }
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+        };
+        new Thread(runnable).start();
+    }
+
+    private void changePercent(final int percent) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                loadingView.setPercent(percent);
             }
         });
     }
