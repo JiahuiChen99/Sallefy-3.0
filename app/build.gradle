@@ -82,4 +82,7 @@ dependencies {
     //Sliding Up Panel
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
 
+    //Loading button
+    implementation 'com.github.jlmd:AnimatedCircleLoadingView:1.1.5@aar'
+
 }
