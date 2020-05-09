@@ -85,4 +85,7 @@ dependencies {
     //Loading button
     implementation 'com.github.jlmd:AnimatedCircleLoadingView:1.1.5@aar'
 
+    //Matisse
+    implementation 'com.zhihu.android:matisse:0.5.2-beta3'
+
 }
