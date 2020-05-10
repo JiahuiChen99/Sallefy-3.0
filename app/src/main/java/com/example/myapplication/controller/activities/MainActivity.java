@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cloudinary.android.MediaManager;
 import com.example.myapplication.R;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.User;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements UserCallback {
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
+        MediaManager.init(this);
     }
 
     private void doLogin(String username, String userpassword) {
