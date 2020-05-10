@@ -29,6 +29,10 @@
         <activity android:name=".controller.activities.PaginaPrincipalActivity"/>
         <activity android:name=".controller.activities.AddSongActivity"/>
         <service android:enabled="true" android:name=".controller.music.MusicService"></service>
+
+        <meta-data
+            android:name="CLOUDINARY_URL"
+            android:value="cloudinary://197131348377583:iFfogcymcyWxAK5KNeYQ9ups2PY@yumenokko"/>
     </application>
 
 
