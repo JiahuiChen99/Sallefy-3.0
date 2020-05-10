@@ -33,7 +33,8 @@ import java.io.File;
 import java.util.List;
 
 public class AddSongActivity extends AppCompatActivity implements PlaylistCallback {
-    public static final int PICKER_REQUEST_CODE = 1;
+    public static final int SONG_SELECTION = 0;
+    public static final int THUMBNAIL_SELECTION = 1;
 
     private TextView tvTitle;
     private ImageView ivThumbnail;
@@ -44,6 +45,7 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
     private AnimatedCircleLoadingView loadingView;
     private ConstraintLayout layout;
     private List<String> selectedSong;
+    private ImageView songPreview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +68,13 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
                 if(hasPermissions(AddSongActivity.this, PERMISSIONS)){
                     ShowPicker();
                 }else{
-                    ActivityCompat.requestPermissions(AddSongActivity.this, PERMISSIONS, PICKER_REQUEST_CODE);
+                    ActivityCompat.requestPermissions(AddSongActivity.this, PERMISSIONS, THUMBNAIL_SELECTION);
                 }
             }
         });
+
+        songPreview = findViewById(R.id.add_song_preview);
+        songPreview.setVisibility(View.GONE);
         etSongName = (EditText) findViewById(R.id.add_song_name);
         etSongDuration = (EditText) findViewById(R.id.add_song_duration);
         etUpload = (Button) findViewById(R.id.add_song_button);
@@ -88,7 +93,7 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
         etSelectSong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                showSelectSong();
             }
         });
 
@@ -119,7 +124,7 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
                 .originalEnable(true)
                 .maxOriginalSize(10)
                 .imageEngine(new GlideEngine())
-                .forResult(PICKER_REQUEST_CODE);
+                .forResult(THUMBNAIL_SELECTION);
     }
 
     /**
@@ -132,7 +137,7 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case PICKER_REQUEST_CODE: {
+            case THUMBNAIL_SELECTION: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(
@@ -174,7 +179,7 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICKER_REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == THUMBNAIL_SELECTION && resultCode == RESULT_OK) {
             selectedSong = Matisse.obtainPathResult(data);
 
             RequestOptions requestOptions = new RequestOptions();
@@ -185,7 +190,26 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
                     .apply(requestOptions)
                     .into(ivThumbnail);
         }
+        if(requestCode == SONG_SELECTION && resultCode == RESULT_OK){
+            etSelectSong.setVisibility(View.GONE);
+            songPreview.setVisibility(View.VISIBLE);
+        }
     }
+
+
+    private void showSelectSong(){
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        try {
+            startActivityForResult(
+                    Intent.createChooser(intent, "Select a song to Upload"), SONG_SELECTION);
+        }catch (android.content.ActivityNotFoundException ex){
+            Toast.makeText(this, "Plase install a File Manager", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void startLoading(){
         loadingView.startDeterminate();
     }
