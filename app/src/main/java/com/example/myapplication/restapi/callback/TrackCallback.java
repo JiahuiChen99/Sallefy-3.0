@@ -27,4 +27,7 @@ public interface TrackCallback extends FailureCallback {
 
     void onArtistTracksReceived(List<Track> artistTracks);
     void onNoArtistTracks(Throwable noArtistTracks);
+
+    void onTrackUploaded(Track uploadedTrack);
+    void onNoTrackUploaded(Throwable notUploaded);
 }
