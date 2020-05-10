@@ -3,6 +3,7 @@ package com.example.myapplication.controller.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -20,6 +21,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
 import com.example.myapplication.R;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
@@ -30,7 +35,9 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public class AddSongActivity extends AppCompatActivity implements PlaylistCallback {
     public static final int SONG_SELECTION = 0;
@@ -44,8 +51,14 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
     private Button etSelectSong;
     private AnimatedCircleLoadingView loadingView;
     private ConstraintLayout layout;
-    private List<String> selectedSong;
+    private List<String> selectedThumbnail;
+    private Uri selectedSong;
     private ImageView songPreview;
+
+    Cloudinary cloudinary = new Cloudinary();
+
+    private String thumbnailURL;
+    private String songURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +95,11 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
         etUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //getData(Integer.parseInt(etIdPlaylist.getText().toString()));
+                try {
+                    uploadCloudinary();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 tvTitle.setText("Uploading ...");
                 layout.setVisibility(View.INVISIBLE);
                 startLoading();
@@ -110,6 +127,7 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
                 }, 1000);
             }
         });
+        MediaManager.init(this);
     }
 
     /**
@@ -180,17 +198,18 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == THUMBNAIL_SELECTION && resultCode == RESULT_OK) {
-            selectedSong = Matisse.obtainPathResult(data);
+            selectedThumbnail = Matisse.obtainPathResult(data);
 
             RequestOptions requestOptions = new RequestOptions();
             requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(20));
 
             Glide.with(this)
-                    .load(new File(selectedSong.get(0)))
+                    .load(new File(selectedThumbnail.get(0)))
                     .apply(requestOptions)
                     .into(ivThumbnail);
         }
         if(requestCode == SONG_SELECTION && resultCode == RESULT_OK){
+            selectedSong = data.getData();
             etSelectSong.setVisibility(View.GONE);
             songPreview.setVisibility(View.VISIBLE);
         }
@@ -239,6 +258,71 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
                 loadingView.setPercent(percent);
             }
         });
+    }
+
+    private void uploadCloudinary() throws IOException {
+        String requestId = MediaManager.get().upload(selectedThumbnail.get(0))
+                .unsigned("preset")
+                .callback(new UploadCallback() {
+                    @Override
+                    public void onStart(String requestId) {
+
+                    }
+
+                    @Override
+                    public void onProgress(String requestId, long bytes, long totalBytes) {
+                        //TODO: Change hardcoded progress
+                    }
+
+                    @Override
+                    public void onSuccess(String requestId, Map resultData) {
+                        thumbnailURL = resultData.get("secure_url").toString();
+                        System.out.println(thumbnailURL);
+                    }
+
+                    @Override
+                    public void onError(String requestId, ErrorInfo error) {
+
+                    }
+
+                    @Override
+                    public void onReschedule(String requestId, ErrorInfo error) {
+
+                    }
+                })
+                .dispatch();
+        //cloudinary.uploader().upload(selectedSong, ObjectUtils.asMap("resource_type", "video"));
+        String requestID2 = MediaManager.get().upload(selectedSong)
+                .unsigned("preset")
+                .option("resource_type", "video")
+                .callback(new UploadCallback() {
+                    @Override
+                    public void onStart(String requestId) {
+
+                    }
+
+                    @Override
+                    public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(String requestId, Map resultData) {
+                        songURL = resultData.get("secure_url").toString();
+                        System.out.println(songURL);
+                    }
+
+                    @Override
+                    public void onError(String requestId, ErrorInfo error) {
+
+                    }
+
+                    @Override
+                    public void onReschedule(String requestId, ErrorInfo error) {
+
+                    }
+                })
+                .dispatch();
     }
 
     private void getData(Integer idPlaylist) {
