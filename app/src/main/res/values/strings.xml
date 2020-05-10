@@ -52,6 +52,7 @@
     <string name="add_song_duration">Song duration</string>
     <string name="add_song_select_track">Select Track</string>
     <string name="add_song_upload">Upload</string>
+    <string name="add_song_choose">Select song</string>
 
     <!-- SEARCH -->
     <string name="search_Songs">Songs</string>
@@ -89,6 +90,8 @@
     <string name="followers">followers</string>
     <string name="following">following</string>
     <string name="userslist">Users list</string>
+
+    <string name="error_gif">x or y bound size should be at least %1$dpx and file size should be no more than %2$sM</string>
 
 
 
