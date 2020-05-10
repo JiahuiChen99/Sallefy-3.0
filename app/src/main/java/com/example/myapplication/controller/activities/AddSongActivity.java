@@ -21,13 +21,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.cloudinary.Cloudinary;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.example.myapplication.R;
-import com.example.myapplication.model.Playlist;
-import com.example.myapplication.restapi.callback.PlaylistCallback;
+import com.example.myapplication.model.Track;
+import com.example.myapplication.restapi.callback.TrackCallback;
+import com.example.myapplication.restapi.manager.TrackManager;
 import com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -39,7 +39,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class AddSongActivity extends AppCompatActivity implements PlaylistCallback {
+public class AddSongActivity extends AppCompatActivity implements TrackCallback {
     public static final int SONG_SELECTION = 0;
     public static final int THUMBNAIL_SELECTION = 1;
 
@@ -54,8 +54,6 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
     private List<String> selectedThumbnail;
     private Uri selectedSong;
     private ImageView songPreview;
-
-    Cloudinary cloudinary = new Cloudinary();
 
     private String thumbnailURL;
     private String songURL;
@@ -127,7 +125,6 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
                 }, 1000);
             }
         });
-        MediaManager.init(this);
     }
 
     /**
@@ -263,6 +260,7 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
     private void uploadCloudinary() throws IOException {
         String requestId = MediaManager.get().upload(selectedThumbnail.get(0))
                 .unsigned("preset")
+                .option("folder", "pictures")
                 .callback(new UploadCallback() {
                     @Override
                     public void onStart(String requestId) {
@@ -295,6 +293,7 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
         String requestID2 = MediaManager.get().upload(selectedSong)
                 .unsigned("preset")
                 .option("resource_type", "video")
+                .option("folder", "songs")
                 .callback(new UploadCallback() {
                     @Override
                     public void onStart(String requestId) {
@@ -310,6 +309,7 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
                     public void onSuccess(String requestId, Map resultData) {
                         songURL = resultData.get("secure_url").toString();
                         System.out.println(songURL);
+                        uploadSallefyAPI();
                     }
 
                     @Override
@@ -325,59 +325,93 @@ public class AddSongActivity extends AppCompatActivity implements PlaylistCallba
                 .dispatch();
     }
 
-    private void getData(Integer idPlaylist) {
-        //PlaylistManager.getInstance(this).seePlaylists(idPlaylist,this);
+    private void uploadSallefyAPI(){
+        TrackManager.getInstance(getApplicationContext())
+                .uploadSong(thumbnailURL, songURL, etSongName.getText().toString(), Integer.valueOf(etSongDuration.getText().toString()),this);
     }
 
     @Override
-    public void onPlaylistReceived(List<Playlist> playlist) {
-        /*if (playlist.getUser().getLogin().equals(Sesion.getInstance(this).getUser().getLogin())) {
-            List<Track> tracks = null;
-            tracks = playlist.getTracks();
-            tracks.add(new Track(Integer.parseInt(etIdSong.getText().toString())));
-            PlaylistManager.getInstance(this).modifyPlaylist(new Playlist(Integer.parseInt(etIdPlaylist.getText().toString()),
-                    etNamePlaylist.getText().toString(), tracks, true), this);
-        }
-        else{
-            Toast.makeText(getApplicationContext(), "No eres dueño de la playlist o no tienes permisos", Toast.LENGTH_LONG).show();
-        }*/
+    public void onTracksReceived(List<Track> tracks) {
+
     }
 
     @Override
-    public void onNoPlaylists(Throwable throwable) {
-        Toast.makeText(getApplicationContext(), "Call failed! " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+    public void onNoTracks(Throwable throwable) {
 
     }
 
+    @Override
+    public void onRecentTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoRecentTracksReceived(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onRecommendedTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoRecommendedTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onSpecificTrackReceived(Track track) {
+
+    }
+
+    @Override
+    public void onNoSpecificTrack(Track track) {
+
+    }
+
+    @Override
+    public void onTrackSelected(Integer id, String sectionID) {
+
+    }
+
+    @Override
+    public void onTrackLiked(Track like) {
+
+    }
+
+    @Override
+    public void onLikedTracksReceived(List<Track> likedTracks) {
+
+    }
+
+    @Override
+    public void onNoLikedTracks(Throwable noLikedTracks) {
+
+    }
+
+    @Override
+    public void onArtistTracksReceived(List<Track> artistTracks) {
+
+    }
+
+    @Override
+    public void onNoArtistTracks(Throwable noArtistTracks) {
+
+    }
+
+    @Override
+    public void onTrackUploaded(Track uploadedTrack) {
+
+    }
+
+    @Override
+    public void onNoTrackUploaded(Throwable notUploaded) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
-        Toast.makeText(getApplicationContext(), "Failure" + throwable.getMessage(), Toast.LENGTH_LONG).show();
-
-    }
-
-    public void onPlaylistCreated(Playlist playlists) {
-        Toast.makeText(getApplicationContext(), "Se ha añadido con éxito la canción", Toast.LENGTH_LONG).show();
-    }
-    public void onPlaylistFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onUserPlaylistsReceived(List<Playlist> playlists) {
-
-    }
-
-    @Override
-    public void onNoUserPlaylists(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onUserSpecificLikedPlaylistReceived(Playlist specificPlaylist) {
-
-    }
-
-    @Override
-    public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
 
     }
 }
