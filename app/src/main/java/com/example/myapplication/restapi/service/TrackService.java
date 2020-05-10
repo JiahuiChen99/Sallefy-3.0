@@ -6,9 +6,11 @@ import com.example.myapplication.model.Track;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
@@ -17,6 +19,8 @@ public interface TrackService {
     @GET("tracks")
     Call<List<Track>> getAllTracks(@Header("Authorization") String token);
 
+    @POST("tracks")
+    Call<Track> uploadTrack(@Body Track uploadTrack, @Header("Authorization") String token);
     @GET("tracks/{id}")
     Call<Track> getSpecificTrack(@Path("id") int id, @Header("Authorization") String token);
 
