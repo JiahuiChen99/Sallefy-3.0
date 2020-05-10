@@ -181,6 +181,16 @@ public class ExploreFragment extends Fragment implements TrackCallback, UserReso
 
     }
 
+    @Override
+    public void onTrackUploaded(Track uploadedTrack) {
+
+    }
+
+    @Override
+    public void onNoTrackUploaded(Throwable notUploaded) {
+
+    }
+
 
     @Override
     public void onUsersReceived(List<User> artists) {

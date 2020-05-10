@@ -461,4 +461,14 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
     public void onNoArtistTracks(Throwable noArtistTracks) {
 
     }
+
+    @Override
+    public void onTrackUploaded(Track uploadedTrack) {
+
+    }
+
+    @Override
+    public void onNoTrackUploaded(Throwable notUploaded) {
+
+    }
 }

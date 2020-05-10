@@ -186,6 +186,16 @@ public class SearchSongsFragment extends Fragment implements SearchCallback, Tra
     }
 
     @Override
+    public void onTrackUploaded(Track uploadedTrack) {
+
+    }
+
+    @Override
+    public void onNoTrackUploaded(Throwable notUploaded) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

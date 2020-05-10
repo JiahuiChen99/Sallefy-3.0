@@ -267,6 +267,16 @@ public class SearchGenreAdapter extends RecyclerView.Adapter<SearchGenreAdapter.
     }
 
     @Override
+    public void onTrackUploaded(Track uploadedTrack) {
+
+    }
+
+    @Override
+    public void onNoTrackUploaded(Throwable notUploaded) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

@@ -246,6 +246,16 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
     }
 
     @Override
+    public void onTrackUploaded(Track uploadedTrack) {
+
+    }
+
+    @Override
+    public void onNoTrackUploaded(Throwable notUploaded) {
+
+    }
+
+    @Override
     public void onTrackSelected(Track track) {
 
     }
