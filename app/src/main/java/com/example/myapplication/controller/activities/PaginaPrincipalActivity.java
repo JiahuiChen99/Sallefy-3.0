@@ -654,6 +654,16 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
     }
 
     @Override
+    public void onTrackUploaded(Track uploadedTrack) {
+
+    }
+
+    @Override
+    public void onNoTrackUploaded(Throwable notUploaded) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }
