@@ -33,7 +33,8 @@
         <meta-data
             android:name="CLOUDINARY_URL"
             android:value="cloudinary://197131348377583:iFfogcymcyWxAK5KNeYQ9ups2PY@yumenokko"/>
+        <meta-data
+            android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
+            android:value="com.example.myapplication.controller.music.CastOptionsProvider" />
     </application>
-
-
 </manifest>
