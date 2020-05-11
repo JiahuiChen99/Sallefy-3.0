@@ -213,4 +213,14 @@ public class LibraryUserPlaylistsFragment extends Fragment implements PlaylistCa
     public void onNoArtistTracks(Throwable noArtistTracks) {
 
     }
+
+    @Override
+    public void onTrackUploaded(Track uploadedTrack) {
+
+    }
+
+    @Override
+    public void onNoTrackUploaded(Throwable notUploaded) {
+
+    }
 }

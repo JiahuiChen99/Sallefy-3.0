@@ -46,10 +46,13 @@
     <string name="playlist_songs">Songs</string>
 
     <!-- ADD SONG -->
-    <string name="add_song_title">Añadir una cancion</string>
-    <string name="add_song_id">Id de la cancion</string>
-    <string name="add_song_playlist_id">Id de la playlist</string>
-    <string name="add_song_playlist_name">Nombre de la playlist</string>
+    <string name="add_song_title">Upload Song</string>
+    <string name="add_song_id">Song Name</string>
+    <string name="add_song_color">Color</string>
+    <string name="add_song_duration">Song duration</string>
+    <string name="add_song_select_track">Select Track</string>
+    <string name="add_song_upload">Upload</string>
+    <string name="add_song_choose">Select song</string>
 
     <!-- SEARCH -->
     <string name="search_Songs">Songs</string>
@@ -87,6 +90,8 @@
     <string name="followers">followers</string>
     <string name="following">following</string>
     <string name="userslist">Users list</string>
+
+    <string name="error_gif">x or y bound size should be at least %1$dpx and file size should be no more than %2$sM</string>
 
 
 

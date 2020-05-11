@@ -82,4 +82,13 @@ dependencies {
     //Sliding Up Panel
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
 
+    //Loading button
+    implementation 'com.github.jlmd:AnimatedCircleLoadingView:1.1.5@aar'
+
+    //Matisse
+    implementation 'com.zhihu.android:matisse:0.5.3-beta3'
+
+    //Cloudinary
+    implementation group: 'com.cloudinary', name: 'cloudinary-android', version: '1.24.0'
+
 }

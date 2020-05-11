@@ -213,4 +213,14 @@ public class LibraryLikedPlaylistsFragment extends Fragment implements PlaylistC
     public void onNoArtistTracks(Throwable noArtistTracks) {
 
     }
+
+    @Override
+    public void onTrackUploaded(Track uploadedTrack) {
+
+    }
+
+    @Override
+    public void onNoTrackUploaded(Throwable notUploaded) {
+
+    }
 }

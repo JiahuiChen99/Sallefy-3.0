@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.controller.activities.AddSongActivity;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.adapters.UserPlaylistAdapter;
 import com.example.myapplication.controller.music.MusicCallback;
@@ -36,6 +38,7 @@ import com.example.myapplication.restapi.manager.PlaylistManager;
 import com.example.myapplication.restapi.manager.UserResourcesManager;
 import com.example.myapplication.utils.Sesion;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
+import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
 import com.nightonke.boommenu.BoomButtons.TextInsideCircleButton;
 import com.nightonke.boommenu.BoomMenuButton;
 import com.nightonke.boommenu.ButtonEnum;
@@ -111,6 +114,14 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
         TextInsideCircleButton.Builder builder = new TextInsideCircleButton.Builder()
                 .normalImageRes(R.drawable.ic_cloud_upload_black_24dp)
                 .normalText("Upload Song");
+
+        builder.listener(new OnBMClickListener() {
+            @Override
+            public void onBoomButtonClick(int index) {
+                Intent uploadActivity = new Intent(getContext(), AddSongActivity.class);
+                startActivity(uploadActivity);
+            }
+        });
 
         builder.imageRect(new Rect(80, 70, 10, 10));
         builder.textSize(10);
@@ -448,6 +459,16 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
 
     @Override
     public void onNoArtistTracks(Throwable noArtistTracks) {
+
+    }
+
+    @Override
+    public void onTrackUploaded(Track uploadedTrack) {
+
+    }
+
+    @Override
+    public void onNoTrackUploaded(Throwable notUploaded) {
 
     }
 }

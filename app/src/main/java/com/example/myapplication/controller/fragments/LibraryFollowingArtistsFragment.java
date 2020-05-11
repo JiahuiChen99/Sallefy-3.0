@@ -50,7 +50,7 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
 
         mArtistsRecyclerView = (RecyclerCoverFlow) view.findViewById(R.id.library_artists);
         CoverFlowLayoutManger userPlaylistManager = new CoverFlowLayoutManger(false, false, true, (float) 1);
-        ArtistsAdapter followingArtistslistAdapter = new ArtistsAdapter( getContext(), null);
+        ArtistsAdapter followingArtistslistAdapter = new ArtistsAdapter( getContext(), null, this);
         mArtistsRecyclerView.setLayoutManager(userPlaylistManager);
         mArtistsRecyclerView.setAdapter(followingArtistslistAdapter);
         mArtistsRecyclerView.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected(){
@@ -127,7 +127,7 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
     public void onFollowingArtistsReceived(List<User> followingArtists) {
         mFollowingArtists = (ArrayList<User>) followingArtists;
         if(mFollowingArtists.size() != 0){
-            ArtistsAdapter adapter = new ArtistsAdapter(getContext(), mFollowingArtists);
+            ArtistsAdapter adapter = new ArtistsAdapter(getContext(), mFollowingArtists, this);
             mArtistsRecyclerView.setAdapter(adapter);
             UserResourcesManager.getInstance(getContext()).getFollowingArtistsTopSongs( mFollowingArtists.get(0).getLogin(), LibraryFollowingArtistsFragment.this);
         }
@@ -242,6 +242,16 @@ public class LibraryFollowingArtistsFragment extends Fragment implements UserRes
 
     @Override
     public void onNoArtistTracks(Throwable noArtistTracks) {
+
+    }
+
+    @Override
+    public void onTrackUploaded(Track uploadedTrack) {
+
+    }
+
+    @Override
+    public void onNoTrackUploaded(Throwable notUploaded) {
 
     }
 

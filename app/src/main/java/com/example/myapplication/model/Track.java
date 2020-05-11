@@ -38,6 +38,13 @@ public class Track implements Serializable {
         this.id = num;
     }
 
+    public Track(String thumbnail, String url, String name, Integer duration){
+        this.thumbnail = thumbnail;
+        this.url = url;
+        this.name = name;
+        this.duration = duration;
+    }
+
     private boolean selected = false;
 
     private boolean liked;

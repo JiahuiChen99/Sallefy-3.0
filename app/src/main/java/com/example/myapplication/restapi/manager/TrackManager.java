@@ -217,4 +217,29 @@ public class TrackManager {
         });
     }
 
+    public synchronized void uploadSong(String thumbnailURL, String songURL, String songName, Integer duration, final  TrackCallback trackCallback){
+        UserToken userToken = Sesion.getInstance(mContext).getUserToken();
+
+        Call<Track> call = mTrackService.uploadTrack(new Track(thumbnailURL, songURL, songName, duration), "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<Track>() {
+            @Override
+            public void onResponse(Call<Track> call, Response<Track> response) {
+                int code = response.code();
+
+                if(response.isSuccessful()){
+                    trackCallback.onTrackUploaded(response.body());
+                }else{
+                    trackCallback.onNoTrackUploaded(new Throwable("ERROR - Track not uploaded"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Track> call, Throwable t) {
+                trackCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+
+    }
+
+
 }
