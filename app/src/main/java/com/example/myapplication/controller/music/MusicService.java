@@ -146,6 +146,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     }
 
     public void updateTrackUI(){
+        setTrack(mTracks.get(currentTrack));
         callback.setSongID(currentTrack);
         callback.showShrinkedBar(true);
         callback.updateLikeButton(mTracks.get(currentTrack).isLiked());
