@@ -18,6 +18,14 @@
         android:textAlignment="center"
         tools:ignore="MissingConstraints" />
 
+    <Button
+        android:id="@+id/follow_playlist"
+        android:layout_width="70dp"
+        android:layout_height="36dp"
+        android:background="@drawable/boton_borde_verde"
+        tools:ignore="MissingConstraints" />
+        <!--android:text="@string/follow_pl"-->
+        android:textSize="12sp" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/playlist_recyclerView"
         android:layout_width="match_parent"

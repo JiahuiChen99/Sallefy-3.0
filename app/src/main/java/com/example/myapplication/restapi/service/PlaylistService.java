@@ -1,6 +1,7 @@
 package com.example.myapplication.restapi.service;
 
 
+import com.example.myapplication.model.Followed;
 import com.example.myapplication.model.Playlist;
 
 import java.util.List;
@@ -34,4 +35,10 @@ public interface PlaylistService {
 
     @GET("me/playlists/{id}")
     Call<Playlist> getSpecificLikedPlaylist(@Path("id") int id, @Header("Authorization") String token);
+
+    @GET("playlists/{id}/follow")
+    Call<Followed> checkFollow(@Path("id") Integer id, @Header("Authorization") String token);
+
+    @PUT("playlists/{id}/follow")
+    Call<Playlist> followPlaylist(@Path("id") Integer id, @Header("Authorization") String token);
 }

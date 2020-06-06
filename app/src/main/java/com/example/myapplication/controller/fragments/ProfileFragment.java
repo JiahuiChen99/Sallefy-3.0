@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.adapters.UserPlaylistAdapter;
+import com.example.myapplication.model.Followed;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.model.User;
@@ -163,6 +164,16 @@ public class ProfileFragment extends Fragment implements PlaylistCallback, Track
 
     @Override
     public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onErrorFollow(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowReceived(Followed follow) {
 
     }
 

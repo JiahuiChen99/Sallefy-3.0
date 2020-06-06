@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.callbacks.TrackListCallback;
+import com.example.myapplication.model.Followed;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
@@ -38,6 +40,7 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
     private static final String PLAY_VIEW = "PlayIcon";
     private static final String STOP_VIEW = "StopIcon";
 
+    private Button follow;
 
     private TextView tvTitle;
     private TextView tvPlaylist;
@@ -62,6 +65,8 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
     private ArrayList<Track> mTracks;
     private int currentTrack = 0;
 
+    private PlaylistManager mPlaylistManager;
+    private Integer id;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -70,7 +75,7 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
         setContentView(R.layout.activity_playlist_song);
         mDuration = 0;
         Intent i = new Intent();
-        Integer id = getIntent().getIntExtra("playlistId", 0);
+        this.id = getIntent().getIntExtra("playlistId", 0);
         initViews();
         getData(id);
     }
@@ -88,6 +93,15 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
     }
 
     private void initViews() {
+
+        follow = (Button) findViewById(R.id.follow_playlist);
+        checkFollow();
+        follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                follow();
+            }
+        });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.playlist_recyclerView);
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
@@ -169,6 +183,15 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
 
             }
         });
+    }
+
+    private void follow() {
+        mPlaylistManager.followPlaylist(this.id, this);
+    }
+
+    private void checkFollow(){
+        mPlaylistManager = new PlaylistManager(this);
+        mPlaylistManager.checkIfFollow(this, id);
     }
 
     private void playAudio() {
@@ -344,6 +367,19 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
     @Override
     public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
 
+    }
+
+    @Override
+    public void onErrorFollow(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowReceived(Followed follow) {
+        if(follow.getFollowed().equalsIgnoreCase("true")){
+            this.follow.setText("UNFOLLOW");
+        } else this.follow.setText("FOLLOW");
+        Toast.makeText(this, "Funciona", Toast.LENGTH_LONG).show();
     }
 
     @Override

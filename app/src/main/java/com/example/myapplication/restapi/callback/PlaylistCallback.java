@@ -1,6 +1,7 @@
 package com.example.myapplication.restapi.callback;
 
 
+import com.example.myapplication.model.Followed;
 import com.example.myapplication.model.Playlist;
 
 import java.util.List;
@@ -16,4 +17,7 @@ public interface PlaylistCallback extends FailureCallback{
 
     void onUserSpecificLikedPlaylistReceived(Playlist specificPlaylist);
     void onNoUserSpecificLikedPlaylist(Throwable throwable);
+
+    void onErrorFollow(Throwable throwable);
+    void onFollowReceived(Followed follow);
 }

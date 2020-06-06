@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 
+import com.example.myapplication.model.Followed;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.UserToken;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
@@ -50,6 +51,54 @@ public class PlaylistManager {
         mService = mRetrofit.create(PlaylistService.class);
     }
 
+    public void followPlaylist(final int id, final PlaylistCallback callback){
+        Call<Playlist> call = mService.followPlaylist(id, "Bearer " + Sesion.getInstance(mContext).getUserToken().getIdToken());
+
+        call.enqueue(new Callback<Playlist>() {
+            @Override
+            public void onResponse(Call<Playlist> call, Response<Playlist> response) {
+                if(response.isSuccessful()){
+                    callback.onFollowReceived(new Followed(response.body().isFollowed() + ""));
+                } else{
+                    try {
+                        callback.onErrorFollow(new Throwable(response.errorBody().string()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Playlist> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void checkIfFollow(final PlaylistCallback callback, Integer id){
+        UserToken userToken = Sesion.getInstance(mContext).getUserToken();
+        Call<Followed> call = mService.checkFollow(id, "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<Followed>() {
+            @Override
+            public void onResponse(Call<Followed> call, Response<Followed> response) {
+                int code = response.code();
+                if(response.isSuccessful()){
+                    callback.onFollowReceived(response.body());
+                } else{
+                    try{
+                        callback.onErrorFollow(new Throwable(response.errorBody().string()));
+                    } catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Followed> call, Throwable t) {
+
+            }
+        });
+    }
 
     public void createPlaylist(Playlist playlist, final PlaylistCallback callback) {
         UserToken userToken = Sesion.getInstance(mContext).getUserToken();

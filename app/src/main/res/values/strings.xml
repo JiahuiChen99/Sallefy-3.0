@@ -61,5 +61,6 @@
 
     <!-- User Profile Fragment -->
     <string name="followButton">follow</string>
+    <string name="follow_pl">FOLLOW</string>
 
 </resources>
