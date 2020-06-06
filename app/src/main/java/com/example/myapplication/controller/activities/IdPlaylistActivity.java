@@ -379,7 +379,7 @@ public class IdPlaylistActivity extends Activity implements TrackCallback, Track
         if(follow.getFollowed().equalsIgnoreCase("true")){
             this.follow.setText("UNFOLLOW");
         } else this.follow.setText("FOLLOW");
-        Toast.makeText(this, "Funciona", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Funciona", Toast.LENGTH_LONG).show();
     }
 
     @Override

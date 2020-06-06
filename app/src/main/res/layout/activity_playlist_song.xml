@@ -25,7 +25,7 @@
         android:background="@drawable/boton_borde_verde"
         tools:ignore="MissingConstraints" />
         <!--android:text="@string/follow_pl"-->
-        android:textSize="12sp" />
+        android:textSize="8sp" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/playlist_recyclerView"
         android:layout_width="match_parent"
