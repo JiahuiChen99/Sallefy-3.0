@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.controller.adapters.SearchPlaylistAdapter;
 import com.example.myapplication.controller.music.MusicCallback;
+import com.example.myapplication.model.Follow;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.SearchResult;
 import com.example.myapplication.model.Track;
@@ -143,6 +144,16 @@ public class SearchPlaylistsFragment extends Fragment implements SearchCallback,
 
     @Override
     public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowReceived(Follow follow) {
+
+    }
+
+    @Override
+    public void onFollowFaliure(Throwable throwable) {
 
     }
 
