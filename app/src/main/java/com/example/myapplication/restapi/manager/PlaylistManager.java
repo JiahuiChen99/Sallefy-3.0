@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 
+import com.example.myapplication.model.Follow;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.UserToken;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
@@ -208,6 +209,30 @@ public class PlaylistManager {
             @Override
             public void onFailure(Call<List<Playlist>> call, Throwable t) {
                 playlistcallback.onPlaylistFailure(t);
+            }
+        });
+    }
+
+    public synchronized void checkIfFollow(final Playlist playlist, final PlaylistCallback playlistCallback){
+        Call<Follow> call = mService.checkIfFollow(playlist.getId(), "Bearer " + Sesion.getInstance(mContext).getUserToken().getIdToken());
+
+        call.enqueue(new Callback<Follow>() {
+            @Override
+            public void onResponse(Call<Follow> call, Response<Follow> response) {
+                if(response.isSuccessful()){
+                    playlistCallback.onFollowReceived(response.body());
+                } else {
+                    try {
+                        playlistCallback.onFollowFaliure(new Throwable(response.errorBody().string()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Follow> call, Throwable t) {
+                playlistCallback.onFollowFaliure(t);
             }
         });
     }
