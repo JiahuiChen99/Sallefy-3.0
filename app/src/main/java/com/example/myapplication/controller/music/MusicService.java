@@ -1,33 +1,50 @@
 package com.example.myapplication.controller.music;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
-import android.provider.SyncStateContract;
-import android.util.Log;
 
-
+import android.os.PowerManager;
 import com.example.myapplication.model.Track;
-import com.example.myapplication.utils.Variables;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class MusicService extends Service {
+public class MusicService extends Service implements MediaPlayer.OnPreparedListener,
+        MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener{
 
     private MediaPlayer mediaPlayer;
     private final IBinder mBinder = new MusicBinder();
-    private AudioManager audioManager;
-    private boolean playingBeforeInterruption = false;
 
-    private ArrayList<Track> mTracks = new ArrayList<>();
-    private int currentTrack = 0;
+    private ArrayList<Track> mTracks;
+    private Track song;
+    private int currentTrack;
 
-    private MusicCallback mCallback;
+    private MusicCallback callback;
+
+    public void setCallback(MusicCallback callback){
+        this.callback = callback;
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+
+    }
+
+    @Override
+    public boolean onError(MediaPlayer mp, int what, int extra) {
+        return false;
+    }
+
+    @Override
+    public void onPrepared(MediaPlayer mp) {
+
+    }
 
     public class MusicBinder extends Binder {
         public MusicService getService(){
@@ -35,233 +52,148 @@ public class MusicService extends Service {
         }
     }
 
-    public MusicService() {
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent.getStringExtra(Variables.URL) != null)
-            playStream(intent.getStringExtra(Variables.URL));
-
-        return START_REDELIVER_INTENT;
-    }
-
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
     }
 
-    public void stopService() {
-        pausePlayer();
+    @Override
+    public boolean onUnbind(Intent intent) {
+        mediaPlayer.stop();;
+        mediaPlayer.release();
         stopSelf();
         onDestroy();
+        return false;
     }
 
-    public void playStream(String url) {
-        if (mediaPlayer != null) {
-            try {
-                mediaPlayer.stop();
-            } catch(Exception e) {
-            }
-            mediaPlayer = null;
-        }
+    @Override
+    public void onCreate() {
+        super.onCreate();
 
+        currentTrack = 0;
         mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                updateTrack(1);
-            }
-        });
 
-        try {
-            mediaPlayer.setDataSource(url);
-            mediaPlayer.prepare();
-            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mediaPlayer.start();
-                    System.out.println("Entra en el prepared");
+        this.callback = callback;
 
-                    if (mCallback != null) {
-                        System.out.println("Entra en el callback");
-                        mCallback.onMusicPlayerPrepared();
-                    }
-                }
-            });
-        } catch(Exception e) {
-
-        }
-
+        initMediaPlayer();
     }
 
-    public void playStream(ArrayList<Track> tracks, int currentTrack) {
+    private void initMediaPlayer(){
+        // Let playback continue when the device continue idle
+        //mediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
-        if (mediaPlayer != null) {
-            try {
-                mediaPlayer.stop();
-            } catch(Exception e) {
-            }
-            mediaPlayer = null;
-        }
+        //Interface Implemented in the Class
+        mediaPlayer.setOnPreparedListener(this);
+        mediaPlayer.setOnCompletionListener(this);
+        mediaPlayer.setOnErrorListener(this);
+    }
 
+    public void setTracks(ArrayList<Track> tracks, int currentTrack){
         mTracks = tracks;
         this.currentTrack = currentTrack;
-        String url = mTracks.get(currentTrack).getUrl();
+        updateTrackUI();
+        playSong();
+    }
 
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+    public ArrayList<Track> getTracks(){
+        return mTracks;
+    }
+
+    public void setTrack(Track song){
+        this.song = song;
+    }
+
+    public Track getTrack(){
+        return song;
+    }
+
+    public void playSong() {
+        mediaPlayer.reset();
+        //Fetch the song buffer it and play it
+        Track track = mTracks.get(currentTrack);
+        try {
+            mediaPlayer.setDataSource(track.getUrl());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mediaPlayer.prepareAsync();
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
-            public void onCompletion(MediaPlayer mp) {
-                updateTrack(1);
+            public void onPrepared(MediaPlayer mp) {
+
+                callback.updateMaxSeekBar(mediaPlayer.getDuration());
+                playAudio();
             }
         });
-
-        try {
-            mediaPlayer.setDataSource(url);
-            mediaPlayer.prepare();
-            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mediaPlayer.start();
-                    mCallback.onMusicPlayerPrepared();
-
-                }
-            });
-        } catch(Exception e) {
-        }
-
-    }
-
-    public int getAudioSession() {
-        return mediaPlayer.getAudioSessionId();
-    }
-
-    public Track getCurrentTrack() {
-        return mTracks.size() > 0 ? mTracks.get(currentTrack):null;
     }
 
     public void updateTrack(int offset) {
         currentTrack = ((currentTrack+offset)%(mTracks.size()));
         currentTrack = currentTrack >= mTracks.size() ? 0:currentTrack;
+        currentTrack = currentTrack < 0 ? (mTracks.size()-1):currentTrack;
+
 
         String newUrl = mTracks.get(currentTrack).getUrl();
         try {
-            mediaPlayer.reset();
-            mediaPlayer.setDataSource(newUrl);
-            //mediaPlayer.pause();
-            mediaPlayer.prepare();
+            playSong();
         } catch(Exception e) {
         }
+
+        //Update view
+        updateTrackUI();
     }
 
-    public void pausePlayer() {
-        try {
-            mediaPlayer.pause();
-           // showNotification();
-        } catch (Exception e) {
-            Log.d(" EXCEPTION", "failed to ic_pause media player.");
-        }
+    public void updateTrackUI(){
+        //callback.updatePlayPauseButton();
+        callback.showShrinkedBar(true);
+        callback.updateLikeButton(mTracks.get(currentTrack).isLiked());
+        callback.updateSongTitle(mTracks.get(currentTrack).getName());
+        callback.updateSongImage(mTracks.get(currentTrack).getThumbnail());
+        callback.updateSeekBar(mediaPlayer.getCurrentPosition());
+        callback.updateArtist(mTracks.get(currentTrack).getUserLogin());
     }
 
-    public void playPlayer() {
-        try {
-            getAudioFocusAndPlay();
-            //showNotification();
-        } catch (Exception e) {
-            Log.d("EXCEPTION", "failed to start media player.");
-        }
+
+    public void seekTo(int newPosition){
+        mediaPlayer.seekTo(newPosition);
     }
 
-    public void togglePlayer() {
-        try {
-            if (mediaPlayer.isPlaying()) {
-                pausePlayer();
-            } else {
-                playPlayer();
-            }
-        }catch(Exception e) {
-            Log.d("EXCEPTION", "failed to toggle media player.");
-        }
+    public void previousSong(){
+        //TODO: Update View
+        currentTrack -= 1;
     }
 
-    public boolean isPlaying() {
-        return mediaPlayer != null && mediaPlayer.isPlaying();
+    public void nextSong(){
+        currentTrack += 1;
     }
 
-    // audio focus section
-    public void getAudioFocusAndPlay () {
-        audioManager = (AudioManager) this.getBaseContext().getSystemService(Context.AUDIO_SERVICE);
-
-        int result = audioManager.requestAudioFocus(afChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
-        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            mediaPlayer.start();
-        }
+    public int getCurrentPosition(){
+        return mediaPlayer.getCurrentPosition();
     }
 
-    public void setCallback(MusicCallback callback) {
-        mCallback = callback;
+    public MediaPlayer getMediaPlayer(){
+        return mediaPlayer;
     }
 
-    public void setCurrentDuration(int time) {
-        try {
-            mediaPlayer.seekTo(time);
-        } catch (Exception e) {
-            Log.d("EXCEPTION", "Failed to set the duration");
-        }
+
+    public Track getCurrentTrack() {
+        return mTracks.size() > 0 ? mTracks.get(currentTrack):null;
     }
 
-    public int getCurrrentPosition() {
-        try {
-            if (mediaPlayer != null) {
-                return mediaPlayer.getCurrentPosition();
-            } else {
-                return 0;
-            }
-        }catch(Exception e) {
-            Log.d("EXCEPTION", "Failed to get the duration");
-        }
-        return 0;
+
+
+    public void playAudio() {
+        mediaPlayer.start();
+        callback.updateSeekBar(mediaPlayer.getCurrentPosition());
+        callback.updatePlayPauseButton(true);
     }
 
-    public int getMaxDuration() {
-        try {
-            if (mediaPlayer != null) {
-                return mediaPlayer.getDuration();
-            } else {
-                return 0;
-            }
-        }catch(Exception e) {
-            Log.d("EXCEPTION", "Failed to get the duration");
-        }
-        return 0;
+    public void pauseAudio() {
+        mediaPlayer.pause();
+        callback.updateSeekBar(mediaPlayer.getCurrentPosition());
+        callback.updatePlayPauseButton(false);
     }
 
-    AudioManager.OnAudioFocusChangeListener afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
-        @Override
-        public void onAudioFocusChange(int focusChange) {
-            if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
-                if (mediaPlayer.isPlaying()) {
-                    playingBeforeInterruption = true;
-                } else {
-                    playingBeforeInterruption = false;
-                }
-                pausePlayer();
-            } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
-                if (playingBeforeInterruption) {
-                    playPlayer();
-                }
-            } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
-                pausePlayer();
-                audioManager.abandonAudioFocus(afChangeListener);
-            }
-        }
-    };
 }

@@ -20,6 +20,7 @@ import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.adapters.UserPlaylistAdapter;
 import com.example.myapplication.controller.callbacks.TrackListCallback;
 import com.example.myapplication.model.Followed;
+import com.example.myapplication.controller.music.MusicCallback;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
@@ -40,6 +41,8 @@ public class LibraryLikedPlaylistsFragment extends Fragment implements PlaylistC
     private TrackCallback callback;
     private Context context;
     private Integer playlistID = 0;
+
+    private MusicCallback sendTracksCallback;
 
     public static LibraryLikedPlaylistsFragment getInstance(){
         return new LibraryLikedPlaylistsFragment();
@@ -71,6 +74,23 @@ public class LibraryLikedPlaylistsFragment extends Fragment implements PlaylistC
         getData();
 
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+
+        try {
+            sendTracksCallback = (MusicCallback) context;
+        }catch (ClassCastException e){
+            System.out.println("Error, class doesn't implement the interface");
+        }
+    }
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        sendTracksCallback = null;
     }
 
     private void getData(){
@@ -179,11 +199,7 @@ public class LibraryLikedPlaylistsFragment extends Fragment implements PlaylistC
 
     @Override
     public void onTrackSelected(Integer id, String sectionID) {
-        Intent intent = new Intent(getActivity(), TrackDetailsActivity.class);
-        intent.putExtra("songId", id);
-        intent.putExtra("sectionId", LikedPlaylistAdapter.TAG);
-        intent.putExtra("playlistID", mPlaylists.get(playlistID).getId());
-        startActivity(intent);
+        sendTracksCallback.setTracks((ArrayList<Track>) mPlaylists.get(playlistID).getTracks(), id);
     }
 
     @Override

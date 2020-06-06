@@ -18,6 +18,7 @@ import com.example.myapplication.controller.activities.TrackDetailsActivity;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.adapters.UserPlaylistAdapter;
 import com.example.myapplication.controller.callbacks.TrackListCallback;
+import com.example.myapplication.controller.music.MusicCallback;
 import com.example.myapplication.model.Track;
 
 import com.example.myapplication.restapi.callback.TrackCallback;
@@ -31,6 +32,7 @@ public class LibraryFavouriteSongsFragment extends Fragment implements TrackCall
     private ArrayList<Track> favouriteSongsList;
     private RecyclerView msongListRecyclerView;
 
+    private MusicCallback sendTracksCallback;
 
     public static LibraryFavouriteSongsFragment getInstance(){
         return new LibraryFavouriteSongsFragment();
@@ -50,6 +52,23 @@ public class LibraryFavouriteSongsFragment extends Fragment implements TrackCall
         getData();
 
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+
+        try {
+            sendTracksCallback = (MusicCallback) context;
+        }catch (ClassCastException e){
+            System.out.println("Error, class doesn't implement the interface");
+        }
+    }
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        sendTracksCallback = null;
     }
 
     private void getData(){
@@ -100,10 +119,11 @@ public class LibraryFavouriteSongsFragment extends Fragment implements TrackCall
 
     @Override
     public void onTrackSelected(Integer id, String sectionID) {
-        Intent intent = new Intent(getActivity(), TrackDetailsActivity.class);
+        /*Intent intent = new Intent(getActivity(), TrackDetailsActivity.class);
         intent.putExtra("songId", id);
         intent.putExtra("sectionId", "Favourite Songs");
-        startActivity(intent);
+        startActivity(intent);*/
+        sendTracksCallback.setTracks(favouriteSongsList, id);
     }
 
     @Override
