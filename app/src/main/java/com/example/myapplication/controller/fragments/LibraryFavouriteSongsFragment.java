@@ -146,6 +146,16 @@ public class LibraryFavouriteSongsFragment extends Fragment implements TrackCall
     }
 
     @Override
+    public void onTrackUploaded(Track uploadedTrack) {
+
+    }
+
+    @Override
+    public void onNoTrackUploaded(Throwable notUploaded) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

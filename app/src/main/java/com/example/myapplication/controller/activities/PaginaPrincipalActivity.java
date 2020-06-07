@@ -1,11 +1,14 @@
 package com.example.myapplication.controller.activities;
 
+import android.app.DownloadManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
@@ -22,11 +25,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.mediarouter.app.MediaRouteButton;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
@@ -37,17 +40,28 @@ import com.example.myapplication.controller.fragments.ExploreFragment;
 import com.example.myapplication.controller.fragments.ProfileFragment;
 import com.example.myapplication.controller.fragments.LibraryFragment;
 import com.example.myapplication.controller.fragments.SearchFragment;
-import com.example.myapplication.model.User;
 import com.example.myapplication.utils.Sesion;
 import com.example.myapplication.controller.music.MusicCallback;
 import com.example.myapplication.controller.music.MusicService;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.TrackCallback;
 import com.example.myapplication.restapi.manager.TrackManager;
+import com.google.android.gms.cast.MediaInfo;
+import com.google.android.gms.cast.MediaLoadRequestData;
+import com.google.android.gms.cast.MediaMetadata;
+import com.google.android.gms.cast.framework.CastButtonFactory;
+import com.google.android.gms.cast.framework.CastContext;
+import com.google.android.gms.cast.framework.CastSession;
+import com.google.android.gms.cast.framework.CastStateListener;
+import com.google.android.gms.cast.framework.SessionManagerListener;
+import com.google.android.gms.cast.framework.media.RemoteMediaClient;
+import com.google.android.gms.common.images.WebImage;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.sackcentury.shinebuttonlib.ShineButton;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,8 +100,7 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
     private String url;
     private String songName;
     private String artistName;
-
-
+    private String songURL;
 
     private static final String PLAY_VIEW = "PlayIcon";
     private static final String STOP_VIEW = "StopIcon";
@@ -125,7 +138,12 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
     private ConstraintLayout shrinkedHeader;
     RelativeLayout shrinkedLayout;
 
-
+    private CastContext mCastContext;
+    private MenuItem mediaRouteMenuItem;
+    private CastSession mCastSession;
+    private androidx.mediarouter.app.MediaRouteButton mMediaRouteButton;
+    private SessionManagerListener<CastSession> mSessionManagerListener;
+    private String imageURL;
 
     private int mDuration;
     private int songID = 0;
@@ -135,6 +153,7 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
 
@@ -154,6 +173,89 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
         initViewsSongUI();
         loadData();
         configSliding();
+
+        mMediaRouteButton = (MediaRouteButton) findViewById(R.id.media_route_button);
+        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mMediaRouteButton);
+        mCastContext = CastContext.getSharedInstance(this);
+        mSessionManagerListener = new SessionManagerListener<CastSession>() {
+            @Override
+            public void onSessionStarting(CastSession castSession) {
+            }
+
+            @Override
+            public void onSessionStarted(CastSession castSession, String s) {
+                mCastSession = mCastContext.getSessionManager().getCurrentCastSession();
+                loadRemoteMedia(0, true);
+            }
+
+            @Override
+            public void onSessionStartFailed(CastSession castSession, int i) {
+
+            }
+
+            @Override
+            public void onSessionEnding(CastSession castSession) {
+
+            }
+
+            @Override
+            public void onSessionEnded(CastSession castSession, int i) {
+
+            }
+
+            @Override
+            public void onSessionResuming(CastSession castSession, String s) {
+
+            }
+
+            @Override
+            public void onSessionResumed(CastSession castSession, boolean b) {
+
+            }
+
+            @Override
+            public void onSessionResumeFailed(CastSession castSession, int i) {
+
+            }
+
+            @Override
+            public void onSessionSuspended(CastSession castSession, int i) {
+
+            }
+        };
+
+        mCastContext.getSessionManager().addSessionManagerListener(mSessionManagerListener, CastSession.class);
+    }
+
+    private void loadRemoteMedia(int position, boolean autoPlay){
+        if(mCastSession == null){
+            System.out.println("NULLLLLLLLLLLLLLLLLLLLLLLLLL");
+            return;
+        }
+        RemoteMediaClient remoteMediaClient = mCastSession.getRemoteMediaClient();
+        if(remoteMediaClient == null){
+            System.out.println("NULLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL 2");
+            return;
+        }
+        remoteMediaClient.load(new MediaLoadRequestData.Builder()
+                        .setMediaInfo(buildMediaInfo())
+                        .setAutoplay(autoPlay)
+                        .setCurrentTime(position)
+                        .build());
+    }
+
+    private MediaInfo buildMediaInfo(){
+        MediaMetadata songMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK);
+
+        songMetadata.putString(MediaMetadata.KEY_TITLE, tvSongName.getText().toString());
+        songMetadata.putString(MediaMetadata.KEY_ARTIST, artistName);
+        songMetadata.addImage(new WebImage(Uri.parse(imageURL)));
+        return new MediaInfo.Builder(musicService.getTrack().getUrl())
+                .setStreamDuration(MediaInfo.STREAM_TYPE_BUFFERED)
+                .setContentType("audio/mpeg")
+                .setMetadata(songMetadata)
+                .setStreamDuration(musicService.getTrack().getDuration()*1000)
+                .build();
     }
 
     private void initService(){
@@ -319,17 +421,33 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
             }
         });
         btnDownload = (ImageButton) findViewById(R.id.download);
-        btnDownload.setOnClickListener(new View.OnClickListener(){
+        btnDownload.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
+                DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+                Uri uri = Uri.parse(songURL);
 
+                DownloadManager.Request request = new DownloadManager.Request(uri);
+                request.setTitle(songName);
+                request.setDescription("Downloading ...");
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, songName);
+
+                downloadManager.enqueue(request);
             }
         });
         btnShareSong = (ImageButton) findViewById(R.id.share);
         btnShareSong.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                Intent send = new Intent(Intent.ACTION_SEND);
+                send.putExtra(Intent.EXTRA_TEXT, songURL);
 
+                send.setType("text/plain");
+
+                send.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                startActivity(Intent.createChooser(send, "SNS"));
             }
         });
         mHandler = new Handler();
@@ -494,6 +612,9 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
         tvHeaderSongName.setText(title);
         tvHeaderSongName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         tvHeaderSongName.setSelected(true);
+
+
+        songName = title;
     }
 
     @Override
@@ -505,6 +626,7 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
 
     @Override
     public void updateSongImage(String imageURL) {
+        this.imageURL = imageURL;
         RequestOptions requestOptions = new RequestOptions();
         requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(30));
         Glide.with(this)
@@ -553,6 +675,11 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
     @Override
     public void setSongID(int songID) {
         this.songID = songID;
+    }
+
+    @Override
+    public void updateSongURL(String url) {
+        this.songURL = url;
     }
 
     private String createTimeLabel(Integer duration){
@@ -650,6 +777,16 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
 
     @Override
     public void onNoArtistTracks(Throwable noArtistTracks) {
+
+    }
+
+    @Override
+    public void onTrackUploaded(Track uploadedTrack) {
+
+    }
+
+    @Override
+    public void onNoTrackUploaded(Throwable notUploaded) {
 
     }
 

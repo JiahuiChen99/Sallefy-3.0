@@ -43,9 +43,9 @@ public interface UserResourceService {
     @GET("users/{login}")
     Call<User> getUser(@Path("login") String artistLogin, @Header("Authorization") String token);
 
-    @GET("me/followers")
-    Call<List<User>> getUserFollowers(@Header("Authorization") String token);
+    @GET("users/{login}/followers")
+    Call<List<User>> getUserFollowers(@Path("login") String artistLogin, @Header("Authorization") String token);
 
-    @GET("me/followings")
-    Call<List<User>> getUserFollowing(@Header("Authorization") String token);
+    @GET("users/{login}/following")
+    Call<List<User>> getUserFollowing(@Path("login") String artistLogin, @Header("Authorization") String token);
 }

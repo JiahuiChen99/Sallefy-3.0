@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,9 +24,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.controller.activities.AddPlaylistActivity;
+import com.example.myapplication.controller.activities.AddSongActivity;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.adapters.UserPlaylistAdapter;
 import com.example.myapplication.controller.music.MusicCallback;
+import com.example.myapplication.model.Followed;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.model.User;
@@ -36,6 +40,7 @@ import com.example.myapplication.restapi.manager.PlaylistManager;
 import com.example.myapplication.restapi.manager.UserResourcesManager;
 import com.example.myapplication.utils.Sesion;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
+import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
 import com.nightonke.boommenu.BoomButtons.TextInsideCircleButton;
 import com.nightonke.boommenu.BoomMenuButton;
 import com.nightonke.boommenu.ButtonEnum;
@@ -48,8 +53,23 @@ import recycler.coverflow.CoverFlowLayoutManger;
 import recycler.coverflow.RecyclerCoverFlow;
 
 public  class ProfileFragment extends Fragment implements PlaylistCallback, TrackCallback, UserResourcesCallback {
+    @Override
+    public void onErrorFollow(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowReceived(Followed follow) {
+
+    }
 
     private static final String FOLLOW = "FollowIcon";
+
+    @Override
+    public void onPlaylistSelected(Integer id, String sectionId) {
+
+    }
+
     private static final String FOLLOWING = "FollowingIcon";
 
     private User user;
@@ -92,14 +112,14 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
         following.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserResourcesManager.getInstance(getContext()).getUserFollowing(ProfileFragment.this);
+                UserResourcesManager.getInstance(getContext()).getUserFollowing(user.getLogin(), ProfileFragment.this);
             }
         });
         followers = view.findViewById(R.id.linearLayout6);
         followers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserResourcesManager.getInstance(getContext()).getUserFollowers(ProfileFragment.this);
+                UserResourcesManager.getInstance(getContext()).getUserFollowers(user.getLogin(), ProfileFragment.this);
             }
         });
         btnMore = view.findViewById(R.id.profile_more_button);
@@ -112,6 +132,14 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
                 .normalImageRes(R.drawable.ic_cloud_upload_black_24dp)
                 .normalText("Upload Song");
 
+        builder.listener(new OnBMClickListener() {
+            @Override
+            public void onBoomButtonClick(int index) {
+                Intent uploadActivity = new Intent(getContext(), AddSongActivity.class);
+                startActivity(uploadActivity);
+            }
+        });
+
         builder.imageRect(new Rect(80, 70, 10, 10));
         builder.textSize(10);
         builder.ellipsize(TextUtils.TruncateAt.MARQUEE);
@@ -120,6 +148,15 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
         builder = new TextInsideCircleButton.Builder()
                 .normalImageRes(R.drawable.ic_playlist_add_black_24dp)
                 .normalText("New Playlist");
+
+        builder.listener(new OnBMClickListener() {
+            @Override
+            public void onBoomButtonClick(int index) {
+                Intent uploadActivity = new Intent(getContext(), AddPlaylistActivity.class);
+                startActivity(uploadActivity);
+            }
+        });
+
         builder.imageRect(new Rect(80, 70, 10, 10));
         btnMore.addBuilder(builder);
 
@@ -448,6 +485,16 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
 
     @Override
     public void onNoArtistTracks(Throwable noArtistTracks) {
+
+    }
+
+    @Override
+    public void onTrackUploaded(Track uploadedTrack) {
+
+    }
+
+    @Override
+    public void onNoTrackUploaded(Throwable notUploaded) {
 
     }
 }

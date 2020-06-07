@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
-import com.example.myapplication.controller.adapters.UserPlaylistAdapter;
 import com.example.myapplication.controller.music.MusicCallback;
 import com.example.myapplication.model.Followed;
 import com.example.myapplication.model.Playlist;
@@ -26,13 +27,55 @@ import com.example.myapplication.restapi.manager.PlaylistManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import recycler.coverflow.CoverFlowLayoutManger;
-import recycler.coverflow.RecyclerCoverFlow;
+public class PlaylistSongsFragment extends Fragment implements PlaylistCallback, TrackCallback {
 
-public class LibraryUserPlaylistsFragment extends Fragment implements PlaylistCallback, TrackCallback {
+    private RecyclerView mRecyclerView;
+    private TextView tvName;
+    private Button bFollow;
+    private ArrayList<Track> tracks;
+    private Playlist playlist;
+    private boolean mIsBound;
+
+    private PlaylistManager mPlaylistManager;
+    private MusicCallback sendTracksCallback;
+
+    @Nullable
     @Override
-    public void onPlaylistSelected(Integer id, String sectionId) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_playlist_songs, container, false);
 
+        Bundle bundle = getArguments();
+        playlist = (Playlist) bundle.getParcelableArrayList("playlist").get(0);
+        tracks = (ArrayList<Track>) playlist.getTracks();
+
+        tvName = (TextView) view.findViewById(R.id.playlist_name);
+        tvName.setText(playlist.getName());
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.playlist_recyclerView);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        TrackListAdapter adapter = new TrackListAdapter(this, getContext(), tracks);
+        mRecyclerView.setLayoutManager(manager);
+        mRecyclerView.setAdapter(adapter);
+
+        bFollow = (Button) view.findViewById(R.id.follow_playlist);
+        checkFollow();
+        bFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateFollow();
+            }
+        });
+
+        return view;
+    }
+
+    private void updateFollow() {
+        mPlaylistManager.followPlaylist(playlist.getId(), this);
+    }
+
+    private void checkFollow() {
+        mPlaylistManager = new PlaylistManager(getContext());
+        mPlaylistManager.checkIfFollow(this, playlist.getId());
     }
 
     @Override
@@ -42,48 +85,9 @@ public class LibraryUserPlaylistsFragment extends Fragment implements PlaylistCa
 
     @Override
     public void onFollowReceived(Followed follow) {
-
-    }
-
-    private RecyclerCoverFlow mPlaylistRecyclerView;
-    private ArrayList<Playlist> mPlaylists;
-    private RecyclerView msongList;
-    private TrackCallback callback;
-    private Context context;
-    private Integer playlistID = 0;
-
-    private MusicCallback sendTracksCallback;
-
-    public static LibraryUserPlaylistsFragment getInstance(){
-        return new LibraryUserPlaylistsFragment();
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_library_user_playlists, container, false);
-
-        mPlaylistRecyclerView = (RecyclerCoverFlow) view.findViewById(R.id.library_playlist);
-        CoverFlowLayoutManger userPlaylistManager = new CoverFlowLayoutManger(false, false, true, (float) 1);
-        UserPlaylistAdapter userPlaylistAdapter = new UserPlaylistAdapter( getContext(), null);
-        mPlaylistRecyclerView.setLayoutManager(userPlaylistManager);
-        mPlaylistRecyclerView.setAdapter(userPlaylistAdapter);
-        mPlaylistRecyclerView.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected(){
-            @Override
-            public void onItemSelected(int position) {
-                System.out.println("POSITION: " + position + " - " + mPlaylists.get(position).getThumbnail());
-                playlistID = position;
-                TrackListAdapter songsListAdapter = new TrackListAdapter(LibraryUserPlaylistsFragment.this, getContext(), (ArrayList<Track>) mPlaylists.get(position).getTracks());
-                msongList.setAdapter(songsListAdapter);
-            }});
-
-        msongList = (RecyclerView) view.findViewById(R.id.library_playlist_songs);
-        LinearLayoutManager songsListManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        msongList.setLayoutManager(songsListManager);;
-
-        getData();
-
-        return view;
+        if(follow.getFollowed().equalsIgnoreCase("true")){
+            bFollow.setText("UNFOLLOW");
+        } else bFollow.setText("FOLLOW");
     }
 
     @Override
@@ -101,16 +105,6 @@ public class LibraryUserPlaylistsFragment extends Fragment implements PlaylistCa
     public void onDetach(){
         super.onDetach();
         sendTracksCallback = null;
-    }
-
-    private void getData(){
-        PlaylistManager.getInstance(this.getActivity()).getUserPlaylists(this);
-        mPlaylists = new ArrayList<>();
-    }
-
-    @Override
-    public void onFailure(Throwable throwable) {
-
     }
 
     @Override
@@ -134,14 +128,13 @@ public class LibraryUserPlaylistsFragment extends Fragment implements PlaylistCa
     }
 
     @Override
+    public void onPlaylistSelected(Integer id, String sectionId) {
+
+    }
+
+    @Override
     public void onUserPlaylistsReceived(List<Playlist> playlists) {
-        mPlaylists = (ArrayList) playlists;
-        if(mPlaylists.size() != 0){
-            UserPlaylistAdapter adapter = new UserPlaylistAdapter(getContext(), mPlaylists);
-            mPlaylistRecyclerView.setAdapter(adapter);
-            TrackListAdapter songsListAdapter = new TrackListAdapter(this, getContext(), (ArrayList<Track>) mPlaylists.get(0).getTracks());
-            msongList.setAdapter(songsListAdapter);
-        }
+
     }
 
     @Override
@@ -201,7 +194,7 @@ public class LibraryUserPlaylistsFragment extends Fragment implements PlaylistCa
 
     @Override
     public void onTrackSelected(Integer id, String sectionID) {
-        sendTracksCallback.setTracks((ArrayList<Track>) mPlaylists.get(playlistID).getTracks(), id);
+        sendTracksCallback.setTracks(tracks, id);
     }
 
     @Override
@@ -236,6 +229,11 @@ public class LibraryUserPlaylistsFragment extends Fragment implements PlaylistCa
 
     @Override
     public void onNoTrackUploaded(Throwable notUploaded) {
+
+    }
+
+    @Override
+    public void onFailure(Throwable throwable) {
 
     }
 }

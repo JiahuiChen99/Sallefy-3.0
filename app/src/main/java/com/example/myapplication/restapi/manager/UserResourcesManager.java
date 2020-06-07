@@ -96,10 +96,10 @@ public class UserResourcesManager {
         });
     }
 
-    public synchronized void getUserFollowing(final UserResourcesCallback userResourcesCallback) {
+    public synchronized void getUserFollowing(String login, final UserResourcesCallback userResourcesCallback) {
         UserToken userToken = Sesion.getInstance(mContext).getUserToken();
 
-        Call<List<User>> call = mUserResourceService.getUserFollowing("Bearer " + userToken.getIdToken());
+        Call<List<User>> call = mUserResourceService.getUserFollowing(login,"Bearer " + userToken.getIdToken());
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
@@ -121,10 +121,10 @@ public class UserResourcesManager {
         });
     }
 
-    public synchronized void getUserFollowers(final UserResourcesCallback userResourcesCallback) {
+    public synchronized void getUserFollowers(String login, final UserResourcesCallback userResourcesCallback) {
         UserToken userToken = Sesion.getInstance(mContext).getUserToken();
 
-        Call<List<User>> call = mUserResourceService.getUserFollowers("Bearer " + userToken.getIdToken());
+        Call<List<User>> call = mUserResourceService.getUserFollowers(login, "Bearer " + userToken.getIdToken());
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {

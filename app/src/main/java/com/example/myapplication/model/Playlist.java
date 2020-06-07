@@ -1,12 +1,15 @@
 package com.example.myapplication.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class Playlist implements Serializable {
+public class Playlist implements Serializable, Parcelable {
 
     @SerializedName("cover")
     @Expose
@@ -49,6 +52,10 @@ public class Playlist implements Serializable {
         this.name = name;
         this.tracks = tracks;
         this.publicAccessible = publico;
+    }
+
+    public Playlist() {
+
     }
 
     public String getCover() {
@@ -148,4 +155,13 @@ public class Playlist implements Serializable {
         this.followed = followed;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
 }
