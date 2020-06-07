@@ -95,14 +95,14 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
         following.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserResourcesManager.getInstance(getContext()).getUserFollowing(ProfileFragment.this);
+                UserResourcesManager.getInstance(getContext()).getUserFollowing(user.getLogin(), ProfileFragment.this);
             }
         });
         followers = view.findViewById(R.id.linearLayout6);
         followers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserResourcesManager.getInstance(getContext()).getUserFollowers(ProfileFragment.this);
+                UserResourcesManager.getInstance(getContext()).getUserFollowers(user.getLogin(), ProfileFragment.this);
             }
         });
         btnMore = view.findViewById(R.id.profile_more_button);
