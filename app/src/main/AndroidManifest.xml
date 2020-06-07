@@ -18,18 +18,24 @@
         android:requestLegacyExternalStorage="true"
         >
 
-        <activity android:name=".controller.activities.MainActivity">
+        <activity android:name=".controller.activities.MainActivity"
+            android:screenOrientation = "portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.activities.RegisterActivity"/>
-        <activity android:name=".controller.activities.PaginaPrincipalActivity"/>
-        <activity android:name=".controller.activities.AddSongActivity"/>
-        <activity android:name=".controller.activities.AddPlaylistActivity"/>
-        <activity android:name=".controller.fragments.PlaylistSongsFragment"/>
+        <activity android:name=".controller.activities.RegisterActivity"
+            android:screenOrientation = "portrait"/>
+        <activity android:name=".controller.activities.PaginaPrincipalActivity"
+            android:screenOrientation = "portrait"/>
+        <activity android:name=".controller.activities.AddSongActivity"
+            android:screenOrientation = "portrait"/>
+        <activity android:name=".controller.activities.AddPlaylistActivity"
+            android:screenOrientation = "portrait"/>
+        <activity android:name=".controller.fragments.PlaylistSongsFragment"
+            android:screenOrientation = "portrait"/>
         <service android:enabled="true" android:name=".controller.music.MusicService"></service>
 
         <meta-data
