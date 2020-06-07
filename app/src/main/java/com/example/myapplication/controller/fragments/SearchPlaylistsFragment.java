@@ -1,13 +1,12 @@
 package com.example.myapplication.controller.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,13 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.controller.activities.PlaylistSongsActivity;
 import com.example.myapplication.controller.adapters.SearchPlaylistAdapter;
 import com.example.myapplication.controller.music.MusicCallback;
 import com.example.myapplication.model.Followed;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.SearchResult;
 import com.example.myapplication.model.Track;
+import com.example.myapplication.model.User;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
 import com.example.myapplication.restapi.callback.SearchCallback;
 import com.example.myapplication.restapi.manager.PlaylistManager;
@@ -118,13 +117,15 @@ public class SearchPlaylistsFragment extends Fragment implements SearchCallback,
 
     @Override
     public void onPlaylistSelected(Integer id, String sectionId) {
-        Playlist pAux = new Playlist();
+        ArrayList<Playlist> pAux = new ArrayList<>();
         for (Playlist p : playlists) {
-            if (p.getId().equals(id)) pAux = p;
+            if (p.getId().equals(id)) pAux.add(0, p);
         }
-        Intent i = new Intent(getContext(), PlaylistSongsActivity.class);
-        i.putExtra("Playlist", pAux);
-        startActivity(i);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("playlist", pAux);
+        Fragment fragment = new PlaylistSongsFragment();
+        fragment.setArguments(bundle);
+        getFragmentManager().beginTransaction().replace(R.id.search_layout, fragment).commit();
     }
 
     @Override

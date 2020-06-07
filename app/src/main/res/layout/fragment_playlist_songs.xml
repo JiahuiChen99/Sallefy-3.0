@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@drawable/gradient_fondo">
+    android:background="@drawable/gradient_fondo"
+    android:id="@+id/activity_see_songs">
 
     <TextView
         android:id="@+id/playlist_name"
@@ -37,7 +38,5 @@
         android:layout_marginTop="20dp"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/playlist_name" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

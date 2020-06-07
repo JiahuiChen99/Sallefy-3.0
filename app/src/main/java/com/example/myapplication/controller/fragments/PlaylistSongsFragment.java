@@ -1,25 +1,22 @@
-package com.example.myapplication.controller.activities;
+package com.example.myapplication.controller.fragments;
 
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.music.MusicCallback;
-import com.example.myapplication.controller.music.MusicService;
 import com.example.myapplication.model.Followed;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.Track;
@@ -30,7 +27,7 @@ import com.example.myapplication.restapi.manager.PlaylistManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaylistSongsActivity extends AppCompatActivity implements PlaylistCallback, TrackCallback, MusicCallback {
+public class PlaylistSongsFragment extends Fragment implements PlaylistCallback, TrackCallback {
 
     private RecyclerView mRecyclerView;
     private TextView tvName;
@@ -42,51 +39,25 @@ public class PlaylistSongsActivity extends AppCompatActivity implements Playlist
     private PlaylistManager mPlaylistManager;
     private MusicCallback sendTracksCallback;
 
-    private MusicService musicService;
-    private ServiceConnection mConnection = new ServiceConnection() {
-
-        /************************************************************************
-         * This is called when the connection with the service has been stablished,
-         * giving us the service object we can use to interact with the service
-         ************************************************************************/
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            musicService = ((MusicService.MusicBinder)service).getService();
-            musicService.setCallback(PlaylistSongsActivity.this);
-        }
-
-        /************************************************************************
-         * We shoulding see this happen, this is called when the connection with
-         * the service has been unexpectedly disconnected, its process crashed
-         ************************************************************************/
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            musicService = null;
-        }
-    };
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceSate) {
-        super.onCreate(savedInstanceSate);
-        setContentView(R.layout.activity_see_songs);
-        initViews();
-    }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_playlist_songs, container, false);
 
-    private void initViews () {
-
-        Intent i = getIntent();
-        playlist = (Playlist) i.getSerializableExtra("Playlist");
+        Bundle bundle = getArguments();
+        playlist = (Playlist) bundle.getParcelableArrayList("playlist").get(0);
         tracks = (ArrayList<Track>) playlist.getTracks();
-        tvName = (TextView) findViewById(R.id.playlist_name);
+
+        tvName = (TextView) view.findViewById(R.id.playlist_name);
         tvName.setText(playlist.getName());
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.playlist_recyclerView);
-        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        TrackListAdapter adapter = new TrackListAdapter(this, this, tracks);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.playlist_recyclerView);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        TrackListAdapter adapter = new TrackListAdapter(this, getContext(), tracks);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(adapter);
 
-        bFollow = (Button) findViewById(R.id.follow_playlist);
+        bFollow = (Button) view.findViewById(R.id.follow_playlist);
         checkFollow();
         bFollow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,27 +65,8 @@ public class PlaylistSongsActivity extends AppCompatActivity implements Playlist
                 updateFollow();
             }
         });
-        sendTracksCallback = this;
 
-        initService();
-    }
-
-    private void initService() {
-        bindService(new Intent(this, MusicService.class), mConnection, Context.BIND_AUTO_CREATE);
-        mIsBound = true;
-    }
-
-    private void doUnbindService(){
-        if(mIsBound){
-            //Detach our existing connection
-            unbindService(mConnection);
-            mIsBound = false;
-        }
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        doUnbindService();
+        return view;
     }
 
     private void updateFollow() {
@@ -122,7 +74,7 @@ public class PlaylistSongsActivity extends AppCompatActivity implements Playlist
     }
 
     private void checkFollow() {
-        mPlaylistManager = new PlaylistManager(this);
+        mPlaylistManager = new PlaylistManager(getContext());
         mPlaylistManager.checkIfFollow(this, playlist.getId());
     }
 
@@ -136,6 +88,23 @@ public class PlaylistSongsActivity extends AppCompatActivity implements Playlist
         if(follow.getFollowed().equalsIgnoreCase("true")){
             bFollow.setText("UNFOLLOW");
         } else bFollow.setText("FOLLOW");
+    }
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+
+        try {
+            sendTracksCallback = (MusicCallback) context;
+        }catch (ClassCastException e){
+            System.out.println("Error, class doesn't implement the interface");
+        }
+    }
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        sendTracksCallback = null;
     }
 
     @Override
@@ -265,66 +234,6 @@ public class PlaylistSongsActivity extends AppCompatActivity implements Playlist
 
     @Override
     public void onFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onMusicPlayerPrepared() {
-
-    }
-
-    @Override
-    public void setTracks(ArrayList<Track> playlist, int currentTrack) {
-        musicService.setTracks(playlist, currentTrack);
-    }
-
-    @Override
-    public void setTrack(Track song) {
-
-    }
-
-    @Override
-    public void updatePlayPauseButton(boolean playing) {
-
-    }
-
-    @Override
-    public void updateLikeButton(boolean liked) {
-
-    }
-
-    @Override
-    public void updateSongTitle(String title) {
-
-    }
-
-    @Override
-    public void updateArtist(String artistName) {
-
-    }
-
-    @Override
-    public void updateSongImage(String imageURL) {
-
-    }
-
-    @Override
-    public void updateSeekBar(int currentPosition) {
-
-    }
-
-    @Override
-    public void updateMaxSeekBar(int currentPosition) {
-
-    }
-
-    @Override
-    public void showShrinkedBar(boolean show) {
-
-    }
-
-    @Override
-    public void setSongID(int songID) {
 
     }
 }
