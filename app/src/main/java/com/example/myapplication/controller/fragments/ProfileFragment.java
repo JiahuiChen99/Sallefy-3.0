@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.controller.activities.AddPlaylistActivity;
 import com.example.myapplication.controller.activities.AddSongActivity;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.adapters.UserPlaylistAdapter;
@@ -131,6 +132,15 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
         builder = new TextInsideCircleButton.Builder()
                 .normalImageRes(R.drawable.ic_playlist_add_black_24dp)
                 .normalText("New Playlist");
+
+        builder.listener(new OnBMClickListener() {
+            @Override
+            public void onBoomButtonClick(int index) {
+                Intent uploadActivity = new Intent(getContext(), AddPlaylistActivity.class);
+                startActivity(uploadActivity);
+            }
+        });
+
         builder.imageRect(new Rect(80, 70, 10, 10));
         btnMore.addBuilder(builder);
 
