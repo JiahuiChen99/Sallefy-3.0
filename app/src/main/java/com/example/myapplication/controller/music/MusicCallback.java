@@ -21,4 +21,5 @@ public interface MusicCallback {
     void updateMaxSeekBar(int currentPosition);
     void showShrinkedBar(boolean show);
     void setSongID(int songID);
+    void updateSongURL(String url);
 }

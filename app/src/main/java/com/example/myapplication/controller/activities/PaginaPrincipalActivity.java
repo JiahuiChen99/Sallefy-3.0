@@ -1,5 +1,6 @@
 package com.example.myapplication.controller.activities;
 
+import android.app.DownloadManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
@@ -59,6 +61,7 @@ import com.sackcentury.shinebuttonlib.ShineButton;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,8 +100,7 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
     private String url;
     private String songName;
     private String artistName;
-
-
+    private String songURL;
 
     private static final String PLAY_VIEW = "PlayIcon";
     private static final String STOP_VIEW = "StopIcon";
@@ -160,7 +162,7 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
         this.artistName = getIntent().getStringExtra("songArtist");
 
         if(url == null){
-            //this.url = "https://livedoor.blogimg.jp/future48/imgs/f/1/f1c032b5.jpg";
+            this.url = "https://livedoor.blogimg.jp/future48/imgs/f/1/f1c032b5.jpg";
         }
 
 
@@ -419,10 +421,19 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
             }
         });
         btnDownload = (ImageButton) findViewById(R.id.download);
-        btnDownload.setOnClickListener(new View.OnClickListener(){
+        btnDownload.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
+                DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+                Uri uri = Uri.parse(songURL);
 
+                DownloadManager.Request request = new DownloadManager.Request(uri);
+                request.setTitle(songName);
+                request.setDescription("Downloading ...");
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, songName);
+
+                downloadManager.enqueue(request);
             }
         });
         btnShareSong = (ImageButton) findViewById(R.id.share);
@@ -594,6 +605,9 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
         tvHeaderSongName.setText(title);
         tvHeaderSongName.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         tvHeaderSongName.setSelected(true);
+
+
+        songName = title;
     }
 
     @Override
@@ -654,6 +668,11 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
     @Override
     public void setSongID(int songID) {
         this.songID = songID;
+    }
+
+    @Override
+    public void updateSongURL(String url) {
+        this.songURL = url;
     }
 
     private String createTimeLabel(Integer duration){
