@@ -29,6 +29,7 @@ import com.example.myapplication.controller.activities.AddSongActivity;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.adapters.UserPlaylistAdapter;
 import com.example.myapplication.controller.music.MusicCallback;
+import com.example.myapplication.model.Followed;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.model.User;
@@ -52,8 +53,23 @@ import recycler.coverflow.CoverFlowLayoutManger;
 import recycler.coverflow.RecyclerCoverFlow;
 
 public  class ProfileFragment extends Fragment implements PlaylistCallback, TrackCallback, UserResourcesCallback {
+    @Override
+    public void onErrorFollow(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowReceived(Followed follow) {
+
+    }
 
     private static final String FOLLOW = "FollowIcon";
+
+    @Override
+    public void onPlaylistSelected(Integer id, String sectionId) {
+
+    }
+
     private static final String FOLLOWING = "FollowingIcon";
 
     private User user;

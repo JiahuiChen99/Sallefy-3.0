@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
+import com.example.myapplication.model.Followed;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
 import com.example.myapplication.restapi.manager.PlaylistManager;
@@ -20,12 +21,26 @@ import com.example.myapplication.restapi.manager.PlaylistManager;
 import java.util.List;
 
 public class AddPlaylistActivity extends AppCompatActivity implements PlaylistCallback {
+    @Override
+    public void onErrorFollow(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowReceived(Followed follow) {
+
+    }
 
     private EditText etPlaylistName;
     private CheckBox check;
     private Button bAccept;
 
     private PlaylistManager pm = new PlaylistManager(this);
+
+    @Override
+    public void onPlaylistSelected(Integer id, String sectionId) {
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceSate) {

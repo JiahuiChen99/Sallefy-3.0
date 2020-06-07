@@ -51,6 +51,10 @@ public class Playlist implements Serializable {
         this.publicAccessible = publico;
     }
 
+    public Playlist() {
+
+    }
+
     public String getCover() {
         return cover;
     }

@@ -1,10 +1,13 @@
 package com.example.myapplication.controller.fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,8 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.controller.activities.PlaylistSongsActivity;
 import com.example.myapplication.controller.adapters.SearchPlaylistAdapter;
 import com.example.myapplication.controller.music.MusicCallback;
+import com.example.myapplication.model.Followed;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.SearchResult;
 import com.example.myapplication.model.Track;
@@ -51,7 +56,7 @@ public class SearchPlaylistsFragment extends Fragment implements SearchCallback,
 
         msongListRecyclerView = (RecyclerView) v.findViewById(R.id.search_songs);
         LinearLayoutManager songsListManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        SearchPlaylistAdapter userPlaylistAdapter = new SearchPlaylistAdapter( getContext(), null);
+        SearchPlaylistAdapter userPlaylistAdapter = new SearchPlaylistAdapter( getContext(), null, this);
         msongListRecyclerView.setLayoutManager(songsListManager);
         msongListRecyclerView.setAdapter(userPlaylistAdapter);
 
@@ -95,7 +100,7 @@ public class SearchPlaylistsFragment extends Fragment implements SearchCallback,
     @Override
     public void onInfoReceived(SearchResult output) {
         this.playlists = (ArrayList)output.getPlaylists();
-        SearchPlaylistAdapter adapter = new SearchPlaylistAdapter(getContext(), playlists);
+        SearchPlaylistAdapter adapter = new SearchPlaylistAdapter(getContext(), playlists, this);
         msongListRecyclerView.setAdapter(adapter);
     }
 
@@ -107,8 +112,19 @@ public class SearchPlaylistsFragment extends Fragment implements SearchCallback,
     @Override
     public void onPlaylistReceived(List<Playlist> playlists) {
         this.playlists = (ArrayList) playlists;
-        SearchPlaylistAdapter adapter = new SearchPlaylistAdapter(getContext(), this.playlists);
+        SearchPlaylistAdapter adapter = new SearchPlaylistAdapter(getContext(), this.playlists, this);
         msongListRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onPlaylistSelected(Integer id, String sectionId) {
+        Playlist pAux = new Playlist();
+        for (Playlist p : playlists) {
+            if (p.getId().equals(id)) pAux = p;
+        }
+        Intent i = new Intent(getContext(), PlaylistSongsActivity.class);
+        i.putExtra("Playlist", pAux);
+        startActivity(i);
     }
 
     @Override
@@ -151,5 +167,13 @@ public class SearchPlaylistsFragment extends Fragment implements SearchCallback,
 
     }
 
-    //TODO implement onSearchPlaylistClicked - open a music list
+    @Override
+    public void onErrorFollow(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowReceived(Followed follow) {
+
+    }
 }

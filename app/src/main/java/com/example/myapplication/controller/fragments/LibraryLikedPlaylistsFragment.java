@@ -16,6 +16,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.controller.adapters.LikedPlaylistAdapter;
 import com.example.myapplication.controller.adapters.TrackListAdapter;
 import com.example.myapplication.controller.music.MusicCallback;
+import com.example.myapplication.model.Followed;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.Track;
 import com.example.myapplication.restapi.callback.PlaylistCallback;
@@ -29,6 +30,20 @@ import recycler.coverflow.CoverFlowLayoutManger;
 import recycler.coverflow.RecyclerCoverFlow;
 
 public class LibraryLikedPlaylistsFragment extends Fragment implements PlaylistCallback, TrackCallback {
+    @Override
+    public void onPlaylistSelected(Integer id, String sectionId) {
+
+    }
+
+    @Override
+    public void onErrorFollow(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowReceived(Followed follow) {
+
+    }
 
     private RecyclerCoverFlow mPlaylistRecyclerView;
     private ArrayList<Playlist> mPlaylists;
