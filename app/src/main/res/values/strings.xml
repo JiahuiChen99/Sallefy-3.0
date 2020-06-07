@@ -44,6 +44,7 @@
     <string name="playlist_follows">Followers</string>
     <string name="playlist_likes">Likes</string>
     <string name="playlist_songs">Songs</string>
+    <string name="add_song_playlist_name">Playlist name</string>
 
     <!-- ADD SONG -->
     <string name="add_song_title">Upload Song</string>
@@ -93,6 +94,7 @@
 
     <string name="error_gif">x or y bound size should be at least %1$dpx and file size should be no more than %2$sM</string>
     <string name="media_route_menu_title">Chromecast</string>
+    <string name="public_p">Public</string>
 
 
 </resources>
