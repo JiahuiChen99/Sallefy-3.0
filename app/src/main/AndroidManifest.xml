@@ -28,6 +28,8 @@
         <activity android:name=".controller.activities.RegisterActivity"/>
         <activity android:name=".controller.activities.PaginaPrincipalActivity"/>
         <activity android:name=".controller.activities.AddSongActivity"/>
+        <activity android:name=".controller.activities.AddPlaylistActivity"/>
+        <activity android:name=".controller.fragments.PlaylistSongsFragment"/>
         <service android:enabled="true" android:name=".controller.music.MusicService"></service>
 
         <meta-data

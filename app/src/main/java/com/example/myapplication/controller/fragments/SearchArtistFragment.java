@@ -16,6 +16,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.controller.adapters.SearchPlaylistAdapter;
 import com.example.myapplication.controller.adapters.SearchUsersAdapter;
 import com.example.myapplication.controller.music.MusicCallback;
+import com.example.myapplication.model.Followed;
 import com.example.myapplication.model.Playlist;
 import com.example.myapplication.model.SearchResult;
 import com.example.myapplication.model.Track;
@@ -33,7 +34,16 @@ import com.example.myapplication.restapi.manager.UserResourcesManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchArtistFragment extends Fragment implements SearchCallback, UserResourcesCallback {
+public class SearchArtistFragment extends Fragment implements SearchCallback, UserResourcesCallback, PlaylistCallback {
+    @Override
+    public void onErrorFollow(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowReceived(Followed follow) {
+
+    }
 
     private ArrayList<User> users;
     private RecyclerView msongListRecyclerView;
@@ -57,7 +67,7 @@ public class SearchArtistFragment extends Fragment implements SearchCallback, Us
 
         msongListRecyclerView = (RecyclerView) v.findViewById(R.id.search_songs);
         LinearLayoutManager songsListManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        SearchPlaylistAdapter userPlaylistAdapter = new SearchPlaylistAdapter( getContext(), null);
+        SearchPlaylistAdapter userPlaylistAdapter = new SearchPlaylistAdapter( getContext(), null, this);
         msongListRecyclerView.setLayoutManager(songsListManager);
         msongListRecyclerView.setAdapter(userPlaylistAdapter);
 
@@ -186,5 +196,50 @@ public class SearchArtistFragment extends Fragment implements SearchCallback, Us
         ProfileFragment profileFragment = new ProfileFragment();
         profileFragment.setArguments(bundle);
         getFragmentManager().beginTransaction().add(R.id.search_layout, profileFragment).commit();
+    }
+
+    @Override
+    public void onPlaylistReceived(List<Playlist> playlists) {
+
+    }
+
+    @Override
+    public void onNoPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistCreated(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistSelected(Integer id, String sectionId) {
+
+    }
+
+    @Override
+    public void onUserPlaylistsReceived(List<Playlist> playlists) {
+
+    }
+
+    @Override
+    public void onNoUserPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onUserSpecificLikedPlaylistReceived(Playlist specificPlaylist) {
+
+    }
+
+    @Override
+    public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
+
     }
 }

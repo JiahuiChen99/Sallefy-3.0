@@ -31,7 +31,7 @@ public class SearchPlaylistAdapter extends RecyclerView.Adapter<SearchPlaylistAd
     private PlaylistCallback callback;
     private int NUM_VIEWHOLDERS = 0;
 
-    public SearchPlaylistAdapter(Context context, ArrayList<Playlist> playlists){
+    public SearchPlaylistAdapter(Context context, ArrayList<Playlist> playlists, PlaylistCallback callback){
         this.callback = callback;
         this.mContext = context;
         this.mPlaylists = playlists;
@@ -74,13 +74,13 @@ public class SearchPlaylistAdapter extends RecyclerView.Adapter<SearchPlaylistAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
 
-        holder.mLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: callback method onSearchPlaylistClicked
-            }
-        });
         if (mPlaylists.get(position).getThumbnail() != null) {
+            holder.mLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callback.onPlaylistSelected(mPlaylists.get(position).getId(), TAG);
+                }
+            });
             RequestOptions requestOptions = new RequestOptions();
             requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(20));
             Glide.with(mContext)
