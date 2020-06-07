@@ -440,7 +440,14 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
         btnShareSong.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                Intent send = new Intent(Intent.ACTION_SEND);
+                send.putExtra(Intent.EXTRA_TEXT, songURL);
 
+                send.setType("text/plain");
+
+                send.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                startActivity(Intent.createChooser(send, "SNS"));
             }
         });
         mHandler = new Handler();
