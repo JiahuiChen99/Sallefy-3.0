@@ -104,34 +104,6 @@ public class PlaylistManager {
 
     }
 
-
-    public synchronized void modifyPlaylist(Playlist playlist, final PlaylistCallback playlistcallback) {
-        UserToken userToken = Sesion.getInstance(mContext).getUserToken();
-
-        Call<Playlist> call = mService.modifyPlaylist(playlist, "Bearer " + userToken.getIdToken());
-        call.enqueue(new Callback<Playlist>() {
-            @Override
-            public void onResponse(Call<Playlist> call, Response<Playlist> response) {
-                int code = response.code();
-
-                if (response.isSuccessful()) {
-                    playlistcallback.onPlaylistCreated(response.body());
-                } else {
-                    try {
-                        playlistcallback.onPlaylistFailure(new Throwable(response.errorBody().string()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Playlist> call, Throwable t) {
-                playlistcallback.onPlaylistFailure(t);
-            }
-        });
-    }
-
     public synchronized void getUserPlaylists(final PlaylistCallback playlistcallback) {
         UserToken userToken = Sesion.getInstance(mContext).getUserToken();
 
@@ -286,6 +258,33 @@ public class PlaylistManager {
             @Override
             public void onFailure(Call<Playlist> call, Throwable t) {
 
+            }
+        });
+    }
+
+    public synchronized void modifyPlaylist(Playlist playlist, final PlaylistCallback playlistcallback) {
+        UserToken userToken = Sesion.getInstance(mContext).getUserToken();
+
+        Call<Playlist> call = mService.modifyPlaylist(playlist, "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<Playlist>() {
+            @Override
+            public void onResponse(Call<Playlist> call, Response<Playlist> response) {
+                int code = response.code();
+
+                if (response.isSuccessful()) {
+                    playlistcallback.onPlaylistModified(response.body());
+                } else {
+                    try {
+                        playlistcallback.onPlaylistFailure(new Throwable(response.errorBody().string()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Playlist> call, Throwable t) {
+                playlistcallback.onPlaylistFailure(t);
             }
         });
     }

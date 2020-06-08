@@ -236,4 +236,9 @@ public class PlaylistSongsFragment extends Fragment implements PlaylistCallback,
     public void onFailure(Throwable throwable) {
 
     }
+
+    @Override
+    public void onPlaylistModified(Playlist playlist) {
+
+    }
 }

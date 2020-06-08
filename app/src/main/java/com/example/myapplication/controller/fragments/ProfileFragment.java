@@ -497,4 +497,9 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
     public void onNoTrackUploaded(Throwable notUploaded) {
 
     }
+
+    @Override
+    public void onPlaylistModified(Playlist playlist) {
+
+    }
 }

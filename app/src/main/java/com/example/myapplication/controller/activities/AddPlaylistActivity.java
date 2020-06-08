@@ -111,4 +111,9 @@ public class AddPlaylistActivity extends AppCompatActivity implements PlaylistCa
     public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
 
     }
+
+    @Override
+    public void onPlaylistModified(Playlist playlist) {
+
+    }
 }
