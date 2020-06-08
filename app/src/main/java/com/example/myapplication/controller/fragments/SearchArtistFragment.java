@@ -242,4 +242,9 @@ public class SearchArtistFragment extends Fragment implements SearchCallback, Us
     public void onNoUserSpecificLikedPlaylist(Throwable throwable) {
 
     }
+
+    @Override
+    public void onPlaylistModified(Playlist playlist) {
+
+    }
 }

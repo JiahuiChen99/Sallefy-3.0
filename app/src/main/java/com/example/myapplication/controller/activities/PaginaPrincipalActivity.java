@@ -37,6 +37,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
 import com.example.myapplication.controller.fragments.ExploreFragment;
+import com.example.myapplication.controller.fragments.PlaylistSongsFragment;
 import com.example.myapplication.controller.fragments.ProfileFragment;
 import com.example.myapplication.controller.fragments.LibraryFragment;
 import com.example.myapplication.controller.fragments.SearchFragment;
@@ -417,7 +418,7 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
         btnAddToPlaylist.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-
+                doTransition();
             }
         });
         btnDownload = (ImageButton) findViewById(R.id.download);
@@ -477,6 +478,14 @@ public class PaginaPrincipalActivity extends AppCompatActivity implements MusicC
 
         expandedHeader = findViewById(R.id.linearLayout3);
         expandedHeader.setVisibility(View.INVISIBLE);
+    }
+
+    private void doTransition() {
+        Track tAux =  musicService.getTracks().get(songID);
+
+        Intent i = new Intent(getApplicationContext(), AddSongToPlaylistActivity.class);
+        i.putExtra("track", tAux);
+        startActivity(i);
     }
 
     private void configSliding(){

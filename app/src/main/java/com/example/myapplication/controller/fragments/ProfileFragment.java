@@ -184,7 +184,7 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
 
         mArtistAlbumsRecyclerView = (RecyclerCoverFlow) view.findViewById(R.id.profile_artist_albums);
         CoverFlowLayoutManger artistAlbumsManager = new CoverFlowLayoutManger(false, false, true, (float) 1);
-        UserPlaylistAdapter artistAlbumsAdapter = new UserPlaylistAdapter(getContext(), null);
+        UserPlaylistAdapter artistAlbumsAdapter = new UserPlaylistAdapter(getContext(), mAlbums);
         mArtistAlbumsRecyclerView.setLayoutManager(artistAlbumsManager);
         mArtistAlbumsRecyclerView.setAdapter(artistAlbumsAdapter);
         mArtistAlbumsRecyclerView.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected() {
@@ -495,6 +495,11 @@ public  class ProfileFragment extends Fragment implements PlaylistCallback, Trac
 
     @Override
     public void onNoTrackUploaded(Throwable notUploaded) {
+
+    }
+
+    @Override
+    public void onPlaylistModified(Playlist playlist) {
 
     }
 }

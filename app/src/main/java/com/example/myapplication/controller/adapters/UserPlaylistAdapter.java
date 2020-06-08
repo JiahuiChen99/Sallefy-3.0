@@ -63,23 +63,23 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
 
-        holder.mLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Clicked: " + mPlaylists.get(position).getName());
+        if (mPlaylists.get(position).getId() != null) {
+            holder.mLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "Clicked: " + mPlaylists.get(position).getName());
+                }
+            });
+            if (mPlaylists.get(position).getThumbnail() != null) {
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(20));
+                Glide.with(mContext)
+                        .asBitmap()
+                        .placeholder(R.drawable.logo)
+                        .load(mPlaylists.get(position).getThumbnail())
+                        .apply(requestOptions)
+                        .into(holder.ivThumbnail);
             }
-        });
-        if (mPlaylists.get(position).getThumbnail() != null) {
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(20));
-            Glide.with(mContext)
-                    .asBitmap()
-                    .placeholder(R.drawable.logo)
-                    .load(mPlaylists.get(position).getThumbnail())
-                    .apply(requestOptions)
-                    .into(holder.ivThumbnail);
-
-            System.out.println(mPlaylists.get(position).getName());
             holder.tvTrackName.setText(mPlaylists.get(position).getName());
         }
     }

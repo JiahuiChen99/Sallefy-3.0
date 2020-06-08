@@ -34,6 +34,8 @@
             android:screenOrientation = "portrait"/>
         <activity android:name=".controller.activities.AddPlaylistActivity"
             android:screenOrientation = "portrait"/>
+        <activity android:name=".controller.activities.AddSongToPlaylistActivity"
+            android:screenOrientation = "portrait"/>
         <activity android:name=".controller.fragments.PlaylistSongsFragment"
             android:screenOrientation = "portrait"/>
         <service android:enabled="true" android:name=".controller.music.MusicService"></service>

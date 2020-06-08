@@ -177,4 +177,9 @@ public class SearchPlaylistsFragment extends Fragment implements SearchCallback,
     public void onFollowReceived(Followed follow) {
 
     }
+
+    @Override
+    public void onPlaylistModified(Playlist playlist) {
+
+    }
 }
