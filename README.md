@@ -2,6 +2,15 @@
 Sallefy is a cloud streaming platform. The front-end is created with Java and the data fetched using [Arnau Garcia](https://github.com/arnaugarcia)'s API: 
 > https://github.com/arnaugarcia/sallefy
 
+<p align="center">
+<b>【YouTube Demo】</b>
+</p>
+
+  
+[<p align="center"><img src="https://user-images.githubusercontent.com/37770349/87924639-73c26b00-ca7f-11ea-8850-9a40e9a7b6c5.png" width="50%"> </p>](https://youtu.be/1IY30NCmF6c)
+
+
+
 ## Sallefy Official Logo & Core UI Design Mockups
 
 <p align="center">
